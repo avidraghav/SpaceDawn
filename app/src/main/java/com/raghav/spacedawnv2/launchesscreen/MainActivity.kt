@@ -1,4 +1,4 @@
-package com.raghav.spacedawnv2
+package com.raghav.spacedawnv2.launchesscreen
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
