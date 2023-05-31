@@ -9,7 +9,7 @@ import javax.inject.Inject
 class LaunchesRepositoryImpl @Inject constructor(
     private val launchesApi: LaunchesApi
 ) : LaunchesRepository {
-    override suspend fun getLaunches(): List<LaunchesResponse> {
-        return launchesApi.getLaunches().map { it.toDomain() }
+    override suspend fun getLaunches(): LaunchesResponse {
+        return launchesApi.getLaunches().toDomain()
     }
 }

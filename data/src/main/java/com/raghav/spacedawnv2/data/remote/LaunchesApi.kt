@@ -6,9 +6,9 @@ import retrofit2.http.Query
 
 interface LaunchesApi {
 
-    @GET("upcoming")
+    @GET("launch/upcoming")
     suspend fun getLaunches(
         @Query("offset")
         offset: Int = 0
-    ): List<LaunchesResponseDto>
+    ): LaunchesResponseDto
 }

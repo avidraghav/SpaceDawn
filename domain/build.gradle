@@ -10,4 +10,5 @@ java {
 
 dependencies {
     implementation("androidx.annotation:annotation:1.6.0")
+    implementation("javax.inject:javax.inject:1")
 }

@@ -4,5 +4,5 @@ import com.raghav.spacedawnv2.domain.model.LaunchesResponse
 
 interface LaunchesRepository {
 
-    suspend fun getLaunches(): List<LaunchesResponse>
+    suspend fun getLaunches(): LaunchesResponse
 }
