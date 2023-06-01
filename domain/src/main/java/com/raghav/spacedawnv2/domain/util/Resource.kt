@@ -7,11 +7,11 @@ package com.raghav.spacedawnv2.domain.util
  * Resource.Error
  *
  * @param data data obtained after performing the said action
- * @param message error message in case when the action gets failed
+ * @param errorMessage error message in case when the action gets failed
  * */
 sealed class Resource<T>(
     val data: T? = null,
-    val message: String? = null
+    val errorMessage: String? = null
 ) {
     class Success<T>(data: T) : Resource<T>(data)
     class Error<T>(message: String, data: T? = null) : Resource<T>(data, message)
