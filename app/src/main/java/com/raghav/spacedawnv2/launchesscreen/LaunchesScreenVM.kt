@@ -19,7 +19,7 @@ class LaunchesScreenVM @Inject constructor(
 
     private val _state: MutableStateFlow<LaunchesScreenState> =
         MutableStateFlow(LaunchesScreenState())
-    private val state: StateFlow<LaunchesScreenState> = _state
+    val state: StateFlow<LaunchesScreenState> = _state
 
     init {
         getLaunches()
