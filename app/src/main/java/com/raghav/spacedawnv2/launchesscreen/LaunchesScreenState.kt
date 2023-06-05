@@ -2,8 +2,12 @@ package com.raghav.spacedawnv2.launchesscreen
 
 import com.raghav.spacedawnv2.domain.model.LaunchDetail
 
-data class LaunchesScreenState(
-    val isLoading: Boolean = false,
+sealed class LaunchesScreenState(
     val launches: List<LaunchDetail> = emptyList(),
-    val error: String? = null
-)
+    val errorMessage: String? = null
+) {
+    object Loading : LaunchesScreenState()
+    class Success(launches: List<LaunchDetail>) : LaunchesScreenState(launches = launches)
+    class Error(message: String?) : LaunchesScreenState(errorMessage = message)
+    object Empty : LaunchesScreenState()
+}

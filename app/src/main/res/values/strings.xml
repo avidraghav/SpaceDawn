@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Space Dawn</string>
     <string name="image_of_rocket">image of rocket</string>
+    <string name="launches_screen_text">Upcoming Launches Will be Displayed here</string>
 </resources>

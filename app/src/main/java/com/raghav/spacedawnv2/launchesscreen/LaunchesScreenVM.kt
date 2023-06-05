@@ -18,7 +18,7 @@ class LaunchesScreenVM @Inject constructor(
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<LaunchesScreenState> =
-        MutableStateFlow(LaunchesScreenState())
+        MutableStateFlow(LaunchesScreenState.Empty)
     val uiState: StateFlow<LaunchesScreenState> = _uiState
 
     init {
@@ -27,16 +27,16 @@ class LaunchesScreenVM @Inject constructor(
 
     private fun getLaunches() {
         viewModelScope.launch(mainDispatcher) {
-            _uiState.emit(LaunchesScreenState(isLoading = true))
+            _uiState.emit(LaunchesScreenState.Loading)
             getLaunchesUseCase().let { result ->
                 when (result) {
                     is Resource.Error -> {
-                        _uiState.emit(LaunchesScreenState(error = result.errorMessage))
+                        _uiState.emit(LaunchesScreenState.Error(message = result.errorMessage))
                     }
 
                     is Resource.Success -> {
                         val launches = result.data?.results?.filterNotNull() ?: emptyList()
-                        _uiState.emit(LaunchesScreenState(launches = launches))
+                        _uiState.emit(LaunchesScreenState.Success(launches = launches))
                     }
                 }
             }
