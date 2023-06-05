@@ -11,10 +11,10 @@ jobs:
     steps:
       - name: Checkout current repository in macos' file system
         uses: actions/checkout@v2
-      - name: Setup JDK 11
+      - name: Setup JDK 17
         uses: actions/setup-java@v2
         with:
-          java-version: '11'
+          java-version: '17'
           distribution: 'temurin'
           cache: gradle
 
@@ -40,10 +40,10 @@ jobs:
       - build-and-test
     steps:
       - uses: actions/checkout@v2
-      - name: Setup JDK 11
+      - name: Setup JDK 17
         uses: actions/setup-java@v2
         with:
-          java-version: '11'
+          java-version: '17'
           distribution: 'temurin'
           cache: gradle
 
