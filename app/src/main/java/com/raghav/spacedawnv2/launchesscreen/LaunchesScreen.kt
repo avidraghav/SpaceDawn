@@ -22,7 +22,7 @@ fun LaunchesScreen(
     modifier: Modifier = Modifier,
     viewModel: LaunchesScreenVM = hiltViewModel()
 ) {
-    val state = viewModel.state.collectAsStateWithLifecycle().value
+    val state = viewModel.uiState.collectAsStateWithLifecycle().value
     Box(modifier = modifier.fillMaxSize()) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(state.launches) { launch ->
