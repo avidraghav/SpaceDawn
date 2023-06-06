@@ -19,21 +19,30 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.raghav.spacedawnv2.R
+import com.raghav.spacedawnv2.domain.model.LaunchDetail
 import com.raghav.spacedawnv2.launchesscreen.components.LaunchesScreenItem
 import com.raghav.spacedawnv2.ui.theme.spacing
 
 @Composable
 fun LaunchesScreen(
     modifier: Modifier = Modifier,
-    viewModel: LaunchesScreenVM = hiltViewModel()
+    viewModel: LaunchesScreenVM = hiltViewModel(),
+    addReminderButtonClicked: (LaunchDetail) -> Unit
 ) {
     val state = viewModel.uiState.collectAsStateWithLifecycle().value
     Box(modifier = modifier.fillMaxSize()) {
         when (state) {
             is LaunchesScreenState.Success -> {
-                LazyColumn(modifier = Modifier.fillMaxSize().padding(top = MaterialTheme.spacing.small)) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize().padding(top = MaterialTheme.spacing.small)
+                ) {
                     items(state.launches) { launch ->
-                        LaunchesScreenItem(launch = launch)
+                        LaunchesScreenItem(
+                            launch = launch,
+                            addReminderClicked = { reminderDetails ->
+                                addReminderButtonClicked(reminderDetails)
+                            }
+                        )
                         Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
                     }
                 }
@@ -46,7 +55,6 @@ fun LaunchesScreen(
                     modifier = Modifier.fillMaxWidth()
                         .align(Alignment.Center)
                         .padding(MaterialTheme.spacing.medium)
-
                 )
             }
 
@@ -61,7 +69,6 @@ fun LaunchesScreen(
                     modifier = Modifier.fillMaxWidth()
                         .align(Alignment.Center)
                         .padding(MaterialTheme.spacing.medium)
-
                 )
             }
         }

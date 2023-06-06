@@ -35,14 +35,16 @@ import com.raghav.spacedawnv2.util.Helpers.Companion.toDate
 @Composable
 fun LaunchesScreenItem(
     launch: LaunchDetail,
-    modifier: Modifier = Modifier,
-    onItemClick: () -> Unit = {}
+    addReminderClicked: (LaunchDetail) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         launch.image?.let {
             LaunchImage(imageUrl = it)
         }
-        LaunchContent(launch)
+        LaunchContent(launch = launch, addReminderClicked = {
+            addReminderClicked(it)
+        })
     }
 }
 
@@ -69,7 +71,11 @@ fun LaunchImage(imageUrl: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun LaunchContent(launch: LaunchDetail, modifier: Modifier = Modifier) {
+fun LaunchContent(
+    launch: LaunchDetail,
+    addReminderClicked: (LaunchDetail) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier.padding(
             start = MaterialTheme.spacing.small
@@ -116,7 +122,7 @@ fun LaunchContent(launch: LaunchDetail, modifier: Modifier = Modifier) {
             style = MaterialTheme.typography.bodyMedium
         )
 
-        OutlinedButton(onClick = {}) {
+        OutlinedButton(onClick = { addReminderClicked(launch) }) {
             Text(
                 text = stringResource(id = R.string.add_reminder)
             )

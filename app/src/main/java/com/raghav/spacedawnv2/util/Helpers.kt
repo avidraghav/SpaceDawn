@@ -1,5 +1,7 @@
 package com.raghav.spacedawnv2.util
 
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -21,5 +23,17 @@ class Helpers {
             formatter.timeZone = timeZone
             return formatter.format(this)
         }
+
+        fun NavHostController.navigateSingleTopTo(route: String) =
+            this.navigate(route) {
+                popUpTo(
+                    this@navigateSingleTopTo.graph.findStartDestination().id
+                ) {
+                    saveState = true
+                }
+                launchSingleTop = true
+                restoreState = true
+                launchSingleTop = true
+            }
     }
 }
