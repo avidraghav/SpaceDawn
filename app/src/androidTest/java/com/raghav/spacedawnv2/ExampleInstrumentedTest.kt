@@ -17,6 +17,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.raghav.spacedawn", appContext.packageName)
+        assertEquals("com.raghav.spacedawnv2", appContext.packageName)
     }
 }
