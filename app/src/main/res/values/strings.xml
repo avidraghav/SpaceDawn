@@ -1,11 +1,3 @@
 <resources>
     <string name="app_name">Space Dawn</string>
-    <string name="image_of_rocket">image of rocket</string>
-    <string name="launches_screen_text">Upcoming Launches Will be Displayed here</string>
-    <string name="rocket_name">Rocket: %s</string>
-    <string name="launch_status">Status:</string>
-    <string name="add_reminder">Add a Reminder</string>
-    <string name="to_be_determined">To Be Determined</string>
-    <string name="go_for_launch">Go for Launch</string>
-    <string name="to_be_confirmed">To Be Confirmed</string>
 </resources>
