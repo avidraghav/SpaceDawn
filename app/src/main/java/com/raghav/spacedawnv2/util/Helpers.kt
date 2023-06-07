@@ -29,6 +29,7 @@ class Helpers {
                 popUpTo(
                     this@navigateSingleTopTo.graph.findStartDestination().id
                 ) {
+                    inclusive = true
                     saveState = true
                 }
                 launchSingleTop = true

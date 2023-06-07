@@ -1,5 +1,6 @@
 package com.raghav.spacedawnv2.launchesscreen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,7 +28,8 @@ import com.raghav.spacedawnv2.ui.theme.spacing
 fun LaunchesScreen(
     modifier: Modifier = Modifier,
     viewModel: LaunchesScreenVM = hiltViewModel(),
-    addReminderButtonClicked: (LaunchDetail) -> Unit
+    addReminderButtonClicked: (LaunchDetail) -> Unit,
+    systemBackButtonClicked: () -> Unit
 ) {
     val state = viewModel.uiState.collectAsStateWithLifecycle().value
     Box(modifier = modifier.fillMaxSize()) {
@@ -72,5 +74,9 @@ fun LaunchesScreen(
                 )
             }
         }
+    }
+
+    BackHandler {
+        systemBackButtonClicked()
     }
 }
