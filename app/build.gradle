@@ -4,7 +4,7 @@ plugins {
     id "org.jlleitschuh.gradle.ktlint"
     // Hilt doesn't supports KSP yet
     id 'kotlin-kapt'
-    id 'com.google.dagger.hilt.android'
+    id 'com.raghav.hiltplugin'
 }
 
 android {
@@ -84,11 +84,8 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$okhttp_interceptor"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_interceptor"
 
-    // Hilt
-    def hilt_version = "2.44"
+    // To Create ViewModel Instance when Hilt is used along with Compose Navigation
     def hilt_navigation_compose = "1.0.0"
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
     implementation "androidx.hilt:hilt-navigation-compose:$hilt_navigation_compose"
 
     // Testing coroutines
@@ -108,3 +105,4 @@ dependencies {
 kapt {
     correctErrorTypes true
 }
+
