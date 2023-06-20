@@ -5,11 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.raghav.spacedawnv2.domain.usecase.GetLaunchesUseCase
 import com.raghav.spacedawnv2.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class LaunchesScreenVM @Inject constructor(
@@ -19,7 +20,7 @@ class LaunchesScreenVM @Inject constructor(
 
     private val _uiState: MutableStateFlow<LaunchesScreenState> =
         MutableStateFlow(LaunchesScreenState.Empty)
-    val uiState: StateFlow<LaunchesScreenState> = _uiState
+    val uiState: StateFlow<LaunchesScreenState> = _uiState.asStateFlow()
 
     init {
         getLaunches()
