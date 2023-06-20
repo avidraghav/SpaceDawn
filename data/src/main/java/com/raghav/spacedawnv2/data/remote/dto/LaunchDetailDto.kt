@@ -17,7 +17,7 @@ data class LaunchDetailDto(
     @SerializedName("holdreason")
     val holdreason: String?,
     @SerializedName("id")
-    val id: String?,
+    val id: String,
     @SerializedName("image")
     val image: String?,
     @SerializedName("infographic")
@@ -73,11 +73,10 @@ fun LaunchDetailDto.toLaunchDetail(): LaunchDetail {
         agencyLaunchAttemptCount = agencyLaunchAttemptCount,
         agencyLaunchAttemptCountYear = agencyLaunchAttemptCountYear,
         failreason = failreason,
-        hashtag = hashtag,
         holdreason = holdreason,
         id = id,
         image = image,
-        infographic = infographic,
+        infographic = infographic.toString(),
         lastUpdated = lastUpdated,
         launchServiceProvider = launchServiceProviderDto?.toLaunchServiceProvider(),
         locationLaunchAttemptCount = locationLaunchAttemptCount,
@@ -91,8 +90,7 @@ fun LaunchDetailDto.toLaunchDetail(): LaunchDetail {
         pad = pad?.toPad(),
         padLaunchAttemptCount = padLaunchAttemptCount,
         padLaunchAttemptCountYear = padLaunchAttemptCountYear,
-        probability = probability,
-        program = program?.map { it?.toProgram() },
+        probability = probability.toString(),
         rocket = rocketDto?.toRocket(),
         slug = slug,
         status = statusDto?.toStatus(),
