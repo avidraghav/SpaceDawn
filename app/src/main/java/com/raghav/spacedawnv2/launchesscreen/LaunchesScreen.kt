@@ -18,6 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.raghav.spacedawnv2.launchesscreen.components.LaunchesScreenItem
 import com.raghav.spacedawnv2.ui.theme.spacing
+import com.raghav.spacedawnv2.util.Constants
 
 @Composable
 fun LaunchesScreen(
@@ -33,11 +34,11 @@ fun LaunchesScreen(
         viewModel.eventFlow.collect { event ->
             when (event) {
                 is LaunchesScreenVM.LaunchesScreenEvent.ReminderSetSuccessfully -> {
-                    reminderSetSuccessfully("Reminder Set Successfully")
+                    reminderSetSuccessfully(Constants.REMINDER_SET)
                 }
 
                 LaunchesScreenVM.LaunchesScreenEvent.ReminderNotSet -> {
-                    reminderNotSet("Reminder Couldn't be Set")
+                    reminderNotSet(Constants.REMINDER_NOT_SET)
                 }
             }
         }

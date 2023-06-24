@@ -9,7 +9,6 @@ import com.raghav.spacedawnv2.domain.util.Resource
 import com.raghav.spacedawnv2.util.DispatchersProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,7 +38,6 @@ class LaunchesScreenVM @Inject constructor(
     private fun getLaunches() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
-            delay(5000)
             getLaunchesUseCase().let { result ->
                 when (result) {
                     is Resource.Error -> {

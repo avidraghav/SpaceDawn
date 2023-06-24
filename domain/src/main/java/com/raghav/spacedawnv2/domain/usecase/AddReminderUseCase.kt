@@ -16,8 +16,16 @@ import javax.inject.Inject
  *
  */
 
-// add alarm for the date
-// save that launch in db
+/**
+ * Creates a reminder/alarm for the specified launch
+ * and saves that launch in local database
+ * @param repository [LaunchesRepository]
+ * @param reminderScheduler Platform specific Implementation of [ReminderScheduler]
+ *
+ * @return Resource<Nothing?>
+ *
+ * @see Resource
+ */
 
 class AddReminderUseCase @Inject constructor(
     private val repository: LaunchesRepository,

@@ -9,6 +9,10 @@ import com.raghav.spacedawnv2.domain.util.ReminderScheduler
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
+/**
+ * Schedules Reminders/Alarms by using Android's [AlarmManager](https://developer.android.com/reference/android/app/AlarmManager)
+ * @param context Application Context
+ */
 class AndroidReminderScheduler @Inject constructor(
     @ApplicationContext private val context: Context
 ) : ReminderScheduler {
