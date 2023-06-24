@@ -21,7 +21,7 @@ data class LaunchDetail(
     val locationLaunchAttemptCountYear: Int?,
     val mission: Mission?,
     val name: String?,
-    val net: String?,
+    val net: String,
     val netPrecision: NetPrecision?,
     val orbitalLaunchAttemptCount: Int?,
     val orbitalLaunchAttemptCountYear: Int?,

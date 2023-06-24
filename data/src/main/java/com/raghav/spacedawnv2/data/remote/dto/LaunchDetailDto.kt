@@ -83,7 +83,7 @@ fun LaunchDetailDto.toLaunchDetail(): LaunchDetail {
         locationLaunchAttemptCountYear = locationLaunchAttemptCountYear,
         mission = missionDto?.toMission(),
         name = name,
-        net = net,
+        net = net.orEmpty(),
         netPrecision = netPrecision?.toNetPrecision(),
         orbitalLaunchAttemptCount = orbitalLaunchAttemptCount,
         orbitalLaunchAttemptCountYear = orbitalLaunchAttemptCountYear,

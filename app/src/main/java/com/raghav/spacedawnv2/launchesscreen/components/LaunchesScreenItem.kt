@@ -115,12 +115,14 @@ fun LaunchContent(
             style = MaterialTheme.typography.bodyMedium
         )
 
-        Text(
-            text = launch.net?.toDate(Constants.LAUNCH_DATE_INPUT_FORMAT)?.formatTo(
-                Constants.DATE_OUTPUT_FORMAT
-            ).orEmpty(),
-            style = MaterialTheme.typography.bodyMedium
-        )
+        if (launch.net.isNotEmpty()) {
+            Text(
+                text = launch.net.toDate(Constants.LAUNCH_DATE_INPUT_FORMAT).formatTo(
+                    Constants.DATE_OUTPUT_FORMAT
+                ),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
 
         OutlinedButton(onClick = { addReminderClicked(launch) }) {
             Text(

@@ -1,4 +1,4 @@
-package com.raghav.spacedawnv2.launchesscreen
+package com.raghav.spacedawnv2.ui
 
 import android.app.Activity
 import android.os.Bundle
@@ -15,12 +15,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -29,6 +34,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.raghav.spacedawnv2.launchesscreen.LaunchesScreen
 import com.raghav.spacedawnv2.navigation.LaunchesScreen
 import com.raghav.spacedawnv2.navigation.RemindersScreen
 import com.raghav.spacedawnv2.navigation.navigationBarScreens
@@ -37,6 +43,7 @@ import com.raghav.spacedawnv2.ui.theme.SpaceDawnTheme
 import com.raghav.spacedawnv2.ui.theme.spacing
 import com.raghav.spacedawnv2.util.Helpers.Companion.navigateSingleTopTo
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -67,7 +74,8 @@ fun SpaceDawnApp(modifier: Modifier = Modifier) {
 
     // to get the currently selected navigation tab
     var selectedTab by remember { mutableStateOf(0) }
-
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
     Scaffold(
         modifier = modifier,
         bottomBar = {
@@ -97,6 +105,9 @@ fun SpaceDawnApp(modifier: Modifier = Modifier) {
                     )
                 }
             }
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
         }
     ) { innerPadding ->
         NavHost(
@@ -108,7 +119,31 @@ fun SpaceDawnApp(modifier: Modifier = Modifier) {
                 val activity = (LocalContext.current as? Activity)
                 LaunchesScreen(
                     systemBackButtonClicked = { activity?.finish() },
-                    addReminderButtonClicked = { navController.navigateSingleTopTo(RemindersScreen.route) }
+                    reminderSetSuccessfully = {
+                        scope.launch {
+                            val actionTaken = snackbarHostState.showSnackbar(
+                                it,
+                                actionLabel = "Reminders",
+                                withDismissAction = true,
+                                duration = SnackbarDuration.Short
+                            )
+                            when (actionTaken) {
+                                SnackbarResult.ActionPerformed -> {
+                                    navController.navigateSingleTopTo(RemindersScreen.route)
+                                }
+
+                                else -> {}
+                            }
+                        }
+                    },
+                    reminderNotSet = {
+                        scope.launch {
+                            snackbarHostState.showSnackbar(
+                                it,
+                                withDismissAction = true
+                            )
+                        }
+                    }
                 )
             }
             composable(RemindersScreen.route) {
