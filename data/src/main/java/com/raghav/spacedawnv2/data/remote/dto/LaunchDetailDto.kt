@@ -19,7 +19,7 @@ data class LaunchDetailDto(
     @Json(name = "holdreason")
     val holdreason: String?,
     @Json(name = "id")
-    val id: String?,
+    val id: String,
     @Json(name = "image")
     val image: String?,
     @Json(name = "infographic")
