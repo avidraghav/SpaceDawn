@@ -1,7 +1,8 @@
 package com.raghav.spacedawnv2.domain.usecase
 
-import com.raghav.spacedawnv2.domain.model.LaunchesResponse
+import com.raghav.spacedawnv2.domain.model.LaunchDetail
 import com.raghav.spacedawnv2.domain.repository.LaunchesRepository
+import com.raghav.spacedawnv2.domain.util.ReminderScheduler
 import com.raghav.spacedawnv2.domain.util.Resource
 import javax.inject.Inject
 
@@ -12,22 +13,29 @@ import javax.inject.Inject
  * then the UseCase should be written in a way such that one doesn't has
  * to do anything extra to save the profile as well as there is no sense to execute only a subset of the
  * steps performed by the UseCase
+ *
  */
 
 /**
- * Fetches Upcoming Launches
+ * Creates a reminder/alarm for the specified launch
+ * and saves that launch in local database
  * @param repository [LaunchesRepository]
+ * @param reminderScheduler Platform specific Implementation of [ReminderScheduler]
  *
- * @return Resource<[LaunchesResponse]>
+ * @return Resource<Nothing?>
  *
  * @see Resource
  */
-class GetLaunchesUseCase @Inject constructor(
-    private val repository: LaunchesRepository
+
+class AddReminderUseCase @Inject constructor(
+    private val repository: LaunchesRepository,
+    private val reminderScheduler: ReminderScheduler
 ) {
-    suspend operator fun invoke(): Resource<LaunchesResponse> {
+    suspend operator fun invoke(launchDetail: LaunchDetail): Resource<Nothing?> {
         return try {
-            Resource.Success(repository.getLaunches())
+            reminderScheduler.setReminder(launchDetail)
+            repository.saveReminderInDb(launchDetail)
+            Resource.Success(null)
         } catch (e: Exception) {
             Resource.Error(message = e.localizedMessage)
         }
