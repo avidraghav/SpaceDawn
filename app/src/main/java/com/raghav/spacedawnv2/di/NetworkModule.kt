@@ -2,15 +2,16 @@ package com.raghav.spacedawnv2.di
 
 import BaseUrlProvider
 import com.raghav.spacedawnv2.data.remote.LaunchesApi
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Singleton
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -26,10 +27,14 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideLaunchesApi(client: OkHttpClient): LaunchesApi {
+    fun provideMoshi(): Moshi = Moshi.Builder().build()
+
+    @Provides
+    @Singleton
+    fun provideLaunchesApi(client: OkHttpClient, moshi: Moshi): LaunchesApi {
         return Retrofit.Builder()
             .baseUrl(BaseUrlProvider.BASE_URL_LAUNCHES_API)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .client(client)
             .build().create(LaunchesApi::class.java)
     }

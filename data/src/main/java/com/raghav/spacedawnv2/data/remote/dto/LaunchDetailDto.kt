@@ -1,70 +1,72 @@
 package com.raghav.spacedawnv2.data.remote.dto
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
 import com.raghav.spacedawnv2.domain.model.LaunchDetail
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
-@Keep
+// @JsonClass is used to make sure that Moshi uses code-gen instead of Reflection
+// for Serializing and Deserializing data
+@JsonClass(generateAdapter = true)
 data class LaunchDetailDto(
-    @SerializedName("agency_launch_attempt_count")
+    @Json(name = "agency_launch_attempt_count")
     val agencyLaunchAttemptCount: Int?,
-    @SerializedName("agency_launch_attempt_count_year")
+    @Json(name = "agency_launch_attempt_count_year")
     val agencyLaunchAttemptCountYear: Int?,
-    @SerializedName("failreason")
+    @Json(name = "failreason")
     val failreason: String?,
-    @SerializedName("hashtag")
+    @Json(name = "hashtag")
     val hashtag: Any?,
-    @SerializedName("holdreason")
+    @Json(name = "holdreason")
     val holdreason: String?,
-    @SerializedName("id")
+    @Json(name = "id")
     val id: String,
-    @SerializedName("image")
+    @Json(name = "image")
     val image: String?,
-    @SerializedName("infographic")
+    @Json(name = "infographic")
     val infographic: Any?,
-    @SerializedName("last_updated")
+    @Json(name = "last_updated")
     val lastUpdated: String?,
-    @SerializedName("launch_service_provider")
+    @Json(name = "launch_service_provider")
     val launchServiceProviderDto: LaunchServiceProviderDto?,
-    @SerializedName("location_launch_attempt_count")
+    @Json(name = "location_launch_attempt_count")
     val locationLaunchAttemptCount: Int?,
-    @SerializedName("location_launch_attempt_count_year")
+    @Json(name = "location_launch_attempt_count_year")
     val locationLaunchAttemptCountYear: Int?,
-    @SerializedName("mission")
+    @Json(name = "mission")
     val missionDto: MissionDto?,
-    @SerializedName("name")
+    @Json(name = "name")
     val name: String?,
-    @SerializedName("net")
+    @Json(name = "net")
     val net: String?,
-    @SerializedName("net_precision")
+    @Json(name = "net_precision")
     val netPrecision: NetPrecisionDto?,
-    @SerializedName("orbital_launch_attempt_count")
+    @Json(name = "orbital_launch_attempt_count")
     val orbitalLaunchAttemptCount: Int?,
-    @SerializedName("orbital_launch_attempt_count_year")
+    @Json(name = "orbital_launch_attempt_count_year")
     val orbitalLaunchAttemptCountYear: Int?,
-    @SerializedName("pad")
+    @Json(name = "pad")
     val pad: PadDto?,
-    @SerializedName("pad_launch_attempt_count")
+    @Json(name = "pad_launch_attempt_count")
     val padLaunchAttemptCount: Int?,
-    @SerializedName("pad_launch_attempt_count_year")
+    @Json(name = "pad_launch_attempt_count_year")
     val padLaunchAttemptCountYear: Int?,
-    @SerializedName("probability")
+    @Json(name = "probability")
     val probability: Any?,
-    @SerializedName("program")
+    @Json(name = "program")
     val program: List<ProgramDto?>?,
-    @SerializedName("rocket")
+    @Json(name = "rocket")
     val rocketDto: RocketDto?,
-    @SerializedName("slug")
+    @Json(name = "slug")
     val slug: String?,
-    @SerializedName("status")
+    @Json(name = "status")
     val statusDto: StatusDto?,
-    @SerializedName("url")
+    @Json(name = "url")
     val url: String?,
-    @SerializedName("webcast_live")
+    @Json(name = "webcast_live")
     val webcastLive: Boolean?,
-    @SerializedName("window_end")
+    @Json(name = "window_end")
     val windowEnd: String?,
-    @SerializedName("window_start")
+    @Json(name = "window_start")
     val windowStart: String?
 )
 

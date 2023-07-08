@@ -1,22 +1,24 @@
 package com.raghav.spacedawnv2.data.remote.dto
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
 import com.raghav.spacedawnv2.domain.model.Mission
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
-@Keep
+// @JsonClass is used to make sure that Moshi uses code-gen instead of Reflection
+// for Serializing and Deserializing data
+@JsonClass(generateAdapter = true)
 data class MissionDto(
-    @SerializedName("description")
+    @Json(name = "description")
     val description: String?,
-    @SerializedName("id")
+    @Json(name = "id")
     val id: Int?,
-    @SerializedName("launch_designator")
+    @Json(name = "launch_designator")
     val launchDesignator: Any?,
-    @SerializedName("name")
+    @Json(name = "name")
     val name: String?,
-    @SerializedName("orbit")
+    @Json(name = "orbit")
     val orbit: OrbitDto?,
-    @SerializedName("type")
+    @Json(name = "type")
     val type: String?
 )
 
