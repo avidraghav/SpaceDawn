@@ -80,7 +80,7 @@ dependencies {
     def retrofit_version = "2.9.0"
     def okhttp_interceptor = "5.0.0-alpha.2"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation("com.squareup.retrofit2:converter-moshi:$retrofit_version")
     implementation "com.squareup.okhttp3:okhttp:$okhttp_interceptor"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_interceptor"
 

@@ -1,14 +1,18 @@
 package com.raghav.spacedawnv2.data.remote.dto
 
 import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
 import com.raghav.spacedawnv2.domain.model.Rocket
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+// @JsonClass is used to make sure that Moshi uses code-gen instead of Reflection
+// for Serializing and Deserializing data
+@JsonClass(generateAdapter = true)
 @Keep
 data class RocketDto(
-    @SerializedName("configuration")
+    @Json(name = "configuration")
     val configuration: ConfigurationDto?,
-    @SerializedName("id")
+    @Json(name = "id")
     val id: Int?
 )
 
