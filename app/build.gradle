@@ -58,6 +58,11 @@ ktlint {
         reporter "checkstyle"
         reporter "sarif"
     }
+    filter {
+        exclude {
+            exclude { it.file.path.contains("$buildDir/generated/") }
+        }
+    }
     disabledRules = ["import-ordering","max-line-length","argument-list-wrapping" ]
 }
 

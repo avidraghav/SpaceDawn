@@ -10,6 +10,22 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
+ktlint {
+    android = true
+    ignoreFailures = false
+    reporters {
+        reporter "plain"
+        reporter "checkstyle"
+        reporter "sarif"
+    }
+    filter {
+        exclude {
+            exclude { it.file.path.contains("$buildDir/generated/") }
+        }
+    }
+    disabledRules = ["import-ordering", "max-line-length", "argument-list-wrapping"]
+}
+
 dependencies {
     implementation("androidx.annotation:annotation:1.6.0")
     implementation("javax.inject:javax.inject:1")

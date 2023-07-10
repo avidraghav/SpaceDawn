@@ -34,6 +34,22 @@ android {
     }
 }
 
+ktlint {
+    android = true
+    ignoreFailures = false
+    reporters {
+        reporter "plain"
+        reporter "checkstyle"
+        reporter "sarif"
+    }
+    filter {
+        exclude {
+            exclude { it.file.path.contains("$buildDir/generated/") }
+        }
+    }
+    disabledRules = ["import-ordering", "max-line-length", "argument-list-wrapping"]
+}
+
 dependencies {
 
     implementation(project(":domain"))
