@@ -1,8 +1,8 @@
 package com.raghav.spacedawnv2.domain.model
 
-import androidx.annotation.Keep
+import com.squareup.moshi.JsonClass
 
-@Keep
+@JsonClass(generateAdapter = true)
 data class Pad(
     val agency_id: Int?,
     val country_code: String?,

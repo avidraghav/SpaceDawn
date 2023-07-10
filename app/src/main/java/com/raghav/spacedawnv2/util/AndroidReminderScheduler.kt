@@ -10,7 +10,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /**
- * Schedules Reminders/Alarms by using Android's [AlarmManager](https://developer.android.com/reference/android/app/AlarmManager)
+ * Schedules Reminders/Alarms by using Android's
+ * [AlarmManager](https://developer.android.com/reference/android/app/AlarmManager)
+ * also see [Simplifying AlarmManager: Understanding Alarm Scheduling in Android](https://avidraghav.hashnode.dev/simplifying-alarmmanager-understanding-alarm-scheduling-in-android)
  * @param context Application Context
  */
 class AndroidReminderScheduler @Inject constructor(
