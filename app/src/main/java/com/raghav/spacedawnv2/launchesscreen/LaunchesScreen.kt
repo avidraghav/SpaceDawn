@@ -1,6 +1,9 @@
 package com.raghav.spacedawnv2.launchesscreen
 
+import android.Manifest
+import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,14 +15,23 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.raghav.spacedawnv2.R
+import com.raghav.spacedawnv2.commoncomponents.AlertDialog
+import com.raghav.spacedawnv2.domain.model.LaunchDetail
+import com.raghav.spacedawnv2.domain.util.Constants
 import com.raghav.spacedawnv2.launchesscreen.components.LaunchesScreenItem
+import com.raghav.spacedawnv2.ui.ReminderPermissionContract
 import com.raghav.spacedawnv2.ui.theme.spacing
-import com.raghav.spacedawnv2.util.Constants
 
+@SuppressLint("InlinedApi")
 @Composable
 fun LaunchesScreen(
     modifier: Modifier = Modifier,
@@ -30,15 +42,38 @@ fun LaunchesScreen(
 ) {
     val state = viewModel.uiState.collectAsStateWithLifecycle().value
 
+    var launch: LaunchDetail? by remember {
+        mutableStateOf(null)
+    }
+
+    var isPermissionRationaleDialogVisible: Boolean by remember {
+        mutableStateOf(false)
+    }
+
+    val scheduleExactAlarmPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ReminderPermissionContract(),
+        onResult = { isGranted ->
+            if (isGranted) {
+                launch?.let {
+                    viewModel.setReminder(it)
+                }
+            }
+        }
+    )
+
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collect { event ->
             when (event) {
-                is LaunchesScreenVM.LaunchesScreenEvent.ReminderSetSuccessfully -> {
+                is LaunchesScreenEvent.ReminderSetSuccessfully -> {
                     reminderSetSuccessfully(Constants.REMINDER_SET)
                 }
 
-                LaunchesScreenVM.LaunchesScreenEvent.ReminderNotSet -> {
+                is LaunchesScreenEvent.ReminderNotSet -> {
                     reminderNotSet(Constants.REMINDER_NOT_SET)
+                }
+
+                is LaunchesScreenEvent.PermissionToSetReminderNotGranted -> {
+                    isPermissionRationaleDialogVisible = true
                 }
             }
         }
@@ -51,10 +86,11 @@ fun LaunchesScreen(
                     .fillMaxSize()
                     .padding(top = MaterialTheme.spacing.small)
             ) {
-                items(state.launches) { launch ->
+                items(state.launches) { item ->
                     LaunchesScreenItem(
-                        launch = launch,
+                        launch = item,
                         addReminderClicked = { launchDetail ->
+                            launch = launchDetail
                             viewModel.setReminder(launchDetail)
                         }
                     )
@@ -66,9 +102,37 @@ fun LaunchesScreen(
         if (state.isLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
-
-        BackHandler {
-            systemBackButtonClicked()
-        }
     }
+
+    BackHandler {
+        systemBackButtonClicked()
+    }
+
+    if (isPermissionRationaleDialogVisible) {
+        ShowPermissionRationaleDialog(
+            onDismissClick = {
+                isPermissionRationaleDialogVisible = false
+            },
+            onConfirmClick = {
+                isPermissionRationaleDialogVisible = false
+                scheduleExactAlarmPermissionLauncher.launch(Manifest.permission.SCHEDULE_EXACT_ALARM)
+            },
+            modifier = modifier
+        )
+    }
+}
+
+@Composable
+fun ShowPermissionRationaleDialog(
+    modifier: Modifier = Modifier,
+    onDismissClick: () -> Unit,
+    onConfirmClick: () -> Unit
+) {
+    AlertDialog(
+        onDismissClick = onDismissClick,
+        onConfirmClick = onConfirmClick,
+        title = R.string.permission_required,
+        content = R.string.alarm_permission_rationale,
+        modifier = modifier
+    )
 }

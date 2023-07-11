@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.raghav.spacedawnv2.data.local.Convertors
 import com.raghav.spacedawnv2.data.local.LaunchesDatabase
-import com.raghav.spacedawnv2.util.Constants
+import com.raghav.spacedawnv2.domain.util.Constants
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides

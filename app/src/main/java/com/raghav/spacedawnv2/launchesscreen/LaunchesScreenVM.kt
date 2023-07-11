@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.raghav.spacedawnv2.domain.model.LaunchDetail
 import com.raghav.spacedawnv2.domain.usecase.AddReminderUseCase
 import com.raghav.spacedawnv2.domain.usecase.GetLaunchesUseCase
+import com.raghav.spacedawnv2.domain.util.Constants
 import com.raghav.spacedawnv2.domain.util.Resource
 import com.raghav.spacedawnv2.util.DispatchersProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -67,7 +68,11 @@ class LaunchesScreenVM @Inject constructor(
             addReminderUseCase(launch).let { result ->
                 when (result) {
                     is Resource.Error -> {
-                        _eventFlow.emit(LaunchesScreenEvent.ReminderNotSet)
+                        if (result.errorMessage == Constants.ALARM_PERMISSION_NOT_AVAILABLE) {
+                            _eventFlow.emit(LaunchesScreenEvent.PermissionToSetReminderNotGranted)
+                        } else {
+                            _eventFlow.emit(LaunchesScreenEvent.ReminderNotSet)
+                        }
                     }
 
                     is Resource.Success -> {
@@ -77,9 +82,11 @@ class LaunchesScreenVM @Inject constructor(
             }
         }
     }
+}
 
-    sealed class LaunchesScreenEvent {
-        object ReminderSetSuccessfully : LaunchesScreenEvent()
-        object ReminderNotSet : LaunchesScreenEvent()
-    }
+sealed class LaunchesScreenEvent {
+    object ReminderSetSuccessfully : LaunchesScreenEvent()
+    object ReminderNotSet : LaunchesScreenEvent()
+    object PermissionToSetReminderNotGranted :
+        LaunchesScreenEvent()
 }

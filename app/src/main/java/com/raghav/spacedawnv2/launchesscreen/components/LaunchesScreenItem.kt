@@ -26,9 +26,9 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.raghav.spacedawnv2.R
 import com.raghav.spacedawnv2.domain.model.LaunchDetail
+import com.raghav.spacedawnv2.domain.util.Constants
 import com.raghav.spacedawnv2.ui.theme.colors
 import com.raghav.spacedawnv2.ui.theme.spacing
-import com.raghav.spacedawnv2.util.Constants
 import com.raghav.spacedawnv2.util.Helpers.Companion.formatTo
 import com.raghav.spacedawnv2.util.Helpers.Companion.toDate
 

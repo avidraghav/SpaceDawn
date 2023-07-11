@@ -12,10 +12,15 @@ interface ReminderScheduler {
      * Set a reminder for a launch and save that launch in
      * local database
      */
-    fun setReminder(launchDetail: LaunchDetail)
+    fun setReminder(launchDetail: LaunchDetail): ReminderPermissionState
 
     /**
      * Cancel an already set reminder
      */
     fun cancelReminder(id: String)
+}
+
+sealed class ReminderPermissionState {
+    object PermissionNotAvailable : ReminderPermissionState()
+    object SetSuccessfully : ReminderPermissionState()
 }

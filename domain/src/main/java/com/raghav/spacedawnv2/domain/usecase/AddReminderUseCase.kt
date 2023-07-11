@@ -2,6 +2,8 @@ package com.raghav.spacedawnv2.domain.usecase
 
 import com.raghav.spacedawnv2.domain.model.LaunchDetail
 import com.raghav.spacedawnv2.domain.repository.LaunchesRepository
+import com.raghav.spacedawnv2.domain.util.Constants
+import com.raghav.spacedawnv2.domain.util.ReminderPermissionState
 import com.raghav.spacedawnv2.domain.util.ReminderScheduler
 import com.raghav.spacedawnv2.domain.util.Resource
 import javax.inject.Inject
@@ -33,9 +35,17 @@ class AddReminderUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(launchDetail: LaunchDetail): Resource<Nothing?> {
         return try {
-            reminderScheduler.setReminder(launchDetail)
-            repository.saveReminderInDb(launchDetail)
-            Resource.Success(null)
+            val result = reminderScheduler.setReminder(launchDetail)
+            return when (result) {
+                ReminderPermissionState.PermissionNotAvailable -> {
+                    return Resource.Error(message = Constants.ALARM_PERMISSION_NOT_AVAILABLE)
+                }
+
+                ReminderPermissionState.SetSuccessfully -> {
+                    repository.saveReminderInDb(launchDetail)
+                    Resource.Success(null)
+                }
+            }
         } catch (e: Exception) {
             Resource.Error(message = e.localizedMessage)
         }

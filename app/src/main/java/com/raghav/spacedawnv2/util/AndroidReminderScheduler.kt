@@ -4,7 +4,9 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import com.raghav.spacedawnv2.domain.model.LaunchDetail
+import com.raghav.spacedawnv2.domain.util.ReminderPermissionState
 import com.raghav.spacedawnv2.domain.util.ReminderScheduler
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -21,44 +23,50 @@ class AndroidReminderScheduler @Inject constructor(
 
     private val alarmManager = context.getSystemService(AlarmManager::class.java)
 
-    override fun setReminder(launchDetail: LaunchDetail) {
+    override fun setReminder(launchDetail: LaunchDetail): ReminderPermissionState {
+        // Apps targeting Android version 12 (Version Code - S, Api Level 31)
+        // or higher need to request for SCHEDULE_EXACT_ALARM permission explicitly whereas
+        // Apps targeting any Android version below 12 don't need to do ask for this permission
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (alarmManager.canScheduleExactAlarms()) {
+                setAlarm(launchDetail)
+                return ReminderPermissionState.SetSuccessfully
+            } else {
+                return ReminderPermissionState.PermissionNotAvailable
+            }
+        } else {
+            setAlarm(launchDetail)
+            return ReminderPermissionState.SetSuccessfully
+        }
+    }
+
+    override fun cancelReminder(id: String) {
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            id.hashCode(),
+            Intent(context, ReminderBroadcastReceiver::class.java),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        alarmManager.cancel(
+            pendingIntent
+        )
+    }
+
+    private fun setAlarm(launchDetail: LaunchDetail) {
         val intent = Intent(context, ReminderBroadcastReceiver::class.java).apply {
             putExtra("key", launchDetail.name)
         }
-//        val pendingIntent = PendingIntent.getBroadcast(
-//            context,
-//            launchDetail.id.hashCode(),
-//            intent,
-//            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-//        )
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            launchDetail.id.hashCode(),
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
 
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
             System.currentTimeMillis() + 10_000,
-            PendingIntent.getBroadcast(
-                context,
-                launchDetail.id.hashCode(),
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-            )
-        )
-//        alarmManager.setAlarmClock(
-//            AlarmManager.AlarmClockInfo(
-//                launchDetail.net.toDate(Constants.LAUNCH_DATE_INPUT_FORMAT).time,
-//                pendingIntent
-//            ),
-//            pendingIntent
-//        )
-    }
-
-    override fun cancelReminder(id: String) {
-        alarmManager.cancel(
-            PendingIntent.getBroadcast(
-                context,
-                id.hashCode(),
-                Intent(context, ReminderBroadcastReceiver::class.java),
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-            )
+            pendingIntent
         )
     }
 }
