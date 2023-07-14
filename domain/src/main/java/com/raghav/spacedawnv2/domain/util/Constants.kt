@@ -6,5 +6,9 @@ object Constants {
     const val LAUNCHES_DB = "launches_db.db"
     const val REMINDER_NOT_SET = "Reminder Couldn't be Set"
     const val REMINDER_SET = "Reminder Set Successfully"
-    const val ALARM_PERMISSION_NOT_AVAILABLE = "alarm_permission_not_available"
+    const val REMINDER_NOTIFICATION_CHANNEL = "Launch Reminders"
+    const val REMINDER_CHANNEL_ID = "launch_reminders"
+    const val REMINDER_PERMISSION_NOT_AVAILABLE = "reminder_permission_not_available"
+    const val NOTIFICATION_PERMISSION_NOT_AVAILABLE = "notification_permission_not_available"
+    const val NOTIFICATION_REMINDER_PERMISSION_NOT_AVAILABLE = "notification_reminder_permission_not_available"
 }

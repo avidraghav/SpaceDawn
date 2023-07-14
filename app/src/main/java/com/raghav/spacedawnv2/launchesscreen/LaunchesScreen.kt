@@ -2,8 +2,15 @@ package com.raghav.spacedawnv2.launchesscreen
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.raghav.spacedawnv2.R
@@ -46,7 +54,17 @@ fun LaunchesScreen(
         mutableStateOf(null)
     }
 
-    var isPermissionRationaleDialogVisible: Boolean by remember {
+    val context: Context = LocalContext.current
+
+    var showReminderPermissionRationale: Boolean by remember {
+        mutableStateOf(false)
+    }
+
+    var showNotificationPermissionRationale: Boolean by remember {
+        mutableStateOf(false)
+    }
+
+    var isNotificationPermissionDeclined: Boolean by remember {
         mutableStateOf(false)
     }
 
@@ -57,6 +75,19 @@ fun LaunchesScreen(
                 launch?.let {
                     viewModel.setReminder(it)
                 }
+            }
+        }
+    )
+
+    val postNotificationsPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            if (isGranted) {
+                launch?.let {
+                    viewModel.setReminder(it)
+                }
+            } else {
+                isNotificationPermissionDeclined = true
             }
         }
     )
@@ -73,7 +104,16 @@ fun LaunchesScreen(
                 }
 
                 is LaunchesScreenEvent.PermissionToSetReminderNotGranted -> {
-                    isPermissionRationaleDialogVisible = true
+                    showReminderPermissionRationale = true
+                }
+
+                LaunchesScreenEvent.PermissionToSendNotificationsNotGranted -> {
+                    showNotificationPermissionRationale = true
+                }
+
+                LaunchesScreenEvent.PermissionsToSendNotificationsAndSetReminderNotGranted -> {
+                    showReminderPermissionRationale = true
+                    showNotificationPermissionRationale = true
                 }
             }
         }
@@ -108,22 +148,66 @@ fun LaunchesScreen(
         systemBackButtonClicked()
     }
 
-    if (isPermissionRationaleDialogVisible) {
+    if (showReminderPermissionRationale) {
         ShowPermissionRationaleDialog(
+            title = R.string.reminder_permission_required,
+            content = R.string.alarm_permission_rationale,
             onDismissClick = {
-                isPermissionRationaleDialogVisible = false
+                showReminderPermissionRationale = false
             },
             onConfirmClick = {
-                isPermissionRationaleDialogVisible = false
+                showReminderPermissionRationale = false
                 scheduleExactAlarmPermissionLauncher.launch(Manifest.permission.SCHEDULE_EXACT_ALARM)
             },
             modifier = modifier
+        )
+    }
+
+    if (showNotificationPermissionRationale) {
+        ShowPermissionRationaleDialog(
+            title = R.string.notification_permission_required,
+            content = R.string.notification_permission_rationale,
+            onDismissClick = {
+                showNotificationPermissionRationale = false
+            },
+            onConfirmClick = {
+                showNotificationPermissionRationale = false
+                if (!isNotificationPermissionDeclined) {
+                    postNotificationsPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                } else {
+                    val i = Intent(
+                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                        Uri.fromParts("package", (context as Activity).packageName, null)
+                    )
+                    context.startActivity(i)
+                }
+            }
+        )
+    }
+
+    if (isNotificationPermissionDeclined) {
+        ShowPermissionRationaleDialog(
+            title = R.string.notification_permission_required,
+            content = R.string.notification_permission_mandatory_rationale,
+            onDismissClick = {
+            },
+            onConfirmClick = {
+                val i = Intent(
+                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.fromParts("package", (context as Activity).packageName, null)
+                )
+                context.startActivity(i)
+            }
         )
     }
 }
 
 @Composable
 fun ShowPermissionRationaleDialog(
+    @StringRes
+    title: Int,
+    @StringRes
+    content: Int,
     modifier: Modifier = Modifier,
     onDismissClick: () -> Unit,
     onConfirmClick: () -> Unit
@@ -131,8 +215,8 @@ fun ShowPermissionRationaleDialog(
     AlertDialog(
         onDismissClick = onDismissClick,
         onConfirmClick = onConfirmClick,
-        title = R.string.permission_required,
-        content = R.string.alarm_permission_rationale,
+        title = title,
+        content = content,
         modifier = modifier
     )
 }

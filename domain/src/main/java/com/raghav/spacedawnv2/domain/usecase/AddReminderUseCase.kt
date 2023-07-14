@@ -3,8 +3,8 @@ package com.raghav.spacedawnv2.domain.usecase
 import com.raghav.spacedawnv2.domain.model.LaunchDetail
 import com.raghav.spacedawnv2.domain.repository.LaunchesRepository
 import com.raghav.spacedawnv2.domain.util.Constants
-import com.raghav.spacedawnv2.domain.util.ReminderPermissionState
 import com.raghav.spacedawnv2.domain.util.ReminderScheduler
+import com.raghav.spacedawnv2.domain.util.ReminderState
 import com.raghav.spacedawnv2.domain.util.Resource
 import javax.inject.Inject
 
@@ -37,13 +37,29 @@ class AddReminderUseCase @Inject constructor(
         return try {
             val result = reminderScheduler.setReminder(launchDetail)
             return when (result) {
-                ReminderPermissionState.PermissionNotAvailable -> {
-                    return Resource.Error(message = Constants.ALARM_PERMISSION_NOT_AVAILABLE)
-                }
-
-                ReminderPermissionState.SetSuccessfully -> {
+                ReminderState.SetSuccessfully -> {
                     repository.saveReminderInDb(launchDetail)
                     Resource.Success(null)
+                }
+
+                is ReminderState.PermissionsState -> {
+                    when {
+                        result.reminderPermission && !result.notificationPermission -> {
+                            Resource.Error(message = Constants.NOTIFICATION_PERMISSION_NOT_AVAILABLE)
+                        }
+
+                        !result.reminderPermission && result.notificationPermission -> {
+                            Resource.Error(message = Constants.REMINDER_PERMISSION_NOT_AVAILABLE)
+                        }
+
+                        !result.reminderPermission && !result.notificationPermission -> {
+                            Resource.Error(message = Constants.NOTIFICATION_REMINDER_PERMISSION_NOT_AVAILABLE)
+                        }
+
+                        else -> {
+                            Resource.Error(message = Constants.NOTIFICATION_REMINDER_PERMISSION_NOT_AVAILABLE)
+                        }
+                    }
                 }
             }
         } catch (e: Exception) {
