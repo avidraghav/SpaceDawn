@@ -26,7 +26,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -48,6 +48,22 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+}
+
+ktlint {
+    android = true
+    ignoreFailures = false
+    reporters{
+        reporter "plain"
+        reporter "checkstyle"
+        reporter "sarif"
+    }
+    filter {
+        exclude {
+            exclude { it.file.path.contains("$buildDir/generated/") }
+        }
+    }
+    disabledRules = ["import-ordering","max-line-length","argument-list-wrapping" ]
 }
 
 dependencies {
@@ -80,7 +96,7 @@ dependencies {
     def retrofit_version = "2.9.0"
     def okhttp_interceptor = "5.0.0-alpha.2"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation("com.squareup.retrofit2:converter-moshi:$retrofit_version")
     implementation "com.squareup.okhttp3:okhttp:$okhttp_interceptor"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_interceptor"
 
@@ -100,8 +116,13 @@ dependencies {
     implementation("io.coil-kt:coil-compose:$coil_version")
 
     // Navigation
-   // def nav_version = "2.5.3"
-   // implementation "androidx.navigation:navigation-compose:$nav_version"
+    def nav_version = "2.5.3"
+    implementation "androidx.navigation:navigation-compose:$nav_version"
+
+    //Room
+    implementation "androidx.room:room-runtime:2.5.1"
+    kapt "androidx.room:room-compiler:2.5.1"
+    implementation "androidx.room:room-ktx:2.5.1"
 
 }
 

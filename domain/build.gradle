@@ -1,6 +1,8 @@
 plugins {
     id 'java-library'
     id 'org.jetbrains.kotlin.jvm'
+    id("com.google.devtools.ksp") version "1.8.20-1.0.11"
+    id "org.jlleitschuh.gradle.ktlint"
 }
 
 java {
@@ -8,7 +10,30 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
+ktlint {
+    android = true
+    ignoreFailures = false
+    reporters {
+        reporter "plain"
+        reporter "checkstyle"
+        reporter "sarif"
+    }
+    filter {
+        exclude {
+            exclude { it.file.path.contains("$buildDir/generated/") }
+        }
+    }
+    disabledRules = ["import-ordering", "max-line-length", "argument-list-wrapping"]
+}
+
 dependencies {
     implementation("androidx.annotation:annotation:1.6.0")
     implementation("javax.inject:javax.inject:1")
+
+    //Room
+    implementation "androidx.room:room-common:2.5.1"
+
+    // Moshi
+    implementation("com.squareup.moshi:moshi:1.14.0")
+    ksp("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
 }

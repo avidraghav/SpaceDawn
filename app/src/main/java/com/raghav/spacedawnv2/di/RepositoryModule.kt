@@ -1,5 +1,6 @@
 package com.raghav.spacedawnv2.di
 
+import com.raghav.spacedawnv2.data.local.LaunchesDao
 import com.raghav.spacedawnv2.data.remote.LaunchesApi
 import com.raghav.spacedawnv2.data.repository.LaunchesRepositoryImpl
 import com.raghav.spacedawnv2.domain.repository.LaunchesRepository
@@ -15,7 +16,10 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideLaunchesRepository(launchesApi: LaunchesApi): LaunchesRepository {
-        return LaunchesRepositoryImpl(launchesApi)
+    fun provideLaunchesRepository(
+        launchesApi: LaunchesApi,
+        launchesDao: LaunchesDao
+    ): LaunchesRepository {
+        return LaunchesRepositoryImpl(launchesApi, launchesDao)
     }
 }

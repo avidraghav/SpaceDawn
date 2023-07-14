@@ -26,23 +26,25 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.raghav.spacedawnv2.R
 import com.raghav.spacedawnv2.domain.model.LaunchDetail
+import com.raghav.spacedawnv2.domain.util.Constants
 import com.raghav.spacedawnv2.ui.theme.colors
 import com.raghav.spacedawnv2.ui.theme.spacing
-import com.raghav.spacedawnv2.util.Constants
 import com.raghav.spacedawnv2.util.Helpers.Companion.formatTo
 import com.raghav.spacedawnv2.util.Helpers.Companion.toDate
 
 @Composable
 fun LaunchesScreenItem(
     launch: LaunchDetail,
-    modifier: Modifier = Modifier,
-    onItemClick: () -> Unit = {}
+    addReminderClicked: (LaunchDetail) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         launch.image?.let {
             LaunchImage(imageUrl = it)
         }
-        LaunchContent(launch)
+        LaunchContent(launch = launch, addReminderClicked = {
+            addReminderClicked(it)
+        })
     }
 }
 
@@ -69,7 +71,11 @@ fun LaunchImage(imageUrl: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun LaunchContent(launch: LaunchDetail, modifier: Modifier = Modifier) {
+fun LaunchContent(
+    launch: LaunchDetail,
+    addReminderClicked: (LaunchDetail) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier.padding(
             start = MaterialTheme.spacing.small
@@ -109,14 +115,16 @@ fun LaunchContent(launch: LaunchDetail, modifier: Modifier = Modifier) {
             style = MaterialTheme.typography.bodyMedium
         )
 
-        Text(
-            text = launch.net?.toDate(Constants.LAUNCH_DATE_INPUT_FORMAT)?.formatTo(
-                Constants.DATE_OUTPUT_FORMAT
-            ).orEmpty(),
-            style = MaterialTheme.typography.bodyMedium
-        )
+        if (launch.net.isNotEmpty()) {
+            Text(
+                text = launch.net.toDate(Constants.LAUNCH_DATE_INPUT_FORMAT).formatTo(
+                    Constants.DATE_OUTPUT_FORMAT
+                ),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
 
-        OutlinedButton(onClick = {}) {
+        OutlinedButton(onClick = { addReminderClicked(launch) }) {
             Text(
                 text = stringResource(id = R.string.add_reminder)
             )

@@ -1,38 +1,40 @@
 package com.raghav.spacedawnv2.data.remote.dto
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
 import com.raghav.spacedawnv2.domain.model.Pad
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
-@Keep
+// @JsonClass is used to make sure that Moshi uses code-gen instead of Reflection
+// for Serializing and Deserializing data
+@JsonClass(generateAdapter = true)
 data class PadDto(
-    @SerializedName("agency_id")
+    @Json(name = "agency_id")
     val agencyId: Int?,
-    @SerializedName("country_code")
+    @Json(name = "country_code")
     val countryCode: String?,
-    @SerializedName("id")
+    @Json(name = "id")
     val id: Int?,
-    @SerializedName("info_url")
+    @Json(name = "info_url")
     val infoUrl: Any?,
-    @SerializedName("latitude")
+    @Json(name = "latitude")
     val latitude: String?,
-    @SerializedName("location")
+    @Json(name = "location")
     val location: LocationDto?,
-    @SerializedName("longitude")
+    @Json(name = "longitude")
     val longitude: String?,
-    @SerializedName("map_image")
+    @Json(name = "map_image")
     val mapImage: String?,
-    @SerializedName("map_url")
+    @Json(name = "map_url")
     val mapUrl: String?,
-    @SerializedName("name")
+    @Json(name = "name")
     val name: String?,
-    @SerializedName("orbital_launch_attempt_count")
+    @Json(name = "orbital_launch_attempt_count")
     val orbitalLaunchAttemptCount: Int?,
-    @SerializedName("total_launch_count")
+    @Json(name = "total_launch_count")
     val totalLaunchCount: Int?,
-    @SerializedName("url")
+    @Json(name = "url")
     val url: String?,
-    @SerializedName("wiki_url")
+    @Json(name = "wiki_url")
     val wikiUrl: String?
 )
 
