@@ -10,8 +10,10 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.content.ContextCompat
 import com.raghav.spacedawnv2.domain.model.LaunchDetail
+import com.raghav.spacedawnv2.domain.util.Constants
 import com.raghav.spacedawnv2.domain.util.ReminderScheduler
 import com.raghav.spacedawnv2.domain.util.ReminderState
+import com.raghav.spacedawnv2.util.Helpers.Companion.toDate
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -105,7 +107,7 @@ class AndroidReminderScheduler @Inject constructor(
 
     private fun setAlarm(launchDetail: LaunchDetail) {
         val intent = Intent(context, ReminderBroadcastReceiver::class.java).apply {
-            putExtra("key", launchDetail.name)
+            putExtra(Constants.KEY_LAUNCH_NAME, launchDetail.name)
         }
         val pendingIntent = PendingIntent.getBroadcast(
             context,
@@ -114,9 +116,11 @@ class AndroidReminderScheduler @Inject constructor(
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
+        val launchTime = launchDetail.net.toDate(Constants.LAUNCH_DATE_INPUT_FORMAT).time
+        val reminderTime = launchTime - Constants.TEN_MINUTES_IN_MILLIS
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
-            System.currentTimeMillis() + 10_000,
+            reminderTime,
             pendingIntent
         )
     }

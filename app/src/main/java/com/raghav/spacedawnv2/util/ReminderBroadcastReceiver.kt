@@ -10,8 +10,11 @@ import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Build
+import android.os.CountDownTimer
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC
 import com.raghav.spacedawnv2.R
+import com.raghav.spacedawnv2.domain.util.Constants
 import com.raghav.spacedawnv2.domain.util.Constants.REMINDER_CHANNEL_ID
 import com.raghav.spacedawnv2.domain.util.Constants.REMINDER_NOTIFICATION_CHANNEL
 import com.raghav.spacedawnv2.ui.MainActivity
@@ -25,20 +28,35 @@ class ReminderBroadcastReceiver : BroadcastReceiver() {
     lateinit var mediaPlayer: MediaPlayer
 
     override fun onReceive(context: Context?, p1: Intent?) {
-        val msg = p1?.getStringExtra("key") ?: return
-        // mediaPlayer.isLooping = true
-        // mediaPlayer.start()
+        val launchName = p1?.getStringExtra(Constants.KEY_LAUNCH_NAME) ?: return
+        mediaPlayer.start()
+
+        val countDownTimer = object : CountDownTimer(Constants.REMINDER_SOUND_DURATION, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+            }
+
+            override fun onFinish() {
+                mediaPlayer.stop()
+            }
+        }
+        countDownTimer.start()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel(
-                context,
-                REMINDER_NOTIFICATION_CHANNEL,
-                REMINDER_CHANNEL_ID,
-                NotificationManager.IMPORTANCE_HIGH
+                context = context,
+                name = REMINDER_NOTIFICATION_CHANNEL,
+                id = REMINDER_CHANNEL_ID,
+                importance = NotificationManager.IMPORTANCE_HIGH
             )
         }
 
-        showNotification(context, REMINDER_CHANNEL_ID, 1, msg, "")
+        showNotification(
+            context = context,
+            channelId = REMINDER_CHANNEL_ID,
+            notificationId = 1,
+            title = "Reminder From Space Dawn",
+            content = "$launchName mission is about to launch"
+        )
     }
 
     @SuppressLint("NewApi")
@@ -47,6 +65,8 @@ class ReminderBroadcastReceiver : BroadcastReceiver() {
         name: String,
         id: String,
         importance: Int,
+        // eg: longArrayOf(0, 400, 200, 400)
+        // Vibration pattern (0ms delay, vibrate for 400ms, wait for 200ms, vibrate for 400ms)
         vibratePattern: LongArray? = null
     ) {
         val channel = NotificationChannel(
@@ -62,7 +82,7 @@ class ReminderBroadcastReceiver : BroadcastReceiver() {
         manager.createNotificationChannel(channel)
     }
 
-    fun showNotification(
+    private fun showNotification(
         context: Context?,
         channelId: String,
         notificationId: Int,
@@ -79,17 +99,18 @@ class ReminderBroadcastReceiver : BroadcastReceiver() {
 
         val builder = context?.let {
             NotificationCompat.Builder(it, channelId)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.notification_icon)
                 .setContentTitle(title)
                 .setContentText(content)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
+                .setVisibility(VISIBILITY_PUBLIC)
         }
 
         val notificationManager =
             context?.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.areNotificationsEnabled()
+
         notificationManager.notify(notificationId, builder?.build())
     }
 }
