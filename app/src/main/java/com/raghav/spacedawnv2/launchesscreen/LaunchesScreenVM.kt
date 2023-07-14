@@ -82,7 +82,7 @@ class LaunchesScreenVM @Inject constructor(
                             }
 
                             else -> {
-                                _eventFlow.emit(LaunchesScreenEvent.ReminderNotSet)
+                                _eventFlow.emit(LaunchesScreenEvent.ReminderNotSet(result.errorMessage))
                             }
                         }
                     }
@@ -96,9 +96,11 @@ class LaunchesScreenVM @Inject constructor(
     }
 }
 
-sealed class LaunchesScreenEvent {
+sealed class LaunchesScreenEvent(
+    val infoMessage: String? = null
+) {
     object ReminderSetSuccessfully : LaunchesScreenEvent()
-    object ReminderNotSet : LaunchesScreenEvent()
+    data class ReminderNotSet(val errorMessage: String?) : LaunchesScreenEvent(errorMessage)
     object PermissionToSetReminderNotGranted : LaunchesScreenEvent()
     object PermissionToSendNotificationsNotGranted : LaunchesScreenEvent()
     object PermissionsToSendNotificationsAndSetReminderNotGranted : LaunchesScreenEvent()

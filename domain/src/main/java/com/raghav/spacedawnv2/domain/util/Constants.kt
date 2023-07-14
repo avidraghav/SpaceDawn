@@ -10,7 +10,8 @@ object Constants {
     const val REMINDER_CHANNEL_ID = "launch_reminders"
     const val REMINDER_PERMISSION_NOT_AVAILABLE = "reminder_permission_not_available"
     const val NOTIFICATION_PERMISSION_NOT_AVAILABLE = "notification_permission_not_available"
-    const val NOTIFICATION_REMINDER_PERMISSION_NOT_AVAILABLE = "notification_reminder_permission_not_available"
+    const val NOTIFICATION_REMINDER_PERMISSION_NOT_AVAILABLE =
+        "notification_reminder_permission_not_available"
     const val KEY_LAUNCH_NAME = "key_launch_name"
     const val TEN_MINUTES_IN_MILLIS = 600_000L
     const val REMINDER_SOUND_DURATION = 10_000L

@@ -9,10 +9,12 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.content.ContextCompat
+import com.raghav.spacedawnv2.R
 import com.raghav.spacedawnv2.domain.model.LaunchDetail
 import com.raghav.spacedawnv2.domain.util.Constants
 import com.raghav.spacedawnv2.domain.util.ReminderScheduler
 import com.raghav.spacedawnv2.domain.util.ReminderState
+import com.raghav.spacedawnv2.util.Helpers.Companion.isNull
 import com.raghav.spacedawnv2.util.Helpers.Companion.toDate
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -45,8 +47,13 @@ class AndroidReminderScheduler @Inject constructor(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             return when {
                 alarmManager.canScheduleExactAlarms() && areNotificationsEnabled(context) -> {
-                    setAlarm(launchDetail)
-                    ReminderState.SetSuccessfully
+                    return setAlarm(launchDetail).let { errorMessage ->
+                        if (errorMessage.isNull()) {
+                            ReminderState.SetSuccessfully
+                        } else {
+                            ReminderState.NotSet(errorMessage!!)
+                        }
+                    }
                 }
 
                 alarmManager.canScheduleExactAlarms() && !areNotificationsEnabled(context) -> {
@@ -79,8 +86,13 @@ class AndroidReminderScheduler @Inject constructor(
             }
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             return if (alarmManager.canScheduleExactAlarms()) {
-                setAlarm(launchDetail)
-                ReminderState.SetSuccessfully
+                return setAlarm(launchDetail).let { errorMessage ->
+                    if (errorMessage.isNull()) {
+                        ReminderState.SetSuccessfully
+                    } else {
+                        ReminderState.NotSet(errorMessage!!)
+                    }
+                }
             } else {
                 ReminderState.PermissionsState(
                     reminderPermission = false,
@@ -88,8 +100,13 @@ class AndroidReminderScheduler @Inject constructor(
                 )
             }
         } else {
-            setAlarm(launchDetail)
-            return ReminderState.SetSuccessfully
+            return setAlarm(launchDetail).let { errorMessage ->
+                if (errorMessage.isNull()) {
+                    ReminderState.SetSuccessfully
+                } else {
+                    ReminderState.NotSet(errorMessage!!)
+                }
+            }
         }
     }
 
@@ -105,7 +122,8 @@ class AndroidReminderScheduler @Inject constructor(
         )
     }
 
-    private fun setAlarm(launchDetail: LaunchDetail) {
+    // returns null if the reminder was set successfully otherwise error message
+    private fun setAlarm(launchDetail: LaunchDetail): String? {
         val intent = Intent(context, ReminderBroadcastReceiver::class.java).apply {
             putExtra(Constants.KEY_LAUNCH_NAME, launchDetail.name)
         }
@@ -118,11 +136,17 @@ class AndroidReminderScheduler @Inject constructor(
 
         val launchTime = launchDetail.net.toDate(Constants.LAUNCH_DATE_INPUT_FORMAT).time
         val reminderTime = launchTime - Constants.TEN_MINUTES_IN_MILLIS
-        alarmManager.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
-            reminderTime,
-            pendingIntent
-        )
+
+        return if (launchTime < System.currentTimeMillis()) {
+            context.getString(R.string.launch_time_passed)
+        } else {
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                reminderTime,
+                pendingIntent
+            )
+            null
+        }
     }
 
     @SuppressLint("InlinedApi")

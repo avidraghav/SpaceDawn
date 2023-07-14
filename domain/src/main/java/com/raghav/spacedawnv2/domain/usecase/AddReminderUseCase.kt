@@ -42,6 +42,10 @@ class AddReminderUseCase @Inject constructor(
                     Resource.Success(null)
                 }
 
+                is ReminderState.NotSet -> {
+                    Resource.Error(message = result.errorMessage!!)
+                }
+
                 is ReminderState.PermissionsState -> {
                     when {
                         result.reminderPermission && !result.notificationPermission -> {
