@@ -36,5 +36,9 @@ class Helpers {
                 restoreState = true
                 launchSingleTop = true
             }
+
+        fun String?.isNull(): Boolean {
+            return this == null
+        }
     }
 }

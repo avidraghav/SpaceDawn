@@ -100,7 +100,7 @@ fun LaunchesScreen(
                 }
 
                 is LaunchesScreenEvent.ReminderNotSet -> {
-                    reminderNotSet(Constants.REMINDER_NOT_SET)
+                    reminderNotSet(event.infoMessage ?: Constants.REMINDER_NOT_SET)
                 }
 
                 is LaunchesScreenEvent.PermissionToSetReminderNotGranted -> {

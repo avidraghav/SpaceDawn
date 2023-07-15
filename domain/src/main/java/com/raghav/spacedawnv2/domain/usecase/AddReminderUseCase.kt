@@ -35,24 +35,28 @@ class AddReminderUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(launchDetail: LaunchDetail): Resource<Nothing?> {
         return try {
-            val result = reminderScheduler.setReminder(launchDetail)
-            return when (result) {
+            val reminder = reminderScheduler.setReminder(launchDetail)
+            return when (reminder) {
                 ReminderState.SetSuccessfully -> {
                     repository.saveReminderInDb(launchDetail)
                     Resource.Success(null)
                 }
 
+                is ReminderState.NotSet -> {
+                    Resource.Error(message = reminder.errorMessage!!)
+                }
+
                 is ReminderState.PermissionsState -> {
                     when {
-                        result.reminderPermission && !result.notificationPermission -> {
+                        reminder.reminderPermission && !reminder.notificationPermission -> {
                             Resource.Error(message = Constants.NOTIFICATION_PERMISSION_NOT_AVAILABLE)
                         }
 
-                        !result.reminderPermission && result.notificationPermission -> {
+                        !reminder.reminderPermission && reminder.notificationPermission -> {
                             Resource.Error(message = Constants.REMINDER_PERMISSION_NOT_AVAILABLE)
                         }
 
-                        !result.reminderPermission && !result.notificationPermission -> {
+                        !reminder.reminderPermission && !reminder.notificationPermission -> {
                             Resource.Error(message = Constants.NOTIFICATION_REMINDER_PERMISSION_NOT_AVAILABLE)
                         }
 

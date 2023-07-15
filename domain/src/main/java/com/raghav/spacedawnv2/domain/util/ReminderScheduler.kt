@@ -20,7 +20,7 @@ interface ReminderScheduler {
     fun cancelReminder(id: String)
 }
 
-sealed class ReminderState {
+sealed class ReminderState(val errorMessage: String? = null) {
 
     data class PermissionsState(
         val reminderPermission: Boolean,
@@ -28,4 +28,5 @@ sealed class ReminderState {
     ) : ReminderState()
 
     object SetSuccessfully : ReminderState()
+    data class NotSet(val message: String) : ReminderState(message)
 }
