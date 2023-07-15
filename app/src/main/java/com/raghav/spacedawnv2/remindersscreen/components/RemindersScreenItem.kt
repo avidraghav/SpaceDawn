@@ -1,4 +1,4 @@
-package com.raghav.spacedawnv2.launchesscreen.components
+package com.raghav.spacedawnv2.remindersscreen.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,28 +26,25 @@ import com.raghav.spacedawnv2.util.Helpers.Companion.formatTo
 import com.raghav.spacedawnv2.util.Helpers.Companion.toDate
 
 @Composable
-fun LaunchesScreenItem(
-    launch: LaunchDetail,
-    addReminderClicked: (LaunchDetail) -> Unit,
+fun RemindersScreenItem(
+    reminder: LaunchDetail,
+    cancelReminderClicked: (LaunchDetail) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-        launch.image?.let {
+        reminder.image?.let {
             CircularImage(imageUrl = it)
         }
-        LaunchContent(
-            launch = launch,
-            addReminderClicked = {
-                addReminderClicked(it)
-            }
-        )
+        ReminderContent(reminder = reminder, cancelReminderClicked = {
+            cancelReminderClicked(it)
+        })
     }
 }
 
 @Composable
-fun LaunchContent(
-    launch: LaunchDetail,
-    addReminderClicked: (LaunchDetail) -> Unit,
+fun ReminderContent(
+    reminder: LaunchDetail,
+    cancelReminderClicked: (LaunchDetail) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -56,51 +53,39 @@ fun LaunchContent(
         )
     ) {
         Text(
-            text = launch.name.orEmpty(),
+            text = reminder.name.orEmpty(),
             overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.headlineSmall
         )
         Text(
-            text = launch.launchServiceProvider?.name.orEmpty(),
-            style = MaterialTheme.typography.titleLarge
-        )
-        Text(
-            text = stringResource(
-                R.string.rocket_name,
-                launch.rocket?.configuration?.full_name.orEmpty()
-            ),
-            style = MaterialTheme.typography.bodyLarge
-        )
-
-        Text(
             text = buildAnnotatedString {
                 append(stringResource(id = R.string.launch_status) + " ")
                 withStyle(
-                    style = when (launch.status?.name) {
+                    style = when (reminder.status?.name) {
                         stringResource(R.string.to_be_determined) -> SpanStyle(color = Color.Red)
                         stringResource(R.string.go_for_launch) -> SpanStyle(MaterialTheme.colors.Green)
                         stringResource(R.string.to_be_confirmed) -> SpanStyle(MaterialTheme.colors.Yellow)
                         else -> SpanStyle()
                     }
                 ) {
-                    append(launch.status?.name.orEmpty())
+                    append(reminder.status?.name.orEmpty())
                 }
             },
             style = MaterialTheme.typography.bodyMedium
         )
 
-        if (launch.net.isNotEmpty()) {
+        if (reminder.net.isNotEmpty()) {
             Text(
-                text = launch.net.toDate(Constants.LAUNCH_DATE_INPUT_FORMAT).formatTo(
+                text = reminder.net.toDate(Constants.LAUNCH_DATE_INPUT_FORMAT).formatTo(
                     Constants.DATE_OUTPUT_FORMAT
                 ),
                 style = MaterialTheme.typography.bodyMedium
             )
         }
 
-        OutlinedButton(onClick = { addReminderClicked(launch) }) {
+        OutlinedButton(onClick = { cancelReminderClicked(reminder) }) {
             Text(
-                text = stringResource(id = R.string.add_reminder)
+                text = stringResource(id = R.string.cancel_reminder)
             )
         }
     }

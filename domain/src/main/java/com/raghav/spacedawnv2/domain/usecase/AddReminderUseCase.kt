@@ -15,7 +15,6 @@ import javax.inject.Inject
  * then the UseCase should be written in a way such that one doesn't has
  * to do anything extra to save the profile as well as there is no sense to execute only a subset of the
  * steps performed by the UseCase
- *
  */
 
 /**

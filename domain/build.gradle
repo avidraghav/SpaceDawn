@@ -36,4 +36,7 @@ dependencies {
     // Moshi
     implementation("com.squareup.moshi:moshi:1.14.0")
     ksp("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
+
+    // Coroutines Flow
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
 }
