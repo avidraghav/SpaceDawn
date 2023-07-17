@@ -10,12 +10,14 @@ interface ReminderScheduler {
 
     /**
      * Set a reminder for a launch and save that launch in
-     * local database
+     * local database.
+     * @param launchDetail object of [LaunchDetail]
      */
     fun setReminder(launchDetail: LaunchDetail): ReminderState
 
     /**
      * Cancel an already set reminder
+     * @param id unique id associated with the saved reminder
      */
     fun cancelReminder(id: String)
 }
