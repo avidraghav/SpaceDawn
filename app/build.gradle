@@ -27,6 +27,7 @@ android {
     buildTypes {
         release {
             minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -39,6 +40,7 @@ android {
     }
     buildFeatures {
         compose true
+        buildConfig true
     }
     composeOptions {
         kotlinCompilerExtensionVersion '1.4.6'
@@ -53,7 +55,7 @@ android {
 ktlint {
     android = true
     ignoreFailures = false
-    reporters{
+    reporters {
         reporter "plain"
         reporter "checkstyle"
         reporter "sarif"
@@ -63,7 +65,7 @@ ktlint {
             exclude { it.file.path.contains("$buildDir/generated/") }
         }
     }
-    disabledRules = ["import-ordering","max-line-length","argument-list-wrapping" ]
+    disabledRules = ["import-ordering", "max-line-length", "argument-list-wrapping"]
 }
 
 dependencies {
