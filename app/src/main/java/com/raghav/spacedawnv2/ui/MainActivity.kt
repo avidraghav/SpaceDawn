@@ -123,6 +123,7 @@ fun SpaceDawnApp(modifier: Modifier = Modifier) {
                         scope.launch {
                             val actionTaken = snackbarHostState.showSnackbar(
                                 it,
+                                // need to extract to string res
                                 actionLabel = "Reminders",
                                 withDismissAction = true,
                                 duration = SnackbarDuration.Short
@@ -147,9 +148,26 @@ fun SpaceDawnApp(modifier: Modifier = Modifier) {
                 )
             }
             composable(RemindersScreen.route) {
-                RemindersScreen {
-                    navController.navigateSingleTopTo(LaunchesScreen.route)
-                }
+                RemindersScreen(
+                    onBackPressed = { navController.navigateSingleTopTo(LaunchesScreen.route) },
+                    reminderNotCancelled = { message ->
+                        scope.launch {
+                            snackbarHostState.showSnackbar(
+                                message.toString(),
+                                withDismissAction = true
+                            )
+                        }
+                    },
+                    reminderCancelled = {
+                        scope.launch {
+                            snackbarHostState.showSnackbar(
+                                // need to extract to string res
+                                "Reminder Cancelled Successfully",
+                                withDismissAction = true
+                            )
+                        }
+                    }
+                )
             }
         }
     }

@@ -44,7 +44,8 @@ class LaunchesScreenVM @Inject constructor(
                     is Resource.Error -> {
                         _uiState.update {
                             it.copy(
-                                isLoading = false
+                                isLoading = false,
+                                infoMessage = result.errorMessage
                             )
                         }
                     }
@@ -54,7 +55,8 @@ class LaunchesScreenVM @Inject constructor(
                         _uiState.update {
                             it.copy(
                                 launches = launches,
-                                isLoading = false
+                                isLoading = false,
+                                infoMessage = it.infoMessage
                             )
                         }
                     }
@@ -64,7 +66,7 @@ class LaunchesScreenVM @Inject constructor(
     }
 
     fun setReminder(launch: LaunchDetail) {
-        viewModelScope.launch(dispatchers.default) {
+        viewModelScope.launch(dispatchers.io) {
             addReminderUseCase(launch).let { result ->
                 when (result) {
                     is Resource.Error -> {

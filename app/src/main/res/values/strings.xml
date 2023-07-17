@@ -14,4 +14,8 @@
     <string name="notification_permission_required">Notification Permission Required</string>
     <string name="notification_permission_mandatory_rationale">To use this feature You must allow Space Dawn to display Notifications</string>
     <string name="launch_time_passed">Scheduled Time for the Launch has already passed\n</string>
+    <string name="cancel_reminder">Cancel Reminder</string>
+    <string name="reminders">Reminders</string>
+    <string name="no_reminders_yet">No Upcoming Reminders</string>
+    <string name="back_button">Back Button</string>
 </resources>

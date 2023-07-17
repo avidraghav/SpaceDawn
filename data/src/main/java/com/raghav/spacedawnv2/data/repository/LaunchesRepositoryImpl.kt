@@ -17,6 +17,6 @@ class LaunchesRepositoryImpl @Inject constructor(
     }
 
     override suspend fun saveReminderInDb(launchDetail: LaunchDetail) {
-        launchesDao.saveLaunch(launchDetail)
+        launchesDao.saveReminder(launchDetail)
     }
 }
