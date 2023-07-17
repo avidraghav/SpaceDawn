@@ -17,7 +17,7 @@ interface ReminderScheduler {
 
     /**
      * Cancel an already set reminder
-     * @param id object unique id associated with the saved reminder
+     * @param id unique id associated with the saved reminder
      */
     fun cancelReminder(id: String)
 }
