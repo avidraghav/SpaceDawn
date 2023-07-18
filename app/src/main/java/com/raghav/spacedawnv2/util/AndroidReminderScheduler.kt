@@ -9,8 +9,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.content.ContextCompat
-import com.raghav.broadcastreceiver.ReminderBroadcastReceiver
 import com.raghav.spacedawnv2.R
+import com.raghav.spacedawnv2.broadcastreceiver.ReminderBroadcastReceiver
 import com.raghav.spacedawnv2.domain.model.LaunchDetail
 import com.raghav.spacedawnv2.domain.util.Constants
 import com.raghav.spacedawnv2.domain.util.ReminderScheduler
@@ -127,6 +127,7 @@ class AndroidReminderScheduler @Inject constructor(
     private fun setAlarm(launchDetail: LaunchDetail): String? {
         val intent = Intent(context, ReminderBroadcastReceiver::class.java).apply {
             putExtra(Constants.KEY_LAUNCH_NAME, launchDetail.name)
+            putExtra(Constants.KEY_LAUNCH_ID, launchDetail.id)
         }
         val pendingIntent = PendingIntent.getBroadcast(
             context,

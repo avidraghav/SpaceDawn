@@ -1,7 +1,6 @@
 package com.raghav.spacedawnv2.data.local
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -17,6 +16,6 @@ interface LaunchesDao {
     @Query("SELECT * FROM saved_launches")
     fun getReminders(): Flow<List<LaunchDetail>>
 
-    @Delete
-    suspend fun deleteReminder(launch: LaunchDetail)
+    @Query("DELETE FROM saved_launches WHERE id =:launchId")
+    suspend fun deleteReminder(launchId: String)
 }

@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface RemindersRepository {
 
     fun getRemindersFromDb(): Flow<List<LaunchDetail>>
-    suspend fun deleteReminderFromDb(launchDetail: LaunchDetail)
+    suspend fun deleteReminderFromDb(reminderId: String)
 }

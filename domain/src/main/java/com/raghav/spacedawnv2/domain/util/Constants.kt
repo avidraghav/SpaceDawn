@@ -13,6 +13,9 @@ object Constants {
     const val NOTIFICATION_REMINDER_PERMISSION_NOT_AVAILABLE =
         "notification_reminder_permission_not_available"
     const val KEY_LAUNCH_NAME = "key_launch_name"
+    const val KEY_LAUNCH_ID = "key_reminder_name"
     const val TEN_MINUTES_IN_MILLIS = 600_000L
     const val REMINDER_SOUND_DURATION = 10_000L
+    const val REMINDER_NOTIFICATION_AND_CLEANUP = "reminder_notification_and_cleanup"
+    const val SET_REMINDER_AFTER_DEVICE_BOOT = "set_reminder_after_device_boot"
 }

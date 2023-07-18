@@ -29,14 +29,27 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name="com.raghav.broadcastreceiver.ReminderBroadcastReceiver" />
+        <receiver android:name=".broadcastreceiver.ReminderBroadcastReceiver" />
         <receiver
-            android:name="com.raghav.broadcastreceiver.DeviceBootReceiver"
+            android:name=".broadcastreceiver.DeviceBootReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <!-- If you are using androidx.startup to initialize other components -->
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
+
     </application>
 
 </manifest>

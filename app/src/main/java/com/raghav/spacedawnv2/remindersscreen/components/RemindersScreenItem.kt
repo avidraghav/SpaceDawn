@@ -28,7 +28,7 @@ import com.raghav.spacedawnv2.util.Helpers.Companion.toDate
 @Composable
 fun RemindersScreenItem(
     reminder: LaunchDetail,
-    cancelReminderClicked: (LaunchDetail) -> Unit,
+    cancelReminderClicked: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
@@ -36,7 +36,7 @@ fun RemindersScreenItem(
             CircularImage(imageUrl = it)
         }
         ReminderContent(reminder = reminder, cancelReminderClicked = {
-            cancelReminderClicked(it)
+            cancelReminderClicked(it.id)
         })
     }
 }
