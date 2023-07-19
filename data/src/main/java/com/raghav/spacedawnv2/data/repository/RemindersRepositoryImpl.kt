@@ -13,7 +13,7 @@ class RemindersRepositoryImpl @Inject constructor(
         return launchesDao.getReminders()
     }
 
-    override suspend fun deleteReminderFromDb(launchDetail: LaunchDetail) {
-        launchesDao.deleteReminder(launchDetail)
+    override suspend fun deleteReminderFromDb(reminderId: String) {
+        launchesDao.deleteReminder(reminderId)
     }
 }

@@ -2,7 +2,6 @@ package com.raghav.spacedawnv2.remindersscreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.raghav.spacedawnv2.domain.model.LaunchDetail
 import com.raghav.spacedawnv2.domain.usecase.CancelReminderUseCase
 import com.raghav.spacedawnv2.domain.usecase.GetRemindersUseCase
 import com.raghav.spacedawnv2.domain.util.Resource
@@ -60,9 +59,9 @@ class RemindersScreenVM @Inject constructor(
         }
     }
 
-    fun cancelReminder(reminder: LaunchDetail) {
+    fun cancelReminder(reminderId: String) {
         viewModelScope.launch(dispatchers.io) {
-            cancelReminderUseCase(reminder).let { result ->
+            cancelReminderUseCase(reminderId).let { result ->
                 when (result) {
                     is Resource.Error -> {
                         _eventFlow.emit(RemindersScreenEvent.ReminderNotCancelled(result.errorMessage.toString()))

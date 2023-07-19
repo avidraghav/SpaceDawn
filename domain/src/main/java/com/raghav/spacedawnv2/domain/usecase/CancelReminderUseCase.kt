@@ -1,6 +1,5 @@
 package com.raghav.spacedawnv2.domain.usecase
 
-import com.raghav.spacedawnv2.domain.model.LaunchDetail
 import com.raghav.spacedawnv2.domain.repository.RemindersRepository
 import com.raghav.spacedawnv2.domain.util.ReminderScheduler
 import com.raghav.spacedawnv2.domain.util.Resource
@@ -27,10 +26,10 @@ class CancelReminderUseCase @Inject constructor(
     private val repository: RemindersRepository,
     private val reminderScheduler: ReminderScheduler
 ) {
-    suspend operator fun invoke(launchDetail: LaunchDetail): Resource<Nothing?> {
+    suspend operator fun invoke(id: String): Resource<Nothing?> {
         return try {
-            reminderScheduler.cancelReminder(launchDetail.id)
-            repository.deleteReminderFromDb(launchDetail)
+            reminderScheduler.cancelReminder(id)
+            repository.deleteReminderFromDb(id)
             Resource.Success(null)
         } catch (e: Exception) {
             Resource.Error(message = e.localizedMessage)

@@ -56,7 +56,7 @@ class Helpers {
          * @param dispatcher CoroutineDispatcher
          * @param block work that needs to be done on the background thread
          */
-        fun BroadcastReceiver.goAsync(
+        fun BroadcastReceiver.doBackgroundWork(
             dispatcher: CoroutineDispatcher = Dispatchers.IO,
             block: suspend CoroutineScope.() -> Unit
         ) {

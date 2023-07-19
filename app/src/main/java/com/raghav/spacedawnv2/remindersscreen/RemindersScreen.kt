@@ -86,8 +86,8 @@ fun RemindersScreen(
                     items(state.reminders) { item ->
                         RemindersScreenItem(
                             reminder = item,
-                            cancelReminderClicked = { reminder ->
-                                viewModel.cancelReminder(reminder)
+                            cancelReminderClicked = { reminderId ->
+                                viewModel.cancelReminder(reminderId)
                             }
                         )
                         Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
