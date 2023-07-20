@@ -18,6 +18,10 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+/**
+ * All dependencies which cannot be classified into the categories of
+ * Network, Storage, Repository and UseCase are provided by this module.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class MiscModule {

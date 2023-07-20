@@ -8,7 +8,7 @@
     <string name="to_be_determined">To Be Determined</string>
     <string name="go_for_launch">Go for Launch</string>
     <string name="to_be_confirmed">To Be Confirmed</string>
-    <string name="alarm_permission_rationale">To set Launch Reminders Space Dawn needs you grant the permission for the same. Kindly click allow and on the next Screen enable Space Dawn to Set Reminders</string>
+    <string name="alarm_permission_rationale">To set Launch Reminders Space Dawn needs you grant the permission for the same. Kindly click allow and on the next Screen and enable Space Dawn to Set Reminders</string>
     <string name="notification_permission_rationale">To show Notifications Space Dawn needs you grant the permission for the same. Kindly click allow and on the next Screen enable Space Dawn to Send Notifications</string>
     <string name="reminder_permission_required">Reminder Permission Required</string>
     <string name="notification_permission_required">Notification Permission Required</string>

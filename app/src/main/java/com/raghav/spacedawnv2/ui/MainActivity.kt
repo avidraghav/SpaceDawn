@@ -26,14 +26,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.raghav.spacedawnv2.R
 import com.raghav.spacedawnv2.launchesscreen.LaunchesScreen
 import com.raghav.spacedawnv2.navigation.LaunchesScreen
 import com.raghav.spacedawnv2.navigation.RemindersScreen
@@ -90,7 +93,6 @@ fun SpaceDawnApp(modifier: Modifier = Modifier) {
                         icon = {
                             when (destination) {
                                 is LaunchesScreen -> Icon(
-                                    // temporary icon
                                     imageVector = Icons.Default.Menu,
                                     contentDescription = null
                                 )
@@ -117,14 +119,14 @@ fun SpaceDawnApp(modifier: Modifier = Modifier) {
         ) {
             composable(LaunchesScreen.route) {
                 val activity = (LocalContext.current as? Activity)
+                val actionLabel by rememberUpdatedState(newValue = stringResource(id = R.string.reminders))
                 LaunchesScreen(
                     systemBackButtonClicked = { activity?.finish() },
                     reminderSetSuccessfully = {
                         scope.launch {
                             val actionTaken = snackbarHostState.showSnackbar(
                                 it,
-                                // need to extract to string res
-                                actionLabel = "Reminders",
+                                actionLabel = actionLabel,
                                 withDismissAction = true,
                                 duration = SnackbarDuration.Short
                             )

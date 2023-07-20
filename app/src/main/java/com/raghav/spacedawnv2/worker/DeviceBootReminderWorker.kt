@@ -10,19 +10,21 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 
 /**
- * Worker which resets the reminder after device is booted up.
+ * Worker which resets the reminders after device is booted up.
+ *
+ * Fetches the saved launches from database and sets the reminders for them
  */
 @HiltWorker
 class DeviceBootReminderWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted params: WorkerParameters,
     private val androidReminderScheduler: ReminderScheduler,
-    private val dao: LaunchesDao
+    private val launchesDao: LaunchesDao
 ) : CoroutineWorker(appContext, params) {
 
     override suspend fun doWork(): Result {
         return try {
-            dao.getReminders().collect {
+            launchesDao.getSavedLaunches().collect {
                 it.forEach { reminder ->
                     androidReminderScheduler.setReminder(reminder)
                 }

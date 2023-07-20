@@ -13,6 +13,13 @@ import com.raghav.spacedawnv2.worker.DeviceBootReminderWorker
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+/**
+ * Receives the broadcast of the device being rebooted.
+ *
+ * Uses WorkManager to reset the Launch Reminders
+ * as reminders set via AlarmManager are cancelled when the
+ * device is rebooted.
+ */
 @AndroidEntryPoint
 class DeviceBootReceiver : BroadcastReceiver() {
 

@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.content.ContextCompat
+import com.raghav.spacedawnv2.BuildConfig
 import com.raghav.spacedawnv2.R
 import com.raghav.spacedawnv2.broadcastreceiver.ReminderBroadcastReceiver
 import com.raghav.spacedawnv2.domain.model.LaunchDetail
@@ -137,7 +138,17 @@ class AndroidReminderScheduler @Inject constructor(
         )
 
         val launchTime = launchDetail.net.toDate(Constants.LAUNCH_DATE_INPUT_FORMAT).time
-        val reminderTime = launchTime - Constants.TEN_MINUTES_IN_MILLIS
+
+        // In release mode the reminder will be scheduled for 10 minutes before the
+        // launch time.
+
+        // In order to test whether the reminder functionality is working
+        // reminder is set after 10 seconds from current time in Debug mode
+        val reminderTime = if (BuildConfig.DEBUG.not()) {
+            launchTime - Constants.TEN_MINUTES_IN_MILLIS
+        } else {
+            System.currentTimeMillis() + 10_000
+        }
 
         return if (launchTime < System.currentTimeMillis()) {
             context.getString(R.string.launch_time_passed)

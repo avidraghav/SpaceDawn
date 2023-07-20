@@ -3,6 +3,9 @@ package com.raghav.spacedawnv2.util
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
+/**
+ * Provides Coroutine Dispatchers in the main source set
+ */
 class CoroutineDispatchers : DispatchersProvider {
     override val main: CoroutineDispatcher
         get() = Dispatchers.Main

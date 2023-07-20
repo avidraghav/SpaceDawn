@@ -4,9 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.provider.Settings
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -33,13 +30,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.raghav.spacedawnv2.R
-import com.raghav.spacedawnv2.commoncomponents.AlertDialog
+import com.raghav.spacedawnv2.commoncomponent.AlertDialog
 import com.raghav.spacedawnv2.domain.model.LaunchDetail
 import com.raghav.spacedawnv2.domain.util.Constants
 import com.raghav.spacedawnv2.launchesscreen.components.LaunchesScreenItem
-import com.raghav.spacedawnv2.ui.ReminderPermissionContract
 import com.raghav.spacedawnv2.ui.theme.spacing
+import com.raghav.spacedawnv2.util.Helpers.Companion.openAppSettings
+import com.raghav.spacedawnv2.util.ReminderPermissionContract
 
+/**
+ * Screen that displays upcoming Rocket Launches
+ * and allows the end users set reminder for them.
+ */
 @SuppressLint("InlinedApi")
 @Composable
 fun LaunchesScreen(
@@ -183,11 +185,7 @@ fun LaunchesScreen(
                 if (!isNotificationPermissionDeclined) {
                     postNotificationsPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                 } else {
-                    val i = Intent(
-                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                        Uri.fromParts("package", (context as Activity).packageName, null)
-                    )
-                    context.startActivity(i)
+                    (context as Activity).openAppSettings()
                 }
             }
         )
@@ -200,11 +198,7 @@ fun LaunchesScreen(
             onDismissClick = {
             },
             onConfirmClick = {
-                val i = Intent(
-                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                    Uri.fromParts("package", (context as Activity).packageName, null)
-                )
-                context.startActivity(i)
+                (context as Activity).openAppSettings()
             }
         )
     }

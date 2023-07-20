@@ -21,7 +21,7 @@ import javax.inject.Inject
  * Creates a reminder/alarm for the specified launch
  * and saves that launch in local database
  * @param repository [LaunchesRepository]
- * @param reminderScheduler Platform specific Implementation of [ReminderScheduler]
+ * @param androidReminderScheduler Platform specific Implementation of [ReminderScheduler]
  *
  * @return Resource<Nothing?>
  *
@@ -30,11 +30,11 @@ import javax.inject.Inject
 
 class AddReminderUseCase @Inject constructor(
     private val repository: LaunchesRepository,
-    private val reminderScheduler: ReminderScheduler
+    private val androidReminderScheduler: ReminderScheduler
 ) {
     suspend operator fun invoke(launchDetail: LaunchDetail): Resource<Nothing?> {
         return try {
-            val reminder = reminderScheduler.setReminder(launchDetail)
+            val reminder = androidReminderScheduler.setReminder(launchDetail)
             return when (reminder) {
                 ReminderState.SetSuccessfully -> {
                     repository.saveReminderInDb(launchDetail)

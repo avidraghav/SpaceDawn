@@ -4,6 +4,10 @@ import com.raghav.spacedawnv2.domain.model.LaunchDetail
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
+/**
+ * this entity represents a Launch object that is fetched from the API
+ */
+
 // @JsonClass is used to make sure that Moshi uses code-gen instead of Reflection
 // for Serializing and Deserializing data
 @JsonClass(generateAdapter = true)

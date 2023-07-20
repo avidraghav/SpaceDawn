@@ -12,6 +12,12 @@ import com.raghav.spacedawnv2.worker.ReminderNotificationCleanupWorker
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+/**
+ * Receives the Broadcast when a Launch Reminder is fired off by the device
+ *
+ * Uses WorkManager to Show the notification to user and then delete that
+ * reminder from app's local database.
+ */
 @AndroidEntryPoint
 class ReminderBroadcastReceiver : BroadcastReceiver() {
 
