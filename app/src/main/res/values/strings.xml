@@ -18,4 +18,5 @@
     <string name="reminders">Reminders</string>
     <string name="no_reminders_yet">No Upcoming Reminders</string>
     <string name="back_button">Back Button</string>
+    <string name="reminder_cancelled_successfully">Reminder Cancelled Successfully</string>
 </resources>
