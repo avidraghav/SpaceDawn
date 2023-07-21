@@ -24,7 +24,7 @@ class Convertors(val moshi: Moshi) {
     }
 
     @TypeConverter
-    fun missionToString(mission: Mission): String {
+    fun missionToString(mission: Mission?): String {
         return moshi.adapter(Mission::class.java).toJson(mission)
     }
 

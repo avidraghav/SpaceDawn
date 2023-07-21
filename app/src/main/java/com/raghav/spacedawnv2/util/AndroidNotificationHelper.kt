@@ -58,7 +58,7 @@ class AndroidNotificationHelper @Inject constructor(
 
         val builder = context?.let {
             NotificationCompat.Builder(it, channelId)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.notification_icon)
                 .setContentTitle(title)
                 .setContentText(content)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
