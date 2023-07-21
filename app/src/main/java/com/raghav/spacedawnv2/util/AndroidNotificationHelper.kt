@@ -14,6 +14,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * Utility class for sending app notifications
+ */
 @Singleton
 class AndroidNotificationHelper @Inject constructor(
     @ApplicationContext val context: Context?

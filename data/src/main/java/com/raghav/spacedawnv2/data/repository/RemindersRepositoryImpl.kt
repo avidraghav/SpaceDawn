@@ -10,10 +10,10 @@ class RemindersRepositoryImpl @Inject constructor(
     private val launchesDao: LaunchesDao
 ) : RemindersRepository {
     override fun getRemindersFromDb(): Flow<List<LaunchDetail>> {
-        return launchesDao.getReminders()
+        return launchesDao.getSavedLaunches()
     }
 
     override suspend fun deleteReminderFromDb(reminderId: String) {
-        launchesDao.deleteReminder(reminderId)
+        launchesDao.deleteLaunch(reminderId)
     }
 }

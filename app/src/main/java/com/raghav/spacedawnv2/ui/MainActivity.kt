@@ -4,11 +4,11 @@ import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -23,21 +23,25 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.raghav.spacedawnv2.R
 import com.raghav.spacedawnv2.launchesscreen.LaunchesScreen
+import com.raghav.spacedawnv2.navigation.Destination
 import com.raghav.spacedawnv2.navigation.LaunchesScreen
 import com.raghav.spacedawnv2.navigation.RemindersScreen
-import com.raghav.spacedawnv2.navigation.navigationBarScreens
 import com.raghav.spacedawnv2.remindersscreen.RemindersScreen
 import com.raghav.spacedawnv2.ui.theme.SpaceDawnTheme
 import com.raghav.spacedawnv2.ui.theme.spacing
@@ -67,47 +71,15 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun SpaceDawnApp(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
-    val currentBackStack by navController.currentBackStackEntryAsState()
-    val currentDestination = currentBackStack?.destination
-    val currentScreen =
-        navigationBarScreens.find { it.route == currentDestination?.route } ?: LaunchesScreen
-
-    // to get the currently selected navigation tab
-    var selectedTab by remember { mutableStateOf(0) }
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     Scaffold(
         modifier = modifier,
         bottomBar = {
-            NavigationBar(tonalElevation = MaterialTheme.spacing.small) {
-                navigationBarScreens.forEachIndexed { index, destination ->
-                    NavigationBarItem(
-                        selected = currentScreen == destination,
-                        onClick = {
-                            selectedTab = index
-                            navController.navigateSingleTopTo(destination.route)
-                        },
-                        icon = {
-                            when (destination) {
-                                is LaunchesScreen -> Icon(
-                                    // temporary icon
-                                    imageVector = Icons.Default.Menu,
-                                    contentDescription = null
-                                )
-
-                                is RemindersScreen -> Icon(
-                                    imageVector = Icons.Default.Notifications,
-                                    contentDescription = null
-                                )
-                            }
-                        },
-                        label = { Text(text = destination.label) }
-                    )
-                }
-            }
+            BottomNavigationBar(navController)
         },
         snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
+            SnackbarHost(snackbarHostState)
         }
     ) { innerPadding ->
         NavHost(
@@ -117,14 +89,14 @@ fun SpaceDawnApp(modifier: Modifier = Modifier) {
         ) {
             composable(LaunchesScreen.route) {
                 val activity = (LocalContext.current as? Activity)
+                val actionLabel by rememberUpdatedState(newValue = stringResource(id = R.string.reminders))
                 LaunchesScreen(
                     systemBackButtonClicked = { activity?.finish() },
                     reminderSetSuccessfully = {
                         scope.launch {
                             val actionTaken = snackbarHostState.showSnackbar(
                                 it,
-                                // need to extract to string res
-                                actionLabel = "Reminders",
+                                actionLabel = actionLabel,
                                 withDismissAction = true,
                                 duration = SnackbarDuration.Short
                             )
@@ -148,6 +120,7 @@ fun SpaceDawnApp(modifier: Modifier = Modifier) {
                 )
             }
             composable(RemindersScreen.route) {
+                val snackBarMessage by rememberUpdatedState(newValue = stringResource(R.string.reminder_cancelled_successfully))
                 RemindersScreen(
                     onBackPressed = { navController.navigateSingleTopTo(LaunchesScreen.route) },
                     reminderNotCancelled = { message ->
@@ -162,7 +135,7 @@ fun SpaceDawnApp(modifier: Modifier = Modifier) {
                         scope.launch {
                             snackbarHostState.showSnackbar(
                                 // need to extract to string res
-                                "Reminder Cancelled Successfully",
+                                snackBarMessage,
                                 withDismissAction = true
                             )
                         }
@@ -171,6 +144,46 @@ fun SpaceDawnApp(modifier: Modifier = Modifier) {
             }
         }
     }
+}
+
+@Composable
+fun BottomNavigationBar(navController: NavHostController, modifier: Modifier = Modifier) {
+    val destinations = listOf(LaunchesScreen, RemindersScreen)
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+
+    NavigationBar(modifier = modifier, tonalElevation = MaterialTheme.spacing.small) {
+        destinations.forEach { destination ->
+            BottomNavigationItem(
+                destination = destination,
+                currentDestination = currentDestination,
+                navController = navController
+            )
+        }
+    }
+}
+
+@Composable
+fun RowScope.BottomNavigationItem(
+    destination: Destination,
+    currentDestination: NavDestination?,
+    navController: NavHostController
+) {
+    NavigationBarItem(
+        selected = currentDestination?.hierarchy?.any {
+            it.route == destination.route
+        } == true,
+        onClick = {
+            navController.navigateSingleTopTo(destination.route)
+        },
+        icon = {
+            Icon(
+                imageVector = Icons.Default.Menu,
+                contentDescription = null
+            )
+        },
+        label = { Text(text = destination.label) }
+    )
 }
 
 @Preview(showBackground = true)

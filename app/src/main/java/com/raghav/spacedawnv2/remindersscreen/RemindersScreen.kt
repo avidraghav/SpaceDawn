@@ -29,6 +29,10 @@ import com.raghav.spacedawnv2.R
 import com.raghav.spacedawnv2.remindersscreen.components.RemindersScreenItem
 import com.raghav.spacedawnv2.ui.theme.spacing
 
+/**
+ * Screen that displays the upcoming Launch Reminders
+ * and allows the end user to delete/cancel them
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RemindersScreen(

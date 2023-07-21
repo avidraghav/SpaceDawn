@@ -19,7 +19,7 @@ import kotlinx.coroutines.withContext
 
 /**
  * Worker which plays the media sound, displays the reminder notification and deletes the
- * saved reminder afterwards.
+ * saved reminder from app's local database afterwards.
  */
 @HiltWorker
 class ReminderNotificationCleanupWorker @AssistedInject constructor(
@@ -28,7 +28,7 @@ class ReminderNotificationCleanupWorker @AssistedInject constructor(
     private val mediaPlayer: MediaPlayer,
     private val notificationHelper: NotificationHelper,
     private val dispatchers: DispatchersProvider,
-    private val dao: LaunchesDao
+    private val launchesDao: LaunchesDao
 ) : CoroutineWorker(appContext, params) {
 
     override suspend fun doWork(): Result {
@@ -42,7 +42,7 @@ class ReminderNotificationCleanupWorker @AssistedInject constructor(
                 delay(Constants.REMINDER_SOUND_DURATION)
                 mediaPlayer.stop()
             }
-            launchId?.let { dao.deleteReminder(it) }
+            launchId?.let { launchesDao.deleteLaunch(it) }
             Result.success()
         } catch (e: Exception) {
             e.printStackTrace()

@@ -4,6 +4,10 @@ import androidx.annotation.Keep
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+/**
+ * this entity represents a Launch object which is showed on the UI
+ * and saved in the Database.
+ */
 @Keep
 @Entity(tableName = "saved_launches")
 data class LaunchDetail(

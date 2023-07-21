@@ -1,4 +1,4 @@
-package com.raghav.spacedawnv2.commoncomponents
+package com.raghav.spacedawnv2.commoncomponent
 
 import androidx.annotation.StringRes
 import androidx.compose.material3.AlertDialog
@@ -17,21 +17,21 @@ import com.raghav.spacedawnv2.ui.theme.spacing
 /**
  * Composable to show Material 3's AlertDialog box
  * @param onDismissClick callback when the dialog is dismissed either by pressing the
- * dismiss/negative button or clicking outside the area of dialog box
- * @param onConfirmClick callback when the Allow/positive button
- * @param title title of the Alert Dialog box
- * @param content content of the Alert Dialog box
- * @param modifier optional modifier
+ * dismiss/negative button or clicking outside the area of dialog box.
+ * @param onConfirmClick callback when the Allow/positive button is clicked.
+ * @param title title of the Alert Dialog box.
+ * @param content content of the Alert Dialog box.
+ * @param modifier optional modifier.
  */
 @Composable
 fun AlertDialog(
-    onDismissClick: () -> Unit,
-    onConfirmClick: () -> Unit,
     @StringRes
     title: Int,
     @StringRes
     content: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onDismissClick: () -> Unit,
+    onConfirmClick: () -> Unit
 ) {
     var openDialog: Boolean by remember {
         mutableStateOf(true)

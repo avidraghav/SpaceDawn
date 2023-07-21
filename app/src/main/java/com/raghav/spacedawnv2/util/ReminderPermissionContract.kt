@@ -1,4 +1,4 @@
-package com.raghav.spacedawnv2.ui
+package com.raghav.spacedawnv2.util
 
 import android.annotation.SuppressLint
 import android.app.Activity

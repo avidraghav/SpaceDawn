@@ -1,18 +1,20 @@
 package com.raghav.spacedawnv2.util
 
-import android.content.BroadcastReceiver
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 
+/**
+ * Extension functions which can be used throughout the app module
+ * to prevent the developer from adding repetitive and boiler plate code.
+ */
 class Helpers {
     companion object {
         fun String.toDate(
@@ -47,27 +49,12 @@ class Helpers {
             return this == null
         }
 
-        /**
-         * extension function to be used in BroadCastReceivers to delegate long
-         * running tasks to background thread. Uses the goAsync() function which makes the BroadcastCastReceiver
-         * running for more than 30 seconds so as to complete the work. If the work is completed
-         * before the limit the BroadcastCastReceiver is cancelled.
-         *
-         * @param dispatcher CoroutineDispatcher
-         * @param block work that needs to be done on the background thread
-         */
-        fun BroadcastReceiver.doBackgroundWork(
-            dispatcher: CoroutineDispatcher = Dispatchers.IO,
-            block: suspend CoroutineScope.() -> Unit
-        ) {
-            val pendingResult = goAsync()
-            CoroutineScope(dispatcher + SupervisorJob()).launch {
-                try {
-                    block()
-                } finally {
-                    pendingResult.finish()
-                }
-            }
+        fun Activity.openAppSettings() {
+            val intent = Intent(
+                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                Uri.fromParts("package", this.packageName, null)
+            )
+            this.startActivity(intent)
         }
     }
 }
