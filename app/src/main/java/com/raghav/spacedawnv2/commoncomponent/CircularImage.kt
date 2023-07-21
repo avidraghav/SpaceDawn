@@ -34,7 +34,7 @@ fun CircularImage(imageUrl: String, widthFraction: Float, modifier: Modifier = M
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current).data(imageUrl)
                 .error(R.drawable.error_icon)
-                .placeholder(R.drawable.notification_icon)
+                .placeholder(R.mipmap.ic_launcher)
                 .build(),
             contentDescription = null,
             contentScale = ContentScale.Crop,
