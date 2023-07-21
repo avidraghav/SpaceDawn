@@ -7,8 +7,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -178,7 +176,7 @@ fun RowScope.BottomNavigationItem(
         },
         icon = {
             Icon(
-                imageVector = Icons.Default.Menu,
+                imageVector = destination.icon,
                 contentDescription = null
             )
         },
