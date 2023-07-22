@@ -1,3 +1,21 @@
+# <img height="40" src="https://github.com/avidraghav/SpaceDawn/assets/49483235/b428282d-a33a-4a5d-8e73-d996b63ce59d"> Space Dawn
+
+[![Android-CI Actions Status](https://github.com/avidraghav/SpaceDawn/workflows/Android-CI/badge.svg)](https://github.com/avidraghav/SpaceDawn/actions)
+[![GitHub license](https://img.shields.io/badge/License-Apache-blue.svg)](LICENSE)
+
+**Space Dawn** is a demo app built to demonstrate the use of **Mutli-Module Clean MVVM Architecture** with **Jetpack Compose** by following Material-3 guidelines along with other MAD libraries
+
+|  Architecture   | Multi-Module Clean MVVM Architecture |
+|----------------	|------------------------------	|
+| <img height="20" src="https://3.bp.blogspot.com/-VVp3WvJvl84/X0Vu6EjYqDI/AAAAAAAAPjU/ZOMKiUlgfg8ok8DY8Hc-ocOvGdB0z86AgCLcBGAsYHQ/s1600/jetpack%2Bcompose%2Bicon_RGB.png">    UI Framework  | [Jetpack Compose](https://www.jetbrains.com/lp/compose-multiplatform/)         |                        |
+| 💉 DI                | [Dagger-Hilt](https://developer.android.com/training/dependency-injection/hilt-android)                        |             |
+| 🌐 Networking        | [Retrofit](https://github.com/square/retrofit) + [Moshi](https://github.com/square/moshi)                   |
+| :floppy_disk: Local Datbase      | [Room Database](https://developer.android.com/topic/libraries/architecture/room)                   |
+| :compass: Navigation       |  [Compose Destinations Navigation](https://developer.android.com/jetpack/compose/navigation) |
+| :building_construction: Persistent Background Work  | [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) + [AlarmManager](https://developer.android.com/reference/android/app/AlarmManager) |
+| :thread: Asynchronous Work     |  [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html)|
+| 🖼️ Image Loading     |  [Coil](https://coil-kt.github.io/coil/)|
+
 <div align="center">
   <video src="https://github.com/avidraghav/SpaceDawn/assets/49483235/4e320b7d-d66d-4e42-8c94-705057fb8939" width="400" />
 </div>
