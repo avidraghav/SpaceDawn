@@ -35,11 +35,11 @@ lets a user **Save reminders/alarms for the upcoming Rocket Launches From around
 </table>
 <br>
 
-## :iphone: Screenshots
+## :iphone: Screenshots Dark Theme
 <table style="width:100%">
   <tr>
     <th>Upcoming Launches Screen</th>
-    <th>Reminders Screen Screen</th> 
+    <th>Reminders Screen</th> 
     <th>Notification Sample</th> 
   </tr>
   <tr>
