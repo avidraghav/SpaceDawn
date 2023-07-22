@@ -36,6 +36,30 @@
     - Modular and customizable Material Design UI components for Android.
 - [Coil](https://coil-kt.github.io/coil/)
     - Image loading library for Compose.
+</br>
+
+## :iphone: Screenshots
+<table style="width:100%">
+  <tr>
+    <th>Upcoming Launches Screen</th>
+    <th>Reminders Screen Screen</th> 
+    <th>Notification Sample</th> 
+  </tr>
+  <tr>
+    <td><img src = "art/upcoming_launches_a10.png" width=240/></td> 
+    <td><img src = "art/reminders_a10.png" width=240/></td>
+    <td><img src = "https://github.com/avidraghav/SpaceDawn/assets/49483235/a710b182-8a5b-4424-8ae4-b49fdeb2ba87" width=240/></td>
+
+  </tr>
+</table>
+
+## 🏗️ Architecture Diagram
+
+<img src="https://github.com/avidraghav/SpaceDawn/assets/49483235/3012faf2-ad12-46c6-a74a-246376581847" width="600" height="800">
+
+
+
+
 
 Useful links
 1. https://plugins.gradle.org/plugin/org.jlleitschuh.gradle.ktlint
