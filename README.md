@@ -93,8 +93,3 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
-
-Useful links
-1. https://plugins.gradle.org/plugin/org.jlleitschuh.gradle.ktlint
-2. https://sdkman.io/usage
-3. https://www.kodeco.com/10562143-continuous-integration-for-android
