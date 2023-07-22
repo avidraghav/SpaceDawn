@@ -4,14 +4,19 @@
 </div>
 <br>
 
-[![Android-CI Actions Status](https://github.com/avidraghav/SpaceDawn/workflows/Android-CI/badge.svg)](https://github.com/avidraghav/SpaceDawn/actions)
+[![Android-CI Actions Status](https://github.com/avidraghav/SpaceDawn/workflows/Android-CI/badge.svg)](https://github.com/avidraghav/spacedawn/actions)
 [![GitHub license](https://img.shields.io/badge/License-Apache-blue.svg)](LICENSE)
 [![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
+[![Contributions Highly Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/avidraghav/spacedawn/issues)
 <br>
 
 **Space Dawn** is a demo app built to demonstrate the use of **Mutli-Module Clean MVVM Architecture** with **Jetpack Compose** by following **Material-3** guidelines along with other MAD libraries. 
 The app lets a user **Save reminders/alarms for the upcoming Rocket Launches From around the world**.
 <br>
+
+**Click on the link below to get the latest version Space Dawn 🚀**
+
+[![Space Dawn](https://img.shields.io/github/v/release/avidraghav/spacedawn?color=7885FF&label=Latest%20Apk&logo=android&style=for-the-badge)](https://github.com/avidraghav/spacedawn/releases/latest/download/app-release.apk)
 
 ## 🛠 Built With
 |  Architecture   | Multi-Module Clean MVVM Architecture |
