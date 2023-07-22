@@ -9,8 +9,8 @@
 [![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
 <br>
 
-**Space Dawn** is a demo app built to demonstrate the use of **Mutli-Module Clean MVVM Architecture** with **Jetpack Compose** by following **Material-3** guidelines along with other MAD libraries which
-lets a user **Save reminders/alarms for the upcoming Rocket Launches From around the world**.
+**Space Dawn** is a demo app built to demonstrate the use of **Mutli-Module Clean MVVM Architecture** with **Jetpack Compose** by following **Material-3** guidelines along with other MAD libraries. 
+The app lets a user **Save reminders/alarms for the upcoming Rocket Launches From around the world**.
 <br>
 
 ## 🛠 Built With
@@ -35,7 +35,7 @@ lets a user **Save reminders/alarms for the upcoming Rocket Launches From around
 </table>
 <br>
 
-## :iphone: Screenshots Dark Theme
+## :iphone: Screenshots (Dark and Light Theme)
 <table style="width:100%">
   <tr>
     <th>Upcoming Launches Screen</th>
@@ -46,6 +46,16 @@ lets a user **Save reminders/alarms for the upcoming Rocket Launches From around
     <td><img src = "art/upcoming_launches_a10.png" width=240/></td> 
     <td><img src = "art/reminders_a10.png" width=240/></td>
     <td><img src = "https://github.com/avidraghav/SpaceDawn/assets/49483235/a710b182-8a5b-4424-8ae4-b49fdeb2ba87" width=240/></td>
+  </tr>
+    <tr>
+    <th>Upcoming Launches Screen</th>
+    <th>Reminders Screen</th> 
+    <th>Notification Sample</th> 
+  </tr>
+  <tr>
+    <td><img src = "art/upcoming_launches_a10_light.png" width=240/></td> 
+    <td><img src = "art/reminders_a10_light.png" width=240/></td>
+    <td><img src = "art/notification_sample_a10_light.png" width=240/></td>
   </tr>
 </table>
 <br>
