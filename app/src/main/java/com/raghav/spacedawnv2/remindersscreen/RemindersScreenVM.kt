@@ -8,6 +8,7 @@ import com.raghav.spacedawnv2.domain.util.Resource
 import com.raghav.spacedawnv2.util.DispatchersProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -50,7 +51,7 @@ class RemindersScreenVM @Inject constructor(
                 .collect { reminders ->
                     _uiState.update {
                         it.copy(
-                            reminders = reminders,
+                            reminders = reminders.toImmutableList(),
                             isLoading = false,
                             infoMessage = it.infoMessage
                         )

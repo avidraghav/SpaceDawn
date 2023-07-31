@@ -13,7 +13,7 @@ data class MissionDto(
     @Json(name = "id")
     val id: Int?,
     @Json(name = "launch_designator")
-    val launchDesignator: Any?,
+    val launchDesignator: String?,
     @Json(name = "name")
     val name: String?,
     @Json(name = "orbit")
