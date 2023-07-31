@@ -25,10 +25,19 @@ import javax.inject.Inject
 class GetLaunchesUseCase @Inject constructor(
     private val repository: LaunchesRepository
 ) {
-    suspend operator fun invoke(): Resource<LaunchesResponse> {
+    suspend operator fun invoke(): Resource<LaunchesResponse?> {
         return try {
-            Resource.Success(repository.getLaunches())
+            when (val result = repository.getLaunches()) {
+                is Resource.Error -> {
+                    Resource.Error(result.errorMessage.toString())
+                }
+
+                is Resource.Success -> {
+                    Resource.Success(result.data)
+                }
+            }
         } catch (e: Exception) {
+            // handle errors such as No Internet Connection
             Resource.Error(message = e.localizedMessage)
         }
     }
