@@ -6,8 +6,8 @@ import com.raghav.spacedawnv2.domain.model.LaunchDetail
 import com.raghav.spacedawnv2.domain.usecase.AddReminderUseCase
 import com.raghav.spacedawnv2.domain.usecase.GetLaunchesUseCase
 import com.raghav.spacedawnv2.domain.util.Constants
+import com.raghav.spacedawnv2.domain.util.DispatchersProvider
 import com.raghav.spacedawnv2.domain.util.Resource
-import com.raghav.spacedawnv2.util.DispatchersProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow

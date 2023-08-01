@@ -18,4 +18,6 @@ object Constants {
     const val REMINDER_SOUND_DURATION = 10_000L
     const val REMINDER_NOTIFICATION_AND_CLEANUP = "reminder_notification_and_cleanup"
     const val SET_REMINDER_AFTER_DEVICE_BOOT = "set_reminder_after_device_boot"
+    const val API_THROTTLED_MESSAGE = "Requests Limit Reached, please try after 1 hour"
+    const val UNKNOWN_ERROR_MESSAGE = "Some Unknown Error Occurred"
 }

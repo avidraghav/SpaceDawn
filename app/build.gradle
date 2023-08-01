@@ -121,12 +121,12 @@ dependencies {
     def nav_version = "2.5.3"
     implementation "androidx.navigation:navigation-compose:$nav_version"
 
-    //Room
+    // Room
     implementation "androidx.room:room-runtime:2.5.1"
     kapt "androidx.room:room-compiler:2.5.1"
     implementation "androidx.room:room-ktx:2.5.1"
 
-    // work manager
+    // WorkManager
     implementation "androidx.work:work-runtime-ktx:2.8.1"
     implementation("androidx.hilt:hilt-work:1.0.0")
     kapt("androidx.hilt:hilt-compiler:1.0.0")

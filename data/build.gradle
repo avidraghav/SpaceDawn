@@ -72,10 +72,21 @@ dependencies {
     implementation "com.google.dagger:hilt-android:2.44"
     kapt "com.google.dagger:hilt-compiler:2.44"
 
-    //Room
+    // Room
     implementation "androidx.room:room-runtime:2.5.1"
     kapt "androidx.room:room-compiler:2.5.1"
     implementation "androidx.room:room-ktx:2.5.1"
+
+    // For making Assertions in Test cases
+    testImplementation "com.google.truth:truth:1.1.4"
+
+    // Testing coroutines
+    def coroutines_version = "1.6.4"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
+
+    // Mockito
+    testImplementation "org.mockito:mockito-core:5.3.1"
+    testImplementation "org.mockito.kotlin:mockito-kotlin:5.0.0"
 }
 
 kapt {

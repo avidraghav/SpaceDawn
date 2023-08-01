@@ -1,5 +1,6 @@
 package com.raghav.spacedawnv2.util
 
+import com.raghav.spacedawnv2.domain.util.DispatchersProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 

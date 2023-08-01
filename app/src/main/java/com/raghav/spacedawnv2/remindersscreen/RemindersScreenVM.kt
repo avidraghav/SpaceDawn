@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.raghav.spacedawnv2.domain.usecase.CancelReminderUseCase
 import com.raghav.spacedawnv2.domain.usecase.GetRemindersUseCase
+import com.raghav.spacedawnv2.domain.util.DispatchersProvider
 import com.raghav.spacedawnv2.domain.util.Resource
-import com.raghav.spacedawnv2.util.DispatchersProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow

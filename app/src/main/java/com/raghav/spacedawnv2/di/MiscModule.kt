@@ -4,12 +4,12 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.provider.Settings
 import androidx.work.WorkManager
+import com.raghav.spacedawnv2.domain.util.DispatchersProvider
 import com.raghav.spacedawnv2.domain.util.NotificationHelper
 import com.raghav.spacedawnv2.domain.util.ReminderScheduler
 import com.raghav.spacedawnv2.util.AndroidNotificationHelper
 import com.raghav.spacedawnv2.util.AndroidReminderScheduler
 import com.raghav.spacedawnv2.util.CoroutineDispatchers
-import com.raghav.spacedawnv2.util.DispatchersProvider
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

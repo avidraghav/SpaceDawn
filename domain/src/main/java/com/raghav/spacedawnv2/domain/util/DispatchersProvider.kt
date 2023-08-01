@@ -1,4 +1,4 @@
-package com.raghav.spacedawnv2.util
+package com.raghav.spacedawnv2.domain.util
 
 import kotlinx.coroutines.CoroutineDispatcher
 
