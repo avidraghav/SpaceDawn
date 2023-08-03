@@ -1,6 +1,6 @@
 package com.raghav.spacedawnv2.data.util
 
-const val LaunchesResponseDtoString = """{
+const val launchesResponseDtoString = """{
     "count": 157,
     "next": "https://lldev.thespacedevs.com/2.2.0/launch/upcoming/?limit=5&offset=5",
     "previous": null,

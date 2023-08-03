@@ -5,7 +5,7 @@ import com.raghav.spacedawnv2.data.local.LaunchesDao
 import com.raghav.spacedawnv2.data.remote.LaunchesApi
 import com.raghav.spacedawnv2.data.remote.dto.LaunchesResponseDto
 import com.raghav.spacedawnv2.data.remote.dto.toDomain
-import com.raghav.spacedawnv2.data.util.LaunchesResponseDtoString
+import com.raghav.spacedawnv2.data.util.launchesResponseDtoString
 import com.raghav.spacedawnv2.domain.repository.LaunchesRepository
 import com.raghav.spacedawnv2.domain.util.Resource
 import com.squareup.moshi.JsonAdapter
@@ -44,10 +44,7 @@ class LaunchesRepositoryImplTest {
 
     @Test
     fun `getLaunches() returns Success(LaunchesResponse) if request was successful`() = runTest {
-        val adapter: JsonAdapter<LaunchesResponseDto> =
-            moshi.adapter(LaunchesResponseDto::class.java)
-
-        val dtoObject: LaunchesResponseDto? = adapter.fromJson(LaunchesResponseDtoString)
+        val dtoObject = getLaunchesResponseDtoFromJson(launchesResponseDtoString)
         Mockito.`when`(mockApi.getLaunches()).thenReturn(
             Response.success(dtoObject)
         )
@@ -99,4 +96,11 @@ class LaunchesRepositoryImplTest {
                 assertThat(resultCode).isNotEqualTo(429)
             }
         }
+
+    private fun getLaunchesResponseDtoFromJson(jsonString: String): LaunchesResponseDto? {
+        val adapter: JsonAdapter<LaunchesResponseDto> =
+            moshi.adapter(LaunchesResponseDto::class.java)
+
+        return adapter.fromJson(jsonString)
+    }
 }

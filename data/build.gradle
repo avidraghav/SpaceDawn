@@ -79,14 +79,18 @@ dependencies {
 
     // For making Assertions in Test cases
     testImplementation "com.google.truth:truth:1.1.4"
+    androidTestImplementation "com.google.truth:truth:1.1.4"
 
     // Testing coroutines
     def coroutines_version = "1.6.4"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
 
     // Mockito
     testImplementation "org.mockito:mockito-core:5.3.1"
     testImplementation "org.mockito.kotlin:mockito-kotlin:5.0.0"
+
+    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
 }
 
 kapt {
