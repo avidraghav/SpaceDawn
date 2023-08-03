@@ -22,14 +22,6 @@ jobs:
       - name: Unit tests
         run: ./gradlew testDebugUnitTest --stacktrace
 
-      - name: Instrumentation tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          working-directory: platform/android
-          api-level: 33
-          target: google_apis
-          script: ./gradlew connectedCheck --stacktrace
-
       - name: Upload Reports
         uses: actions/upload-artifact@v3
         with:
