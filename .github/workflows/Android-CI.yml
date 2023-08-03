@@ -26,8 +26,8 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           working-directory: platform/android
-          arch: 'arm64-v8a'
           api-level: 33
+          target: google_apis
           script: ./gradlew connectedCheck --stacktrace
 
       - name: Upload Reports
