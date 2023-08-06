@@ -4,10 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.raghav.spacedawnv2.domain.usecase.CancelReminderUseCase
 import com.raghav.spacedawnv2.domain.usecase.GetRemindersUseCase
-import com.raghav.spacedawnv2.domain.util.DispatchersProvider
 import com.raghav.spacedawnv2.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,7 +22,7 @@ import kotlinx.coroutines.launch
 class RemindersScreenVM @Inject constructor(
     private val getRemindersUseCase: GetRemindersUseCase,
     private val cancelReminderUseCase: CancelReminderUseCase,
-    private val dispatchers: DispatchersProvider
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<RemindersScreenState> =
@@ -60,7 +61,7 @@ class RemindersScreenVM @Inject constructor(
     }
 
     fun cancelReminder(reminderId: String) {
-        viewModelScope.launch(dispatchers.io) {
+        viewModelScope.launch(ioDispatcher) {
             cancelReminderUseCase(reminderId).let { result ->
                 when (result) {
                     is Resource.Error -> {
