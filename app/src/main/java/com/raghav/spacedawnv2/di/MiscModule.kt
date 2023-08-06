@@ -4,12 +4,10 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.provider.Settings
 import androidx.work.WorkManager
-import com.raghav.spacedawnv2.domain.util.DispatchersProvider
 import com.raghav.spacedawnv2.domain.util.NotificationHelper
 import com.raghav.spacedawnv2.domain.util.ReminderScheduler
 import com.raghav.spacedawnv2.util.AndroidNotificationHelper
 import com.raghav.spacedawnv2.util.AndroidReminderScheduler
-import com.raghav.spacedawnv2.util.CoroutineDispatchers
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -17,6 +15,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 
 /**
  * All dependencies which cannot be classified into the categories of
@@ -33,9 +33,9 @@ abstract class MiscModule {
             return AndroidReminderScheduler(context)
         }
 
-        @Singleton
         @Provides
-        fun provideDispatchers(): DispatchersProvider = CoroutineDispatchers()
+        @Singleton
+        fun provideIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
 
         @Provides
         fun provideMediaPlayer(@ApplicationContext context: Context): MediaPlayer =

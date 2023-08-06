@@ -9,11 +9,11 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.raghav.spacedawnv2.data.local.LaunchesDao
 import com.raghav.spacedawnv2.domain.util.Constants
-import com.raghav.spacedawnv2.domain.util.DispatchersProvider
 import com.raghav.spacedawnv2.domain.util.NotificationHelper
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlin.random.Random
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
@@ -27,7 +27,6 @@ class ReminderNotificationCleanupWorker @AssistedInject constructor(
     @Assisted params: WorkerParameters,
     private val mediaPlayer: MediaPlayer,
     private val notificationHelper: NotificationHelper,
-    private val dispatchers: DispatchersProvider,
     private val launchesDao: LaunchesDao
 ) : CoroutineWorker(appContext, params) {
 
@@ -36,7 +35,7 @@ class ReminderNotificationCleanupWorker @AssistedInject constructor(
             val launchName = inputData.getString(Constants.KEY_LAUNCH_NAME)
             val launchId = inputData.getString(Constants.KEY_LAUNCH_ID)
 
-            withContext(dispatchers.main) {
+            withContext(Dispatchers.Main) {
                 mediaPlayer.start()
                 showNotification(launchName)
                 delay(Constants.REMINDER_SOUND_DURATION)
@@ -46,7 +45,7 @@ class ReminderNotificationCleanupWorker @AssistedInject constructor(
             Result.success()
         } catch (e: Exception) {
             e.printStackTrace()
-            withContext(dispatchers.main) {
+            withContext(Dispatchers.Main) {
                 mediaPlayer.stop()
             }
             Result.failure()

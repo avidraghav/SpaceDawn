@@ -6,10 +6,11 @@ import com.raghav.spacedawnv2.domain.model.LaunchDetail
 import com.raghav.spacedawnv2.domain.usecase.AddReminderUseCase
 import com.raghav.spacedawnv2.domain.usecase.GetLaunchesUseCase
 import com.raghav.spacedawnv2.domain.util.Constants
-import com.raghav.spacedawnv2.domain.util.DispatchersProvider
 import com.raghav.spacedawnv2.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,7 +22,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class LaunchesScreenVM @Inject constructor(
     private val getLaunchesUseCase: GetLaunchesUseCase,
-    private val dispatchers: DispatchersProvider,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val addReminderUseCase: AddReminderUseCase
 ) : ViewModel() {
 
@@ -66,7 +67,7 @@ class LaunchesScreenVM @Inject constructor(
     }
 
     fun setReminder(launch: LaunchDetail) {
-        viewModelScope.launch(dispatchers.io) {
+        viewModelScope.launch(ioDispatcher) {
             addReminderUseCase(launch).let { result ->
                 when (result) {
                     is Resource.Error -> {

@@ -22,6 +22,9 @@ import retrofit2.Response
 /**
  * Contains Unit Test cases for verifying the
  * working/integrity of [LaunchesRepositoryImpl]
+ *
+ * Test cases follow naming convention:
+ * unitUnderTest_inputProvidedToUnit_resultExpected
  */
 
 class LaunchesRepositoryImplTest {
@@ -43,16 +46,13 @@ class LaunchesRepositoryImplTest {
     }
 
     @Test
-    fun `getLaunches() returns Success(LaunchesResponse) if request was successful`() = runTest {
-        val dtoObject = getLaunchesResponseDtoFromJson(launchesResponseDtoString)
+    fun `getLaunches()_ifRequestWasSuccessful_ReturnsSuccess(LaunchesResponse) `() = runTest {
+        val dtoObject = getDtoFromJson<LaunchesResponseDto>(launchesResponseDtoString)
         Mockito.`when`(mockApi.getLaunches()).thenReturn(
             Response.success(dtoObject)
         )
 
         val requestResult = mockApi.getLaunches()
-
-        println(dtoObject)
-        println(requestResult.body())
 
         if (requestResult.isSuccessful) {
             val result = Resource.Success(requestResult.body()?.toDomain())
@@ -62,9 +62,8 @@ class LaunchesRepositoryImplTest {
         }
     }
 
-    /**
-     * error_message = "Requests Limit Reached, please try after 1 hour"
-     */
+    // error_message = "Requests Limit Reached, please try after 1 hour"
+
     @Test
     fun `getLaunches() returns Error(error_message) if status code was 429`() =
         runTest {
@@ -80,9 +79,8 @@ class LaunchesRepositoryImplTest {
             }
         }
 
-    /**
-     * error_message = "Some Unknown Error Occurred"
-     */
+    // error_message = "Some Unknown Error Occurred"
+
     @Test
     fun `getLaunches() returns Error(error_message) if request was unsuccessful with any status code`() =
         runTest {
@@ -97,9 +95,9 @@ class LaunchesRepositoryImplTest {
             }
         }
 
-    private fun getLaunchesResponseDtoFromJson(jsonString: String): LaunchesResponseDto? {
-        val adapter: JsonAdapter<LaunchesResponseDto> =
-            moshi.adapter(LaunchesResponseDto::class.java)
+    private inline fun <reified T> getDtoFromJson(jsonString: String): T? {
+        val adapter: JsonAdapter<T> =
+            moshi.adapter(T::class.java)
 
         return adapter.fromJson(jsonString)
     }
