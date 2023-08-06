@@ -74,7 +74,7 @@ The app lets a user **Save reminders/alarms for the upcoming Rocket Launches Fro
 <br>
 
 ## ✔️ Tests 
-Tests are up and coming 🚧
+Tests are continuosly being written. Check the `test` and `androidTest` source sets for already available test cases.
 
 ### 🚀  The app uses [Launch Library 2](https://thespacedevs.com/llapi) API for getting upcoming Rocket Launches.
 
