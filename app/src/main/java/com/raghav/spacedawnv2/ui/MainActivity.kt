@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -85,7 +86,15 @@ fun SpaceDawnApp(modifier: Modifier = Modifier) {
             startDestination = LaunchesScreen.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(LaunchesScreen.route) {
+            composable(
+                LaunchesScreen.route,
+                enterTransition = {
+                    slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Right)
+                },
+                exitTransition = {
+                    slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Left)
+                }
+            ) {
                 val activity = (LocalContext.current as? Activity)
                 val actionLabel by rememberUpdatedState(newValue = stringResource(id = R.string.reminders))
                 LaunchesScreen(
@@ -117,7 +126,15 @@ fun SpaceDawnApp(modifier: Modifier = Modifier) {
                     }
                 )
             }
-            composable(RemindersScreen.route) {
+            composable(
+                RemindersScreen.route,
+                enterTransition = {
+                    slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left)
+                },
+                exitTransition = {
+                    slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right)
+                }
+            ) {
                 val snackBarMessage by rememberUpdatedState(newValue = stringResource(R.string.reminder_cancelled_successfully))
                 RemindersScreen(
                     onBackPressed = { navController.navigateSingleTopTo(LaunchesScreen.route) },
