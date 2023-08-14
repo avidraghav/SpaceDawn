@@ -1,6 +1,6 @@
 package com.raghav.spacedawnv2.domain.util
 
-import com.raghav.spacedawnv2.domain.model.LaunchDetail
+import com.raghav.spacedawnv2.domain.model.Reminder
 
 /**
  * Implement this Interface to write platform specific
@@ -11,9 +11,9 @@ interface ReminderScheduler {
     /**
      * Set a reminder for a launch and save that launch in
      * local database.
-     * @param launchDetail object of [LaunchDetail]
+     * @param reminder object of [Reminder]
      */
-    fun setReminder(launchDetail: LaunchDetail): ReminderState
+    fun setReminder(reminder: Reminder): ReminderState
 
     /**
      * Cancel an already set reminder

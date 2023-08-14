@@ -27,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.raghav.spacedawnv2.R
@@ -123,33 +124,45 @@ fun LaunchesScreen(
     }
 
     Box(modifier = modifier.fillMaxSize()) {
-        if (state.launches.isNotEmpty()) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = MaterialTheme.spacing.small)
-            ) {
-                items(state.launches) { item ->
-                    LaunchesScreenItem(
-                        launch = item,
-                        addReminderClicked = { launchDetail ->
-                            launch = launchDetail
-                            viewModel.setReminder(launchDetail)
-                        }
-                    )
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
+        if (state.launches != null) {
+            // If the app is opened for the first time with
+            // no internet connection then the LaunchesScreenVM will emit
+            // Success event but the received launches list will be empty.
+            if (state.launches.isNotEmpty()) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = MaterialTheme.spacing.small)
+                ) {
+                    items(state.launches) { item ->
+                        LaunchesScreenItem(
+                            launch = item,
+                            addReminderClicked = { launchDetail ->
+                                launch = launchDetail
+                                viewModel.setReminder(launchDetail)
+                            }
+                        )
+                        Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
+                    }
                 }
+            } else {
+                Text(
+                    text = stringResource(id = R.string.no_upcoming_launches),
+                    modifier = Modifier.align(Alignment.Center)
+                )
             }
         }
 
         if (state.isLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
-        state.infoMessage?.let {
+        state.errorMessage?.let {
             Text(
                 text = it,
                 style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.align(Alignment.Center).padding(MaterialTheme.spacing.medium)
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .padding(MaterialTheme.spacing.medium)
             )
         }
     }

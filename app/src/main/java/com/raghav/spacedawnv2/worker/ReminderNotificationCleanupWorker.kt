@@ -7,15 +7,15 @@ import android.os.Build
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.raghav.spacedawnv2.data.local.LaunchesDao
+import com.raghav.spacedawnv2.data.local.RemindersDao
 import com.raghav.spacedawnv2.domain.util.Constants
 import com.raghav.spacedawnv2.domain.util.NotificationHelper
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlin.random.Random
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import kotlin.random.Random
 
 /**
  * Worker which plays the media sound, displays the reminder notification and deletes the
@@ -27,7 +27,7 @@ class ReminderNotificationCleanupWorker @AssistedInject constructor(
     @Assisted params: WorkerParameters,
     private val mediaPlayer: MediaPlayer,
     private val notificationHelper: NotificationHelper,
-    private val launchesDao: LaunchesDao
+    private val remindersDao: RemindersDao
 ) : CoroutineWorker(appContext, params) {
 
     override suspend fun doWork(): Result {
@@ -41,7 +41,7 @@ class ReminderNotificationCleanupWorker @AssistedInject constructor(
                 delay(Constants.REMINDER_SOUND_DURATION)
                 mediaPlayer.stop()
             }
-            launchId?.let { launchesDao.deleteLaunch(it) }
+            launchId?.let { remindersDao.deleteReminder(it) }
             Result.success()
         } catch (e: Exception) {
             e.printStackTrace()

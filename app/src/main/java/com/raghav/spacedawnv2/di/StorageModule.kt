@@ -3,7 +3,7 @@ package com.raghav.spacedawnv2.di
 import android.content.Context
 import androidx.room.Room
 import com.raghav.spacedawnv2.data.local.Convertors
-import com.raghav.spacedawnv2.data.local.LaunchesDatabase
+import com.raghav.spacedawnv2.data.local.SpaceDawnDatabase
 import com.raghav.spacedawnv2.domain.util.Constants
 import com.squareup.moshi.Moshi
 import dagger.Module
@@ -22,16 +22,20 @@ object StorageModule {
     fun provideLaunchesDatabase(
         @ApplicationContext context: Context,
         moshi: Moshi
-    ): LaunchesDatabase {
+    ): SpaceDawnDatabase {
         val typeConverter = Convertors(moshi)
         return Room.databaseBuilder(
             context,
-            LaunchesDatabase::class.java,
-            Constants.LAUNCHES_DB
+            SpaceDawnDatabase::class.java,
+            Constants.SPACE_DAWN_DB
         ).addTypeConverter(typeConverter).build()
     }
 
     @Singleton
     @Provides
-    fun provideReposDao(database: LaunchesDatabase) = database.getLaunchesDao()
+    fun provideLaunchesDao(database: SpaceDawnDatabase) = database.getLaunchesDao()
+
+    @Singleton
+    @Provides
+    fun provideRemindersDao(database: SpaceDawnDatabase) = database.getRemindersDao()
 }

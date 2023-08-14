@@ -1,6 +1,6 @@
 package com.raghav.spacedawnv2.domain.usecase
 
-import com.raghav.spacedawnv2.domain.model.LaunchDetail
+import com.raghav.spacedawnv2.domain.model.Reminder
 import com.raghav.spacedawnv2.domain.repository.LaunchesRepository
 import com.raghav.spacedawnv2.domain.util.Constants
 import com.raghav.spacedawnv2.domain.util.ReminderScheduler
@@ -32,12 +32,12 @@ class AddReminderUseCase @Inject constructor(
     private val repository: LaunchesRepository,
     private val androidReminderScheduler: ReminderScheduler
 ) {
-    suspend operator fun invoke(launchDetail: LaunchDetail): Resource<Nothing?> {
+    suspend operator fun invoke(reminder: Reminder): Resource<Nothing?> {
         return try {
-            val reminderState = androidReminderScheduler.setReminder(launchDetail)
+            val reminderState = androidReminderScheduler.setReminder(reminder)
             return when (reminderState) {
                 ReminderState.SetSuccessfully -> {
-                    repository.saveReminderInDb(launchDetail)
+                    repository.createReminder(reminder)
                     Resource.Success(null)
                 }
 
