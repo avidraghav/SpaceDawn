@@ -30,7 +30,7 @@ class LaunchesRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun createReminder(reminder: Reminder) {
+    override suspend fun saveReminder(reminder: Reminder) {
         launchesDao.saveReminder(reminder)
     }
 }

@@ -4,12 +4,16 @@ import com.google.common.truth.Truth.assertThat
 import com.raghav.spacedawnv2.data.local.LaunchesDao
 import com.raghav.spacedawnv2.data.remote.LaunchesApi
 import com.raghav.spacedawnv2.data.remote.dto.LaunchesResponseDto
-import com.raghav.spacedawnv2.data.remote.dto.toDomain
+import com.raghav.spacedawnv2.data.remote.dto.toLaunchDetail
+import com.raghav.spacedawnv2.data.util.NetworkConnectivityManager
 import com.raghav.spacedawnv2.data.util.launchesResponseDtoString
+import com.raghav.spacedawnv2.domain.model.LaunchDetail
 import com.raghav.spacedawnv2.domain.repository.LaunchesRepository
 import com.raghav.spacedawnv2.domain.util.Resource
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Before
@@ -17,6 +21,7 @@ import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
+import retrofit2.HttpException
 import retrofit2.Response
 
 /**
@@ -37,62 +42,92 @@ class LaunchesRepositoryImplTest {
     @Mock
     private lateinit var mockApi: LaunchesApi
 
+    @Mock
+    private lateinit var mockConnectivityManager: NetworkConnectivityManager
+
     private val moshi = Moshi.Builder().build()
 
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
-        launchesRepository = LaunchesRepositoryImpl(mockApi, mockDao)
+        launchesRepository = LaunchesRepositoryImpl(mockApi, mockDao, mockConnectivityManager)
     }
 
     @Test
-    fun `getLaunches()_ifRequestWasSuccessful_ReturnsSuccess(LaunchesResponse) `() = runTest {
-        val dtoObject = getDtoFromJson<LaunchesResponseDto>(launchesResponseDtoString)
-        Mockito.`when`(mockApi.getLaunches()).thenReturn(
-            Response.success(dtoObject)
-        )
-
-        val requestResult = mockApi.getLaunches()
-
-        if (requestResult.isSuccessful) {
-            val result = Resource.Success(requestResult.body()?.toDomain())
-            val expected = Resource.Success(dtoObject?.toDomain())
-            assertThat(expected.data).isEqualTo(result.data)
-            assertThat(result).isInstanceOf(Resource.Success::class.java)
-        }
-    }
-
-    // error_message = "Requests Limit Reached, please try after 1 hour"
-
-    @Test
-    fun `getLaunches() returns Error(error_message) if status code was 429`() =
+    fun `getLaunches() returns Flow containing cached Launches after refreshing the cache if Internet Available`() =
         runTest {
-            Mockito.`when`(mockApi.getLaunches()).thenReturn(
-                Response.error(429, "".toResponseBody(null))
-            )
-            val requestResult = mockApi.getLaunches()
+            val dtoObject = getDtoFromJson<LaunchesResponseDto>(launchesResponseDtoString)
+            val launches =
+                dtoObject?.results?.filterNotNull()?.map { it.toLaunchDetail() } ?: emptyList()
 
-            if (requestResult.isSuccessful.not()) {
-                val expectedCode = 429
-                val resultCode = requestResult.code()
-                assertThat(expectedCode).isEqualTo(resultCode)
-            }
+            Mockito.`when`(mockApi.getLaunches()).thenReturn(
+                Response.success(dtoObject)
+            )
+            Mockito.`when`(mockConnectivityManager.isConnectedToNetwork()).thenReturn(
+                true
+            )
+            Mockito.`when`(mockDao.getLaunches()).thenReturn(
+                flowOf(launches)
+            )
+
+            val cachedLaunches = launchesRepository.getLaunches()
+
+            assertThat(cachedLaunches.first()).isInstanceOf(Resource.Success::class.java)
+            assertThat(cachedLaunches.first().data).isEqualTo(launches)
         }
 
-    // error_message = "Some Unknown Error Occurred"
+    @Test
+    fun `getLaunches() returns Flow containing only error message if no cache available in case of Failure while refreshing cache`() =
+        runTest {
+            Mockito.`when`(mockDao.getLaunches()).thenReturn(
+                flowOf(emptyList())
+            )
+            Mockito.`when`(mockApi.getLaunches()).thenThrow(
+                HttpException(Response.error<LaunchesResponseDto>(400, "".toResponseBody(null)))
+            )
+            Mockito.`when`(mockConnectivityManager.isConnectedToNetwork()).thenReturn(
+                true
+            )
+
+            val cachedLaunches = launchesRepository.getLaunches()
+            assertThat(cachedLaunches.first()).isInstanceOf(Resource.Error::class.java)
+        }
 
     @Test
-    fun `getLaunches() returns Error(error_message) if request was unsuccessful with any status code`() =
+    fun `getLaunches() returns Flow containing error message along with cache if cache available in case of Failure while refreshing cache`() =
         runTest {
-            Mockito.`when`(mockApi.getLaunches()).thenReturn(
-                Response.error(404, "".toResponseBody(null))
-            )
-            val requestResult = mockApi.getLaunches()
+            val dtoObject = getDtoFromJson<LaunchesResponseDto>(launchesResponseDtoString)
+            val launches =
+                dtoObject?.results?.filterNotNull()?.map { it.toLaunchDetail() } ?: emptyList()
 
-            if (requestResult.isSuccessful.not()) {
-                val resultCode = requestResult.code()
-                assertThat(resultCode).isNotEqualTo(429)
-            }
+            Mockito.`when`(mockDao.getLaunches()).thenReturn(
+                flowOf(launches)
+            )
+            Mockito.`when`(mockApi.getLaunches()).thenThrow(
+                HttpException(Response.error<LaunchesResponseDto>(400, "".toResponseBody(null)))
+            )
+            Mockito.`when`(mockConnectivityManager.isConnectedToNetwork()).thenReturn(
+                true
+            )
+
+            val cachedLaunches = launchesRepository.getLaunches()
+            assertThat(cachedLaunches.first()).isInstanceOf(Resource.Error::class.java)
+            assertThat(cachedLaunches.first().data).isEqualTo(launches)
+        }
+
+    @Test
+    fun `getLaunches() returns Flow containing empty List if there is no Internet along with cache`() =
+        runTest {
+            Mockito.`when`(mockDao.getLaunches()).thenReturn(
+                flowOf(emptyList())
+            )
+            Mockito.`when`(mockConnectivityManager.isConnectedToNetwork()).thenReturn(
+                false
+            )
+
+            val cachedLaunches = launchesRepository.getLaunches()
+            assertThat(cachedLaunches.first().data).isEqualTo(emptyList<LaunchDetail>())
+            assertThat(cachedLaunches.first()).isInstanceOf(Resource.Success::class.java)
         }
 
     private inline fun <reified T> getDtoFromJson(jsonString: String): T? {

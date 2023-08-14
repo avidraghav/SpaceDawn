@@ -9,5 +9,5 @@ interface LaunchesRepository {
 
     fun getLaunches(): Flow<Resource<List<LaunchDetail>>>
 
-    suspend fun createReminder(reminder: Reminder)
+    suspend fun saveReminder(reminder: Reminder)
 }

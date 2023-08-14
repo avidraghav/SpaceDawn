@@ -37,7 +37,7 @@ class AddReminderUseCase @Inject constructor(
             val reminderState = androidReminderScheduler.setReminder(reminder)
             return when (reminderState) {
                 ReminderState.SetSuccessfully -> {
-                    repository.createReminder(reminder)
+                    repository.saveReminder(reminder)
                     Resource.Success(null)
                 }
 

@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.map
  * @param fetch A suspend function that fetches data from the network source.
  * @param saveFetchedResult A suspend function that saves the fetched data into the local database.
  * @param shouldFetch A function that determines whether the network should be queried based on some condition.
- *                   Defaults to true, meaning the network call will be made if not specified otherwise.
+ * Defaults to true, meaning the network call will be made if not specified otherwise.
  * @return A Flow emitting the resource result.
  *
  * @see ResultType The type of data stored in the local database.

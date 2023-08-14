@@ -49,7 +49,7 @@ class LaunchesScreenVM @Inject constructor(
                                 it.copy(
                                     isLoading = false,
                                     errorMessage = result.errorMessage,
-                                    launches = null
+                                    launches = result.data ?: emptyList()
                                 )
                             }
                         }
@@ -57,7 +57,7 @@ class LaunchesScreenVM @Inject constructor(
                         is Resource.Success -> {
                             _uiState.update {
                                 it.copy(
-                                    launches = result.data,
+                                    launches = result.data ?: emptyList(),
                                     isLoading = false,
                                     errorMessage = null
                                 )

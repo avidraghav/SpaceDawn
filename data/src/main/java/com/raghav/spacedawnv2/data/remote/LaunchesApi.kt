@@ -10,6 +10,6 @@ interface LaunchesApi {
     @GET("launch/upcoming")
     suspend fun getLaunches(
         @Query("offset")
-        offset: Int = 10
+        offset: Int = 0
     ): Response<LaunchesResponseDto>
 }

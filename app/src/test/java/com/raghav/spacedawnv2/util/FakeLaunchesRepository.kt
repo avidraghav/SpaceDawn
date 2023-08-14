@@ -1,39 +1,37 @@
 package com.raghav.spacedawnv2.util
 
 import com.raghav.spacedawnv2.data.remote.dto.LaunchesResponseDto
-import com.raghav.spacedawnv2.data.remote.dto.toDomain
+import com.raghav.spacedawnv2.data.remote.dto.toLaunchDetail
 import com.raghav.spacedawnv2.domain.model.LaunchDetail
-import com.raghav.spacedawnv2.domain.model.LaunchesResponse
+import com.raghav.spacedawnv2.domain.model.Reminder
 import com.raghav.spacedawnv2.domain.repository.LaunchesRepository
-import com.raghav.spacedawnv2.domain.util.Constants
 import com.raghav.spacedawnv2.domain.util.Resource
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 class FakeLaunchesRepository(
-    private val successOutput: Boolean? = null,
-    private val errorCode: Int? = null
+    private val successOutput: Boolean = true
 ) : LaunchesRepository {
     private val moshi = Moshi.Builder().build()
-    override suspend fun getLaunches(): Resource<LaunchesResponse?> {
-        return if (successOutput != null) {
-            if (successOutput == true) {
-                val adapter: JsonAdapter<LaunchesResponseDto> =
-                    moshi.adapter(LaunchesResponseDto::class.java)
 
-                Resource.Success(adapter.fromJson(launchesResponseDtoString)?.toDomain())
-            } else {
-                if (errorCode == 429) {
-                    Resource.Error(Constants.API_THROTTLED_MESSAGE)
-                } else {
-                    Resource.Error(Constants.UNKNOWN_ERROR_MESSAGE)
-                }
-            }
+    override fun getLaunches(): Flow<Resource<List<LaunchDetail>>> {
+        val adapter: JsonAdapter<LaunchesResponseDto> =
+            moshi.adapter(LaunchesResponseDto::class.java)
+        val dto =
+            adapter.fromJson(launchesResponseDtoString)
+        val launches = dto?.results?.filterNotNull()
+            ?.map { it.toLaunchDetail() } ?: emptyList()
+
+        return if (successOutput) {
+            flowOf(Resource.Success(launches))
         } else {
-            Resource.Error("")
+            flowOf(Resource.Error("some error message"))
         }
     }
 
-    override suspend fun saveReminderInDb(launchDetail: LaunchDetail) {
+    override suspend fun saveReminder(reminder: Reminder) {
+        // do nothing
     }
 }

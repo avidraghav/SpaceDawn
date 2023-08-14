@@ -36,6 +36,7 @@ import com.raghav.spacedawnv2.domain.model.LaunchDetail
 import com.raghav.spacedawnv2.domain.util.Constants
 import com.raghav.spacedawnv2.launchesscreen.components.LaunchesScreenItem
 import com.raghav.spacedawnv2.ui.theme.spacing
+import com.raghav.spacedawnv2.util.Helpers.Companion.isNull
 import com.raghav.spacedawnv2.util.Helpers.Companion.openAppSettings
 import com.raghav.spacedawnv2.util.ReminderPermissionContract
 
@@ -124,27 +125,35 @@ fun LaunchesScreen(
     }
 
     Box(modifier = modifier.fillMaxSize()) {
-        if (state.launches != null) {
-            // If the app is opened for the first time with
-            // no internet connection then the LaunchesScreenVM will emit
-            // Success event but the received launches list will be empty.
-            if (state.launches.isNotEmpty()) {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = MaterialTheme.spacing.small)
-                ) {
-                    items(state.launches) { item ->
-                        LaunchesScreenItem(
-                            launch = item,
-                            addReminderClicked = { launchDetail ->
-                                launch = launchDetail
-                                viewModel.setReminder(launchDetail)
-                            }
-                        )
-                        Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
-                    }
+        // If the app is opened for the first time with
+        // no internet connection then the LaunchesScreenVM will emit
+        // Success event but the received launches list will be empty.
+        if (state.launches.isNotEmpty()) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = MaterialTheme.spacing.small)
+            ) {
+                items(state.launches) { item ->
+                    LaunchesScreenItem(
+                        launch = item,
+                        addReminderClicked = { launchDetail ->
+                            launch = launchDetail
+                            viewModel.setReminder(launchDetail)
+                        }
+                    )
+                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
                 }
+            }
+        } else {
+            if (state.errorMessage.isNull().not()) {
+                Text(
+                    text = state.errorMessage!!,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(MaterialTheme.spacing.medium)
+                )
             } else {
                 Text(
                     text = stringResource(id = R.string.no_upcoming_launches),
@@ -155,15 +164,6 @@ fun LaunchesScreen(
 
         if (state.isLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-        }
-        state.errorMessage?.let {
-            Text(
-                text = it,
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .padding(MaterialTheme.spacing.medium)
-            )
         }
     }
 

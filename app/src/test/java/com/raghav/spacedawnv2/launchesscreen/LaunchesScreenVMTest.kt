@@ -6,8 +6,6 @@ import com.raghav.spacedawnv2.data.remote.dto.LaunchesResponseDto
 import com.raghav.spacedawnv2.data.remote.dto.toDomain
 import com.raghav.spacedawnv2.data.remote.dto.toLaunchDetail
 import com.raghav.spacedawnv2.domain.usecase.AddReminderUseCase
-import com.raghav.spacedawnv2.domain.usecase.GetLaunchesUseCase
-import com.raghav.spacedawnv2.domain.util.Constants
 import com.raghav.spacedawnv2.util.FakeLaunchesRepository
 import com.raghav.spacedawnv2.util.FakeReminderScheduler
 import com.raghav.spacedawnv2.util.MainDispatcherRule
@@ -68,9 +66,9 @@ class LaunchesScreenVMTest {
 
     /*
     UiState = LaunchesScreenState(
-       val launches: List<LaunchDetail> ,
+       val launches: List<LaunchDetail>,
        val isLoading: Boolean = false,
-       val infoMessage: String? = "Some Unknown Error Occurred"
+       val infoMessage: String? = "some error message"
     )
      */
     @Test
@@ -78,29 +76,7 @@ class LaunchesScreenVMTest {
         initialize(launchesRepoOutputIsSuccess = false, testScheduler = testScheduler)
         val result = launchesScreenVM.uiState.value
 
-        val expected = LaunchesScreenState(infoMessage = Constants.UNKNOWN_ERROR_MESSAGE)
-
-        assertThat(result).isEqualTo(expected)
-    }
-
-    /*
-    UiState = LaunchesScreenState(
-       val launches: List<LaunchDetail> ,
-       val isLoading: Boolean = false,
-       val infoMessage: String? = "Requests Limit Reached, please try after 1 hour"
-    )
-    */
-    @Test
-    fun getLaunches_apiThrottled_updatesUiState() = runTest {
-        initialize(
-            launchesRepoOutputIsSuccess = false,
-            errorCode = 429,
-            testScheduler = testScheduler
-        )
-
-        val result = launchesScreenVM.uiState.value
-
-        val expected = LaunchesScreenState(infoMessage = Constants.API_THROTTLED_MESSAGE)
+        val expected = LaunchesScreenState(errorMessage = "some error message")
 
         assertThat(result).isEqualTo(expected)
     }
@@ -128,16 +104,14 @@ class LaunchesScreenVMTest {
 
     private fun initialize(
         launchesRepoOutputIsSuccess: Boolean = true,
-        errorCode: Int = 200,
         testScheduler: TestCoroutineScheduler
     ) {
-        val fakeLaunchesRepository = FakeLaunchesRepository(launchesRepoOutputIsSuccess, errorCode)
-        val getLaunchesUseCase = GetLaunchesUseCase(fakeLaunchesRepository)
+        val fakeLaunchesRepository = FakeLaunchesRepository(launchesRepoOutputIsSuccess)
         val addReminderUseCase =
             AddReminderUseCase(fakeLaunchesRepository, fakeReminderScheduler)
         launchesScreenVM =
             LaunchesScreenVM(
-                getLaunchesUseCase,
+                fakeLaunchesRepository,
                 UnconfinedTestDispatcher(testScheduler),
                 addReminderUseCase
             )
