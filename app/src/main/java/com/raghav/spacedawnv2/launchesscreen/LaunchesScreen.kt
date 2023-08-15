@@ -154,7 +154,8 @@ fun LaunchesScreen(
                         .align(Alignment.Center)
                         .padding(MaterialTheme.spacing.medium)
                 )
-            } else {
+            }
+            if (state.isLoading.not()) {
                 Text(
                     text = stringResource(id = R.string.no_upcoming_launches),
                     modifier = Modifier.align(Alignment.Center)
