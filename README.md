@@ -6,8 +6,10 @@
 
 [![Android-CI Actions Status](https://github.com/avidraghav/SpaceDawn/workflows/Android-CI/badge.svg)](https://github.com/avidraghav/spacedawn/actions)
 [![GitHub license](https://img.shields.io/badge/License-Apache-blue.svg)](LICENSE)
+![GitHub Repo stars](https://img.shields.io/github/stars/avidraghav/spacedawn?logo=star)
 [![Kotlin Weekly](https://img.shields.io/badge/Kotlin%20Weekly-%23364-8A2BE2.svg?style=flat)](https://mailchi.mp/kotlinweekly/kotlin-weekly-364)
 <br>
+[![Offline First](https://img.shields.io/badge/offline%20first-%F0%9F%93%B2-8A2BE)]()
 [![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
 [![Contributions Highly Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/avidraghav/spacedawn/issues)
 <br>
