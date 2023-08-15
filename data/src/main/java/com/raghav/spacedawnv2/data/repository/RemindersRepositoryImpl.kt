@@ -1,19 +1,19 @@
 package com.raghav.spacedawnv2.data.repository
 
-import com.raghav.spacedawnv2.data.local.LaunchesDao
-import com.raghav.spacedawnv2.domain.model.LaunchDetail
+import com.raghav.spacedawnv2.data.local.RemindersDao
+import com.raghav.spacedawnv2.domain.model.Reminder
 import com.raghav.spacedawnv2.domain.repository.RemindersRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
 class RemindersRepositoryImpl @Inject constructor(
-    private val launchesDao: LaunchesDao
+    private val remindersDao: RemindersDao
 ) : RemindersRepository {
-    override fun getRemindersFromDb(): Flow<List<LaunchDetail>> {
-        return launchesDao.getSavedLaunches()
+    override fun getRemindersFromDb(): Flow<List<Reminder>> {
+        return remindersDao.getReminders()
     }
 
     override suspend fun deleteReminderFromDb(reminderId: String) {
-        launchesDao.deleteLaunch(reminderId)
+        remindersDao.deleteReminder(reminderId)
     }
 }

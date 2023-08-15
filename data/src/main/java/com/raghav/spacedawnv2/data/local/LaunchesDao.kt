@@ -5,17 +5,18 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.raghav.spacedawnv2.domain.model.LaunchDetail
+import com.raghav.spacedawnv2.domain.model.Reminder
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface LaunchesDao {
 
+    @Query("SELECT * FROM cached_launches")
+    fun getLaunches(): Flow<List<LaunchDetail>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveLaunch(launch: LaunchDetail)
+    suspend fun cacheLaunches(launches: List<LaunchDetail>)
 
-    @Query("SELECT * FROM saved_launches")
-    fun getSavedLaunches(): Flow<List<LaunchDetail>>
-
-    @Query("DELETE FROM saved_launches WHERE id =:launchId")
-    suspend fun deleteLaunch(launchId: String)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveReminder(launch: Reminder)
 }

@@ -9,8 +9,11 @@ import com.raghav.spacedawnv2.data.remote.dto.toLaunchDetail
 import com.raghav.spacedawnv2.data.util.launchDetailDtoString1
 import com.raghav.spacedawnv2.data.util.launchDetailDtoString2
 import com.raghav.spacedawnv2.domain.model.LaunchDetail
+import com.raghav.spacedawnv2.domain.model.Reminder
+import com.raghav.spacedawnv2.domain.model.toReminder
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -28,7 +31,7 @@ import org.junit.Test
  */
 class LaunchesDaoTest {
 
-    private lateinit var database: LaunchesDatabase
+    private lateinit var database: SpaceDawnDatabase
     private lateinit var dao: LaunchesDao
 
     // Executes each task synchronously using Architecture Components.
@@ -42,7 +45,7 @@ class LaunchesDaoTest {
         val typeConverter = Convertors(moshi)
         database = Room.inMemoryDatabaseBuilder(
             ApplicationProvider.getApplicationContext(),
-            LaunchesDatabase::class.java
+            SpaceDawnDatabase::class.java
         ).allowMainThreadQueries().addTypeConverter(typeConverter)
             .build()
 
@@ -55,66 +58,85 @@ class LaunchesDaoTest {
     }
 
     @Test
-    fun getSavedLaunches_returnsFlowContainingEmptyListIfNoLaunchesSaved() = runTest {
-        val savedLaunches = dao.getSavedLaunches()
-        val result = savedLaunches.firstOrNull()
-        val expected = emptyList<List<LaunchDetail>>()
-        assertThat(result).isEqualTo(expected)
-    }
-
-    @Test
-    fun saveLaunch_launchDetail_launchIsSavedInDb() = runTest {
-        val dtoObject = getLaunchDetailDtoFromJson(launchDetailDtoString1)
-        val launchDetail = dtoObject?.toLaunchDetail()
-
-        launchDetail?.let {
-            dao.saveLaunch(launchDetail)
-
-            val savedLaunches = dao.getSavedLaunches().firstOrNull()
-
-            assertThat(savedLaunches).containsExactly(launchDetail)
-        }
-    }
-
-    @Test
-    fun saveLaunch_launchDetailWithSameIdTwice_replacesThePreviouslySavedLaunchWithSameId() =
-        runTest {
-            val dtoObject = getLaunchDetailDtoFromJson(launchDetailDtoString1)
-            val launchDetail = dtoObject?.toLaunchDetail()
-
-            launchDetail?.let {
-                dao.saveLaunch(launchDetail)
-                dao.saveLaunch(launchDetail)
-
-                val savedLaunches = dao.getSavedLaunches().firstOrNull()
-
-                assertThat(savedLaunches).hasSize(1)
-            }
-        }
-
-    @Test
-    fun getSavedLaunches_returnsFlowContainingListOfLaunches() = runTest {
+    fun cacheLaunches_launchesList_savesTheListOfLaunchesInDb() = runTest {
         val dtoObject1 = getLaunchDetailDtoFromJson(launchDetailDtoString1)
         val dtoObject2 = getLaunchDetailDtoFromJson(launchDetailDtoString2)
-        val launchDetail1 = dtoObject1?.toLaunchDetail()
-        val launchDetail2 = dtoObject2?.toLaunchDetail()
+        val launch1 = dtoObject1?.toLaunchDetail()
+        val launch2 = dtoObject2?.toLaunchDetail()
 
-        if (launchDetail1 != null && launchDetail2 != null) {
-            dao.saveLaunch(launchDetail1)
-            dao.saveLaunch(launchDetail2)
+        if (launch1 != null && launch2 != null) {
+            val launchesToBeCached = listOf(launch1, launch2)
+            dao.cacheLaunches(launchesToBeCached)
 
-            val savedLaunches = dao.getSavedLaunches()
-            val result = savedLaunches.firstOrNull()
-            val expected = listOf(launchDetail1, launchDetail2)
+            val cachedLaunches = dao.getLaunches().first()
 
-            assertThat(result).isEqualTo(expected)
+            assertThat(cachedLaunches).isEqualTo(launchesToBeCached)
         }
     }
+
+    @Test
+    fun getLaunches_returnsFlowContainingListOfCachedLaunches() = runTest {
+        val dtoObject1 = getLaunchDetailDtoFromJson(launchDetailDtoString1)
+        val dtoObject2 = getLaunchDetailDtoFromJson(launchDetailDtoString2)
+        val launch1 = dtoObject1?.toLaunchDetail()
+        val launch2 = dtoObject2?.toLaunchDetail()
+
+        if (launch1 != null && launch2 != null) {
+            val cachedLaunches = listOf(launch1, launch2)
+            dao.cacheLaunches(cachedLaunches)
+
+            val launches = dao.getLaunches()
+            val result = launches.firstOrNull()
+
+            assertThat(result).isEqualTo(cachedLaunches)
+        }
+    }
+
+    @Test
+    fun getLaunches_returnsFlowContainingEmptyListIfNoCacheAvailable() = runTest {
+        val launches = dao.getLaunches()
+        val result = launches.firstOrNull()
+
+        assertThat(result).isEqualTo(emptyList<LaunchDetail>())
+    }
+
+    @Test
+    fun saveReminder_reminder_reminderIsSavedInDb() = runTest {
+        val reminder = getReminderFromLaunch()
+
+        reminder?.let {
+            dao.saveReminder(it)
+            val savedReminders = database.getRemindersDao().getReminders().firstOrNull()
+
+            assertThat(reminder).isEqualTo(savedReminders?.first())
+        }
+    }
+
+    @Test
+    fun saveReminder_reminderWithSameIdTwice_replacesThePreviouslySavedReminderWithSameId() =
+        runTest {
+            val reminder = getReminderFromLaunch()
+
+            reminder?.let {
+                dao.saveReminder(it)
+                dao.saveReminder(it)
+
+                val savedReminders = database.getRemindersDao().getReminders().firstOrNull()
+
+                assertThat(savedReminders).hasSize(1)
+            }
+        }
 
     private fun getLaunchDetailDtoFromJson(jsonString: String): LaunchDetailDto? {
         val adapter: JsonAdapter<LaunchDetailDto> =
             moshi.adapter(LaunchDetailDto::class.java)
 
         return adapter.fromJson(jsonString)
+    }
+
+    private fun getReminderFromLaunch(): Reminder? {
+        val dtoObject = getLaunchDetailDtoFromJson(launchDetailDtoString1)
+        val launch = dtoObject?.toLaunchDetail()
+        return launch?.toReminder()
     }
 }

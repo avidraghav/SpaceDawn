@@ -39,4 +39,7 @@ dependencies {
 
     // Coroutines Flow
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
+
+    def okhttp_interceptor = "5.0.0-alpha.2"
+    api "com.squareup.okhttp3:logging-interceptor:$okhttp_interceptor"
 }

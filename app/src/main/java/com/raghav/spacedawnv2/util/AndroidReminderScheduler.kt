@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat
 import com.raghav.spacedawnv2.BuildConfig
 import com.raghav.spacedawnv2.R
 import com.raghav.spacedawnv2.broadcastreceiver.ReminderBroadcastReceiver
-import com.raghav.spacedawnv2.domain.model.LaunchDetail
+import com.raghav.spacedawnv2.domain.model.Reminder
 import com.raghav.spacedawnv2.domain.util.Constants
 import com.raghav.spacedawnv2.domain.util.ReminderScheduler
 import com.raghav.spacedawnv2.domain.util.ReminderState
@@ -33,7 +33,7 @@ class AndroidReminderScheduler @Inject constructor(
 
     private val alarmManager = context.getSystemService(AlarmManager::class.java)
 
-    override fun setReminder(launchDetail: LaunchDetail): ReminderState {
+    override fun setReminder(reminder: Reminder): ReminderState {
         // Apps targeting Android version 12 (Version Code - S, Api Level 31)
         // or higher need to request for SCHEDULE_EXACT_ALARM permission explicitly whereas
         // Apps targeting any Android version below 12 don't need to do ask for this permission
@@ -49,7 +49,7 @@ class AndroidReminderScheduler @Inject constructor(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             return when {
                 alarmManager.canScheduleExactAlarms() && areNotificationsEnabled(context) -> {
-                    return setAlarm(launchDetail).let { errorMessage ->
+                    return setAlarm(reminder).let { errorMessage ->
                         if (errorMessage.isNull()) {
                             ReminderState.SetSuccessfully
                         } else {
@@ -88,7 +88,7 @@ class AndroidReminderScheduler @Inject constructor(
             }
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             return if (alarmManager.canScheduleExactAlarms()) {
-                return setAlarm(launchDetail).let { errorMessage ->
+                return setAlarm(reminder).let { errorMessage ->
                     if (errorMessage.isNull()) {
                         ReminderState.SetSuccessfully
                     } else {
@@ -102,7 +102,7 @@ class AndroidReminderScheduler @Inject constructor(
                 )
             }
         } else {
-            return setAlarm(launchDetail).let { errorMessage ->
+            return setAlarm(reminder).let { errorMessage ->
                 if (errorMessage.isNull()) {
                     ReminderState.SetSuccessfully
                 } else {
@@ -125,19 +125,19 @@ class AndroidReminderScheduler @Inject constructor(
     }
 
     // returns null if the reminder was set successfully otherwise error message
-    private fun setAlarm(launchDetail: LaunchDetail): String? {
+    private fun setAlarm(reminder: Reminder): String? {
         val intent = Intent(context, ReminderBroadcastReceiver::class.java).apply {
-            putExtra(Constants.KEY_LAUNCH_NAME, launchDetail.name)
-            putExtra(Constants.KEY_LAUNCH_ID, launchDetail.id)
+            putExtra(Constants.KEY_LAUNCH_NAME, reminder.name)
+            putExtra(Constants.KEY_LAUNCH_ID, reminder.id)
         }
         val pendingIntent = PendingIntent.getBroadcast(
             context,
-            launchDetail.id.hashCode(),
+            reminder.id.hashCode(),
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        val launchTime = launchDetail.net.toDate(Constants.LAUNCH_DATE_INPUT_FORMAT).time
+        val launchTime = reminder.net.toDate(Constants.LAUNCH_DATE_INPUT_FORMAT).time
 
         // In release mode the reminder will be scheduled for 10 minutes before the
         // launch time.

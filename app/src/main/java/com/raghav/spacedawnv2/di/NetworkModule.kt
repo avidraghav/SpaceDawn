@@ -2,6 +2,7 @@ package com.raghav.spacedawnv2.di
 
 import BaseUrlProvider
 import com.raghav.spacedawnv2.data.remote.LaunchesApi
+import com.raghav.spacedawnv2.domain.util.NetworkInterceptor
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -19,10 +20,12 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofitClient(): OkHttpClient {
+    fun provideRetrofitClient(interceptor: NetworkInterceptor): OkHttpClient {
         val logging = HttpLoggingInterceptor()
         val level = logging.setLevel(HttpLoggingInterceptor.Level.BODY)
-        return OkHttpClient.Builder().addInterceptor(level).build()
+        return OkHttpClient.Builder().addInterceptor(interceptor)
+            .addInterceptor(level)
+            .build()
     }
 
     @Provides

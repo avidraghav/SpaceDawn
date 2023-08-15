@@ -1,6 +1,6 @@
 package com.raghav.spacedawnv2.domain.usecase
 
-import com.raghav.spacedawnv2.domain.model.LaunchDetail
+import com.raghav.spacedawnv2.domain.model.Reminder
 import com.raghav.spacedawnv2.domain.repository.RemindersRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.Flow
 class GetRemindersUseCase @Inject constructor(
     private val repository: RemindersRepository
 ) {
-    operator fun invoke(): Flow<List<LaunchDetail>> {
+    operator fun invoke(): Flow<List<Reminder>> {
         return repository.getRemindersFromDb()
     }
 }

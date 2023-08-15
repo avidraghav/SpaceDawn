@@ -6,10 +6,9 @@ import androidx.room.PrimaryKey
 
 /**
  * this entity represents a Launch object which is showed on the UI
- * and saved in the Database.
  */
 @Keep
-@Entity(tableName = "saved_launches")
+@Entity(tableName = "cached_launches")
 data class LaunchDetail(
     val agencyLaunchAttemptCount: Int?,
     val agencyLaunchAttemptCountYear: Int?,
@@ -41,3 +40,36 @@ data class LaunchDetail(
     val windowEnd: String?,
     val windowStart: String?
 )
+
+fun LaunchDetail.toReminder(): Reminder {
+    return Reminder(
+        agencyLaunchAttemptCount = agencyLaunchAttemptCount,
+        agencyLaunchAttemptCountYear = agencyLaunchAttemptCountYear,
+        failreason = failreason,
+        holdreason = holdreason,
+        id = id,
+        image = image,
+        infographic = infographic,
+        lastUpdated = lastUpdated,
+        launchServiceProvider = launchServiceProvider,
+        locationLaunchAttemptCount = locationLaunchAttemptCount,
+        locationLaunchAttemptCountYear = locationLaunchAttemptCountYear,
+        mission = mission,
+        name = name,
+        net = net,
+        netPrecision = netPrecision,
+        orbitalLaunchAttemptCount = orbitalLaunchAttemptCount,
+        orbitalLaunchAttemptCountYear = orbitalLaunchAttemptCountYear,
+        pad = pad,
+        padLaunchAttemptCount = padLaunchAttemptCount,
+        padLaunchAttemptCountYear = padLaunchAttemptCountYear,
+        probability = probability,
+        rocket = rocket,
+        slug = slug,
+        status = status,
+        url = url,
+        webcastLive = webcastLive,
+        windowEnd = windowEnd,
+        windowStart = windowStart
+    )
+}

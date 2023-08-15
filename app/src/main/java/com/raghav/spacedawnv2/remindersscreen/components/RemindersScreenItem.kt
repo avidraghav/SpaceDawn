@@ -18,7 +18,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import com.raghav.spacedawnv2.R
 import com.raghav.spacedawnv2.commoncomponent.CircularImage
-import com.raghav.spacedawnv2.domain.model.LaunchDetail
+import com.raghav.spacedawnv2.domain.model.Reminder
 import com.raghav.spacedawnv2.domain.util.Constants
 import com.raghav.spacedawnv2.ui.theme.colors
 import com.raghav.spacedawnv2.ui.theme.spacing
@@ -27,7 +27,7 @@ import com.raghav.spacedawnv2.util.Helpers.Companion.toDate
 
 @Composable
 fun RemindersScreenItem(
-    reminder: LaunchDetail,
+    reminder: Reminder,
     cancelReminderClicked: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -43,8 +43,8 @@ fun RemindersScreenItem(
 
 @Composable
 fun ReminderContent(
-    reminder: LaunchDetail,
-    cancelReminderClicked: (LaunchDetail) -> Unit,
+    reminder: Reminder,
+    cancelReminderClicked: (Reminder) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(

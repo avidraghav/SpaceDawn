@@ -3,8 +3,9 @@ package com.raghav.spacedawnv2.launchesscreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.raghav.spacedawnv2.domain.model.LaunchDetail
+import com.raghav.spacedawnv2.domain.model.toReminder
+import com.raghav.spacedawnv2.domain.repository.LaunchesRepository
 import com.raghav.spacedawnv2.domain.usecase.AddReminderUseCase
-import com.raghav.spacedawnv2.domain.usecase.GetLaunchesUseCase
 import com.raghav.spacedawnv2.domain.util.Constants
 import com.raghav.spacedawnv2.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +22,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class LaunchesScreenVM @Inject constructor(
-    private val getLaunchesUseCase: GetLaunchesUseCase,
+    private val launchesRepository: LaunchesRepository,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val addReminderUseCase: AddReminderUseCase
 ) : ViewModel() {
@@ -40,35 +41,37 @@ class LaunchesScreenVM @Inject constructor(
     private fun getLaunches() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
-            getLaunchesUseCase().let { result ->
-                when (result) {
-                    is Resource.Error -> {
-                        _uiState.update {
-                            it.copy(
-                                isLoading = false,
-                                infoMessage = result.errorMessage
-                            )
+            launchesRepository.getLaunches()
+                .collect { result ->
+                    when (result) {
+                        is Resource.Error -> {
+                            _uiState.update {
+                                it.copy(
+                                    isLoading = false,
+                                    errorMessage = result.errorMessage,
+                                    launches = result.data ?: emptyList()
+                                )
+                            }
                         }
-                    }
 
-                    is Resource.Success -> {
-                        val launches = result.data?.results?.filterNotNull() ?: emptyList()
-                        _uiState.update {
-                            it.copy(
-                                launches = launches,
-                                isLoading = false,
-                                infoMessage = it.infoMessage
-                            )
+                        is Resource.Success -> {
+                            _uiState.update {
+                                it.copy(
+                                    launches = result.data ?: emptyList(),
+                                    isLoading = false,
+                                    errorMessage = null
+                                )
+                            }
                         }
                     }
                 }
-            }
         }
     }
 
     fun setReminder(launch: LaunchDetail) {
         viewModelScope.launch(ioDispatcher) {
-            addReminderUseCase(launch).let { result ->
+            val reminder = launch.toReminder()
+            addReminderUseCase(reminder).let { result ->
                 when (result) {
                     is Resource.Error -> {
                         when (result.errorMessage) {
