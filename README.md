@@ -71,7 +71,7 @@ The app lets a user **Save reminders/alarms for the upcoming Rocket Launches Fro
 
 ## 🏗️ Architecture Diagram
 <div align="center">
-<img src="https://github.com/avidraghav/SpaceDawn/assets/49483235/3012faf2-ad12-46c6-a74a-246376581847" width="600" height="800">
+<img src="https://github.com/avidraghav/SpaceDawn/assets/49483235/f030124e-e329-4ecd-b30a-e06271cef7ae" width="600" height="800">
 </div>
 <br>
 
