@@ -1,19 +1,19 @@
 package com.raghav.spacedawnv2.data.remote.dto
 
-import com.raghav.spacedawnv2.domain.model.Program
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.collections.immutable.ImmutableList
 
 // @JsonClass is used to make sure that Moshi uses code-gen instead of Reflection
 // for Serializing and Deserializing data
 @JsonClass(generateAdapter = true)
 data class ProgramDto(
     @Json(name = "agencies")
-    val agencies: List<AgencyDto?>?,
+    val agencies: ImmutableList<AgencyDto?>?,
     @Json(name = "description")
     val description: String?,
     @Json(name = "end_date")
-    val endDate: Any?,
+    val endDate: String?,
     @Json(name = "id")
     val id: Int?,
     @Json(name = "image_url")
@@ -21,7 +21,7 @@ data class ProgramDto(
     @Json(name = "info_url")
     val infoUrl: String?,
     @Json(name = "mission_patches")
-    val missionPatches: List<Any?>?,
+    val missionPatches: ImmutableList<String?>?,
     @Json(name = "name")
     val name: String?,
     @Json(name = "start_date")
@@ -31,19 +31,3 @@ data class ProgramDto(
     @Json(name = "wiki_url")
     val wikiUrl: String?
 )
-
-fun ProgramDto.toProgram(): Program {
-    return Program(
-        agencies = agencies?.map { it?.toAgency() },
-        description = description,
-        end_date = endDate,
-        id = id,
-        image_url = imageUrl,
-        info_url = infoUrl,
-        mission_patches = missionPatches,
-        name = name,
-        start_date = startDate,
-        url = url,
-        wiki_url = wikiUrl
-    )
-}

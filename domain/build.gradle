@@ -1,7 +1,7 @@
 plugins {
     id 'java-library'
     id 'org.jetbrains.kotlin.jvm'
-    id("com.google.devtools.ksp") version "1.8.20-1.0.11"
+    id("com.google.devtools.ksp")
     id "org.jlleitschuh.gradle.ktlint"
 }
 
@@ -42,4 +42,7 @@ dependencies {
 
     def okhttp_interceptor = "5.0.0-alpha.2"
     api "com.squareup.okhttp3:logging-interceptor:$okhttp_interceptor"
+
+    // For Making Kotlin Collections Immutable as to be considered stable
+    api("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
 }

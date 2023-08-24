@@ -3,6 +3,7 @@ package com.raghav.spacedawnv2.data.remote.dto
 import com.raghav.spacedawnv2.domain.model.LaunchDetail
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.collections.immutable.ImmutableList
 
 /**
  * this entity represents a Launch object that is fetched from the API
@@ -19,7 +20,7 @@ data class LaunchDetailDto(
     @Json(name = "failreason")
     val failreason: String?,
     @Json(name = "hashtag")
-    val hashtag: Any?,
+    val hashtag: String?,
     @Json(name = "holdreason")
     val holdreason: String?,
     @Json(name = "id")
@@ -57,7 +58,7 @@ data class LaunchDetailDto(
     @Json(name = "probability")
     val probability: Any?,
     @Json(name = "program")
-    val program: List<ProgramDto?>?,
+    val program: ImmutableList<ProgramDto?>?,
     @Json(name = "rocket")
     val rocketDto: RocketDto?,
     @Json(name = "slug")

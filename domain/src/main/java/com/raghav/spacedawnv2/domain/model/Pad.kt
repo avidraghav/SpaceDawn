@@ -7,7 +7,7 @@ data class Pad(
     val agency_id: Int?,
     val country_code: String?,
     val id: Int?,
-    val info_url: Any?,
+    val info_url: String?,
     val latitude: String?,
     val location: Location?,
     val longitude: String?,

@@ -15,7 +15,7 @@ data class PadDto(
     @Json(name = "id")
     val id: Int?,
     @Json(name = "info_url")
-    val infoUrl: Any?,
+    val infoUrl: String?,
     @Json(name = "latitude")
     val latitude: String?,
     @Json(name = "location")
