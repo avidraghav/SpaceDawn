@@ -3,7 +3,6 @@ package com.raghav.spacedawnv2.data.remote.dto
 import com.raghav.spacedawnv2.domain.model.LaunchesResponse
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 // @JsonClass is used to make sure that Moshi uses code-gen instead of Reflection
@@ -17,7 +16,7 @@ data class LaunchesResponseDto(
     @Json(name = "previous")
     val previous: String?,
     @Json(name = "results")
-    val results: ImmutableList<LaunchDetailDto?>?
+    val results: List<LaunchDetailDto?>?
 )
 
 fun LaunchesResponseDto.toDomain(): LaunchesResponse {
