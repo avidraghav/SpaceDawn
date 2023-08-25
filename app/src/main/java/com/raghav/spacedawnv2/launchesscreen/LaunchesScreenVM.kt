@@ -10,6 +10,8 @@ import com.raghav.spacedawnv2.domain.util.Constants
 import com.raghav.spacedawnv2.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -49,7 +51,7 @@ class LaunchesScreenVM @Inject constructor(
                                 it.copy(
                                     isLoading = false,
                                     errorMessage = result.errorMessage,
-                                    launches = result.data ?: emptyList()
+                                    launches = result.data?.toImmutableList() ?: persistentListOf()
                                 )
                             }
                         }
@@ -57,7 +59,7 @@ class LaunchesScreenVM @Inject constructor(
                         is Resource.Success -> {
                             _uiState.update {
                                 it.copy(
-                                    launches = result.data ?: emptyList(),
+                                    launches = result.data?.toImmutableList() ?: persistentListOf(),
                                     isLoading = false,
                                     errorMessage = null
                                 )

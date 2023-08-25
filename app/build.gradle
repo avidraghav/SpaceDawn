@@ -5,6 +5,7 @@ plugins {
     // Hilt doesn't supports KSP yet
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -43,7 +44,7 @@ android {
         buildConfig true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.4.6'
+        kotlinCompilerExtensionVersion '1.5.0'
     }
     packagingOptions {
         resources {
@@ -101,7 +102,7 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
 
     // Hilt
-    def hilt_version = "2.44"
+    def hilt_version = "2.47"
     def hilt_navigation_compose = "1.0.0"
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
@@ -121,7 +122,7 @@ dependencies {
 
     // Room
     implementation "androidx.room:room-runtime:2.5.1"
-    kapt "androidx.room:room-compiler:2.5.1"
+    ksp "androidx.room:room-compiler:2.5.1"
     implementation "androidx.room:room-ktx:2.5.1"
 
     // WorkManager

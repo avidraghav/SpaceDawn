@@ -19,7 +19,7 @@ data class LaunchDetailDto(
     @Json(name = "failreason")
     val failreason: String?,
     @Json(name = "hashtag")
-    val hashtag: Any?,
+    val hashtag: String?,
     @Json(name = "holdreason")
     val holdreason: String?,
     @Json(name = "id")
@@ -27,7 +27,7 @@ data class LaunchDetailDto(
     @Json(name = "image")
     val image: String?,
     @Json(name = "infographic")
-    val infographic: Any?,
+    val infographic: String?,
     @Json(name = "last_updated")
     val lastUpdated: String?,
     @Json(name = "launch_service_provider")
@@ -55,9 +55,7 @@ data class LaunchDetailDto(
     @Json(name = "pad_launch_attempt_count_year")
     val padLaunchAttemptCountYear: Int?,
     @Json(name = "probability")
-    val probability: Any?,
-    @Json(name = "program")
-    val program: List<ProgramDto?>?,
+    val probability: String?,
     @Json(name = "rocket")
     val rocketDto: RocketDto?,
     @Json(name = "slug")

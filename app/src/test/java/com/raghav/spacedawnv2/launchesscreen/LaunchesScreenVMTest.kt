@@ -13,6 +13,7 @@ import com.raghav.spacedawnv2.util.launchDetailDtoString
 import com.raghav.spacedawnv2.util.launchesResponseDtoString
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestCoroutineScheduler
@@ -59,7 +60,7 @@ class LaunchesScreenVMTest {
             launchesResponse?.results?.filterNotNull()
                 ?: emptyList()
 
-        val expected = LaunchesScreenState(launches = launches)
+        val expected = LaunchesScreenState(launches = launches.toImmutableList())
 
         assertThat(result).isEqualTo(expected)
     }
