@@ -19,8 +19,9 @@
 The app lets a user **Save reminders/alarms for the upcoming Rocket Launches From around the world**.
 <br>
 
-**Click on the link below to get the latest version Space Dawn 🚀**
+**You can download the app from Playstore or download the apk from 🚀**
 
+[![Playstore](https://img.shields.io/badge/Download%20From%20Playstore-448045.svg?logo=google&style=for-the-badge)]([https://devlibrary.withgoogle.com/products/android/repos/avidraghav-SpaceDawn](https://play.google.com/store/apps/details?id=com.raghav.spacedawnv2))
 [![Space Dawn](https://img.shields.io/github/v/release/avidraghav/spacedawn?color=7885FF&label=Latest%20Apk&logo=android&style=for-the-badge)](https://github.com/avidraghav/spacedawn/releases/latest/download/app-release.apk)
 
 ## 🛠 Built With
