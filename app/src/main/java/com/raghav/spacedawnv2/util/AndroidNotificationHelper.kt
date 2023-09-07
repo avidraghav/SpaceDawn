@@ -7,9 +7,9 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
+import com.raghav.spacedawnv2.MainActivity
 import com.raghav.spacedawnv2.R
 import com.raghav.spacedawnv2.domain.util.NotificationHelper
-import com.raghav.spacedawnv2.ui.MainActivity
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
