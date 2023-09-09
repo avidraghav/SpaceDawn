@@ -1,4 +1,4 @@
-package com.raghav.common.di
+package com.raghav.di
 
 import dagger.Module
 import dagger.Provides
