@@ -13,9 +13,9 @@ import com.raghav.spacedawnv2.BuildConfig
 import com.raghav.spacedawnv2.R
 import com.raghav.spacedawnv2.broadcastreceiver.ReminderBroadcastReceiver
 import com.raghav.spacedawnv2.domain.model.Reminder
-import com.raghav.spacedawnv2.domain.util.Constants
 import com.raghav.spacedawnv2.domain.util.ReminderScheduler
 import com.raghav.spacedawnv2.domain.util.ReminderState
+import com.raghav.util.Constants
 import com.raghav.util.Helpers.Companion.isNull
 import com.raghav.util.Helpers.Companion.toDate
 import dagger.hilt.android.qualifiers.ApplicationContext

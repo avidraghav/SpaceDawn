@@ -16,12 +16,11 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
-import com.raghav.commonui.CircularImage
 import com.raghav.designsystem.ui.theme.colors
 import com.raghav.designsystem.ui.theme.spacing
 import com.raghav.launches.R
 import com.raghav.spacedawnv2.domain.model.LaunchDetail
-import com.raghav.spacedawnv2.domain.util.Constants
+import com.raghav.util.Constants
 import com.raghav.util.Helpers.Companion.formatTo
 import com.raghav.util.Helpers.Companion.toDate
 
@@ -33,7 +32,7 @@ fun LaunchesScreenItem(
 ) {
     Row(modifier = modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         launch.image?.let {
-            CircularImage(imageUrl = it, widthFraction = 0.35f)
+            com.raghav.common.components.CircularImage(imageUrl = it, widthFraction = 0.35f)
         }
         LaunchContent(
             launch = launch,

@@ -7,8 +7,8 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.raghav.spacedawnv2.domain.util.Constants
 import com.raghav.spacedawnv2.worker.ReminderNotificationCleanupWorker
+import com.raghav.util.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

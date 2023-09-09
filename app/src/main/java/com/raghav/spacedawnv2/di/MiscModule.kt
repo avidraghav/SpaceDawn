@@ -15,8 +15,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 
 /**
  * All dependencies which cannot be classified into the categories of
@@ -32,10 +30,6 @@ abstract class MiscModule {
         fun provideReminderScheduler(@ApplicationContext context: Context): ReminderScheduler {
             return AndroidReminderScheduler(context)
         }
-
-        @Provides
-        @Singleton
-        fun provideIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
 
         @Provides
         fun provideMediaPlayer(@ApplicationContext context: Context): MediaPlayer =

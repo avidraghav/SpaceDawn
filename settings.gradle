@@ -18,9 +18,10 @@ dependencyResolutionManagement {
 
 rootProject.name = "SpaceDawn"
 include ':app'
-include ':domain'
-include ':data'
+include ':core:domain'
+include ':core:data'
 include ':feature:launches'
 include ':feature:reminders'
-include ':common'
-include ':designsystem'
+include ':core:designsystem'
+include ':feature:common'
+include ':core:util'

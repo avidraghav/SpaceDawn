@@ -6,10 +6,8 @@ import android.content.Intent
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import com.raghav.spacedawnv2.data.local.LaunchesDao
-import com.raghav.spacedawnv2.domain.util.Constants
-import com.raghav.spacedawnv2.domain.util.ReminderScheduler
 import com.raghav.spacedawnv2.worker.DeviceBootReminderWorker
+import com.raghav.util.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -25,12 +23,6 @@ class DeviceBootReceiver : BroadcastReceiver() {
 
     @Inject
     lateinit var workManager: WorkManager
-
-    @Inject
-    lateinit var androidReminderScheduler: ReminderScheduler
-
-    @Inject
-    lateinit var launchesDao: LaunchesDao
 
     override fun onReceive(context: Context?, intent: Intent?) {
         if (intent?.action == Intent.ACTION_BOOT_COMPLETED) {

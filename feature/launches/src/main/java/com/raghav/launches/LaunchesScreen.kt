@@ -30,13 +30,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.raghav.commonui.AlertDialog
+import com.raghav.common.util.Helpers.Companion.openAppSettings
 import com.raghav.designsystem.ui.theme.spacing
 import com.raghav.launches.components.LaunchesScreenItem
 import com.raghav.spacedawnv2.domain.model.LaunchDetail
-import com.raghav.spacedawnv2.domain.util.Constants
+import com.raghav.util.Constants
 import com.raghav.util.Helpers.Companion.isNull
-import com.raghav.util.Helpers.Companion.openAppSettings
 
 /**
  * Screen that displays upcoming Rocket Launches
@@ -226,7 +225,7 @@ fun ShowPermissionRationaleDialog(
     onDismissClick: () -> Unit,
     onConfirmClick: () -> Unit
 ) {
-    AlertDialog(
+    com.raghav.common.components.AlertDialog(
         onDismissClick = onDismissClick,
         onConfirmClick = onConfirmClick,
         title = title,

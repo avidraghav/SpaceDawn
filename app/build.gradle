@@ -70,12 +70,12 @@ ktlint {
 
 dependencies {
 
-    implementation(project(":domain"))
-    implementation(project(":data"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:data"))
     implementation(project(":feature:launches"))
     implementation(project(":feature:reminders"))
-    implementation(project(":designsystem"))
-    implementation(project(":common"))
+    implementation(project(":core:designsystem"))
+    implementation(project(":core:util"))
 
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.0')
@@ -120,7 +120,11 @@ dependencies {
     // WorkManager
     implementation "androidx.work:work-runtime-ktx:2.8.1"
     implementation("androidx.hilt:hilt-work:1.0.0")
-    ksp("androidx.hilt:hilt-compiler:1.0.0")
+    kapt("androidx.hilt:hilt-compiler:1.0.0")
+
+    // Compose Navigation
+    def nav_version = "2.7.0"
+    implementation "androidx.navigation:navigation-compose:$nav_version"
 
 }
 

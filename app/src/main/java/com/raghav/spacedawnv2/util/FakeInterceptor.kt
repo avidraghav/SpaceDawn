@@ -9,6 +9,11 @@ import okhttp3.Protocol
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 
+/**
+ * Default Network Interceptor in case of Debug build. Use it to mock Api responses or
+ * testing purposes.
+ * see https://avidraghav.hashnode.dev/intercepting-network-requests-in-android-via-okhttp-interceptor
+ */
 class FakeInterceptor(private val context: Context) : NetworkInterceptor {
     private var contentType = "application/json"
 
