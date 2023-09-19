@@ -41,11 +41,11 @@ class RemindersScreenVM @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             getRemindersUseCase()
-                .catch {
+                .catch { throwable ->
                     _uiState.update {
                         it.copy(
                             isLoading = false,
-                            infoMessage = it.infoMessage
+                            infoMessage = throwable.localizedMessage
                         )
                     }
                 }
@@ -54,7 +54,7 @@ class RemindersScreenVM @Inject constructor(
                         it.copy(
                             reminders = reminders.toImmutableList(),
                             isLoading = false,
-                            infoMessage = it.infoMessage
+                            infoMessage = null
                         )
                     }
                 }

@@ -11,5 +11,6 @@ class FakeReminderScheduler : ReminderScheduler {
     }
 
     override fun cancelReminder(id: String) {
+        // assume reminder is cancelled by the AlarmManager api
     }
 }
