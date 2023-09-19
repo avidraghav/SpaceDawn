@@ -1,26 +1,28 @@
 package com.raghav.spacedawnv2.data.remote.dto
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
 import com.raghav.spacedawnv2.domain.model.Location
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
-@Keep
+// @JsonClass is used to make sure that Moshi uses code-gen instead of Reflection
+// for Serializing and Deserializing data
+@JsonClass(generateAdapter = true)
 data class LocationDto(
-    @SerializedName("country_code")
+    @Json(name = "country_code")
     val countryCode: String?,
-    @SerializedName("id")
+    @Json(name = "id")
     val id: Int?,
-    @SerializedName("map_image")
+    @Json(name = "map_image")
     val mapImage: String?,
-    @SerializedName("name")
+    @Json(name = "name")
     val name: String?,
-    @SerializedName("timezone_name")
+    @Json(name = "timezone_name")
     val timezoneName: String?,
-    @SerializedName("total_landing_count")
+    @Json(name = "total_landing_count")
     val totalLandingCount: Int?,
-    @SerializedName("total_launch_count")
+    @Json(name = "total_launch_count")
     val totalLaunchCount: Int?,
-    @SerializedName("url")
+    @Json(name = "url")
     val url: String?
 )
 

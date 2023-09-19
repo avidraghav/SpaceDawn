@@ -1,18 +1,21 @@
 package com.raghav.spacedawnv2.data.remote.dto
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
 import com.raghav.spacedawnv2.domain.model.LaunchesResponse
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
+import kotlinx.collections.immutable.toImmutableList
 
-@Keep
+// @JsonClass is used to make sure that Moshi uses code-gen instead of Reflection
+// for Serializing and Deserializing data
+@JsonClass(generateAdapter = true)
 data class LaunchesResponseDto(
-    @SerializedName("count")
+    @Json(name = "count")
     val count: Int?,
-    @SerializedName("next")
+    @Json(name = "next")
     val next: String?,
-    @SerializedName("previous")
-    val previous: Any?,
-    @SerializedName("results")
+    @Json(name = "previous")
+    val previous: String?,
+    @Json(name = "results")
     val results: List<LaunchDetailDto?>?
 )
 
@@ -21,6 +24,6 @@ fun LaunchesResponseDto.toDomain(): LaunchesResponse {
         count = count,
         next = next,
         previous = previous,
-        results = results?.map { it?.toLaunchDetail() }
+        results = results?.map { it?.toLaunchDetail() }?.toImmutableList()
     )
 }

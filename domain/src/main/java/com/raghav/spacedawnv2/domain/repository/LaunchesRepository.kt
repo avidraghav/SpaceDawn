@@ -1,8 +1,13 @@
 package com.raghav.spacedawnv2.domain.repository
 
-import com.raghav.spacedawnv2.domain.model.LaunchesResponse
+import com.raghav.spacedawnv2.domain.model.LaunchDetail
+import com.raghav.spacedawnv2.domain.model.Reminder
+import com.raghav.spacedawnv2.domain.util.Resource
+import kotlinx.coroutines.flow.Flow
 
 interface LaunchesRepository {
 
-    suspend fun getLaunches(): LaunchesResponse
+    fun getLaunches(): Flow<Resource<List<LaunchDetail>>>
+
+    suspend fun saveReminder(reminder: Reminder)
 }

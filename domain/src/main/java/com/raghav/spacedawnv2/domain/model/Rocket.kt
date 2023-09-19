@@ -1,8 +1,8 @@
 package com.raghav.spacedawnv2.domain.model
 
-import androidx.annotation.Keep
+import com.squareup.moshi.JsonClass
 
-@Keep
+@JsonClass(generateAdapter = true)
 data class Rocket(
     val configuration: Configuration?,
     val id: Int?

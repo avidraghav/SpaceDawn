@@ -1,13 +1,13 @@
 package com.raghav.spacedawnv2.launchesscreen
 
+import androidx.compose.runtime.Stable
 import com.raghav.spacedawnv2.domain.model.LaunchDetail
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
-sealed class LaunchesScreenState(
-    val launches: List<LaunchDetail> = emptyList(),
+@Stable
+data class LaunchesScreenState(
+    val launches: ImmutableList<LaunchDetail> = persistentListOf(),
+    val isLoading: Boolean = false,
     val errorMessage: String? = null
-) {
-    object Loading : LaunchesScreenState()
-    class Success(launches: List<LaunchDetail>) : LaunchesScreenState(launches = launches)
-    class Error(message: String?) : LaunchesScreenState(errorMessage = message)
-    object Empty : LaunchesScreenState()
-}
+)

@@ -1,47 +1,33 @@
 package com.raghav.spacedawnv2.data.remote.dto
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
-import com.raghav.spacedawnv2.domain.model.Program
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
+import kotlinx.collections.immutable.ImmutableList
 
-@Keep
+// @JsonClass is used to make sure that Moshi uses code-gen instead of Reflection
+// for Serializing and Deserializing data
+@JsonClass(generateAdapter = true)
 data class ProgramDto(
-    @SerializedName("agencies")
-    val agencies: List<AgencyDto?>?,
-    @SerializedName("description")
+    @Json(name = "agencies")
+    val agencies: ImmutableList<AgencyDto?>?,
+    @Json(name = "description")
     val description: String?,
-    @SerializedName("end_date")
-    val endDate: Any?,
-    @SerializedName("id")
+    @Json(name = "end_date")
+    val endDate: String?,
+    @Json(name = "id")
     val id: Int?,
-    @SerializedName("image_url")
+    @Json(name = "image_url")
     val imageUrl: String?,
-    @SerializedName("info_url")
+    @Json(name = "info_url")
     val infoUrl: String?,
-    @SerializedName("mission_patches")
-    val missionPatches: List<Any?>?,
-    @SerializedName("name")
+    @Json(name = "mission_patches")
+    val missionPatches: ImmutableList<String?>?,
+    @Json(name = "name")
     val name: String?,
-    @SerializedName("start_date")
+    @Json(name = "start_date")
     val startDate: String?,
-    @SerializedName("url")
+    @Json(name = "url")
     val url: String?,
-    @SerializedName("wiki_url")
+    @Json(name = "wiki_url")
     val wikiUrl: String?
 )
-
-fun ProgramDto.toProgram(): Program {
-    return Program(
-        agencies = agencies?.map { it?.toAgency() },
-        description = description,
-        end_date = endDate,
-        id = id,
-        image_url = imageUrl,
-        info_url = infoUrl,
-        mission_patches = missionPatches,
-        name = name,
-        start_date = startDate,
-        url = url,
-        wiki_url = wikiUrl
-    )
-}
