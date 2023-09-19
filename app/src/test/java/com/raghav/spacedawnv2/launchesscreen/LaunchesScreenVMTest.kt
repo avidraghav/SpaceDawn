@@ -8,11 +8,10 @@ import com.raghav.spacedawnv2.data.remote.dto.toLaunchDetail
 import com.raghav.spacedawnv2.domain.usecase.AddReminderUseCase
 import com.raghav.spacedawnv2.util.FakeLaunchesRepository
 import com.raghav.spacedawnv2.util.FakeReminderScheduler
+import com.raghav.spacedawnv2.util.Helpers.Companion.getDtoFromJson
 import com.raghav.spacedawnv2.util.MainDispatcherRule
 import com.raghav.spacedawnv2.util.launchDetailDtoString
 import com.raghav.spacedawnv2.util.launchesResponseDtoString
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -39,8 +38,6 @@ class LaunchesScreenVMTest {
     private lateinit var launchesScreenVM: LaunchesScreenVM
     private val fakeReminderScheduler = FakeReminderScheduler()
 
-    private val moshi = Moshi.Builder().build()
-
     /*
     UiState = LaunchesScreenState(
        val launches: List<LaunchDetail> ,
@@ -53,6 +50,7 @@ class LaunchesScreenVMTest {
         initialize(testScheduler = testScheduler)
 
         val result = launchesScreenVM.uiState.value
+
         val launchesResponse =
             getDtoFromJson<LaunchesResponseDto>(launchesResponseDtoString)?.toDomain()
 
@@ -116,12 +114,5 @@ class LaunchesScreenVMTest {
                 UnconfinedTestDispatcher(testScheduler),
                 addReminderUseCase
             )
-    }
-
-    private inline fun <reified T> getDtoFromJson(jsonString: String): T? {
-        val adapter: JsonAdapter<T> =
-            moshi.adapter(T::class.java)
-
-        return adapter.fromJson(jsonString)
     }
 }
