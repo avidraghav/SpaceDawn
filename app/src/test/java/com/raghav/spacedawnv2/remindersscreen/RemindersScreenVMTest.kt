@@ -3,6 +3,7 @@ package com.raghav.spacedawnv2.remindersscreen
 import com.google.common.truth.Truth
 import com.raghav.spacedawnv2.data.remote.dto.LaunchesResponseDto
 import com.raghav.spacedawnv2.data.remote.dto.toDomain
+import com.raghav.spacedawnv2.domain.model.Reminder
 import com.raghav.spacedawnv2.domain.model.toReminder
 import com.raghav.spacedawnv2.domain.usecase.CancelReminderUseCase
 import com.raghav.spacedawnv2.domain.usecase.GetRemindersUseCase
@@ -56,13 +57,7 @@ class RemindersScreenVMTest {
         initialize(remindersFetchedSuccessfully = true, testScheduler = testScheduler)
         val result = remindersScreenVM.uiState.value
 
-        val launchesResponse =
-            getDtoFromJson<LaunchesResponseDto>(launchesResponseDtoString)?.toDomain()
-
-        val reminders =
-            launchesResponse?.results?.filterNotNull()?.map {
-                it.toReminder()
-            } ?: emptyList()
+        val reminders = createReminders()
 
         val expected = RemindersScreenState(reminders = reminders.toImmutableList())
 
@@ -72,13 +67,8 @@ class RemindersScreenVMTest {
     @Test
     fun cancelReminder_removesReminderFromDeviceAndAppDatabase() = runTest {
         initialize(testScheduler = testScheduler)
-        val launchesResponse =
-            getDtoFromJson<LaunchesResponseDto>(launchesResponseDtoString)?.toDomain()
 
-        val reminders =
-            launchesResponse?.results?.filterNotNull()?.map {
-                it.toReminder()
-            } ?: emptyList()
+        val reminders = createReminders()
 
         var result: RemindersScreenEvent? = null
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
@@ -97,13 +87,7 @@ class RemindersScreenVMTest {
         // assuming failure occurred while deleting the reminder from database
         initialize(reminderDeletedSuccessfully = false, testScheduler = testScheduler)
 
-        val launchesResponse =
-            getDtoFromJson<LaunchesResponseDto>(launchesResponseDtoString)?.toDomain()
-
-        val reminders =
-            launchesResponse?.results?.filterNotNull()?.map {
-                it.toReminder()
-            } ?: emptyList()
+        val reminders = createReminders()
 
         var result: RemindersScreenEvent? = null
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
@@ -134,5 +118,14 @@ class RemindersScreenVMTest {
                 getRemindersUseCase = getReminderUseCase,
                 ioDispatcher = UnconfinedTestDispatcher(testScheduler)
             )
+    }
+
+    private fun createReminders(): List<Reminder> {
+        val launchesResponse =
+            getDtoFromJson<LaunchesResponseDto>(launchesResponseDtoString)?.toDomain()
+
+        return launchesResponse?.results?.filterNotNull()?.map {
+            it.toReminder()
+        } ?: emptyList()
     }
 }
