@@ -13,7 +13,7 @@ java {
 }
 
 ktlint {
-    android.set(false)
+    android.set(true)
     ignoreFailures.set(false)
     reporters {
         reporter(ReporterType.PLAIN)
@@ -25,6 +25,7 @@ ktlint {
             it.file.path.contains("$buildDir/generated/")
         }
     }
+    disabledRules.set(listOf("max-line-length"))
 }
 
 dependencies {
