@@ -78,19 +78,27 @@ class LaunchesScreenVM @Inject constructor(
                     is Resource.Error -> {
                         when (result.errorMessage) {
                             Constants.REMINDER_PERMISSION_NOT_AVAILABLE -> {
-                                _eventFlow.emit(LaunchesScreenEvent.PermissionToSetReminderNotGranted)
+                                _eventFlow.emit(
+                                    LaunchesScreenEvent.PermissionToSetReminderNotGranted
+                                )
                             }
 
                             Constants.NOTIFICATION_PERMISSION_NOT_AVAILABLE -> {
-                                _eventFlow.emit(LaunchesScreenEvent.PermissionToSendNotificationsNotGranted)
+                                _eventFlow.emit(
+                                    LaunchesScreenEvent.PermissionToSendNotificationsNotGranted
+                                )
                             }
 
                             Constants.NOTIFICATION_REMINDER_PERMISSION_NOT_AVAILABLE -> {
-                                _eventFlow.emit(LaunchesScreenEvent.PermissionsToSendNotificationsAndSetReminderNotGranted)
+                                _eventFlow.emit(
+                                    LaunchesScreenEvent.PermissionsToSendNotificationsAndSetReminderNotGranted
+                                )
                             }
 
                             else -> {
-                                _eventFlow.emit(LaunchesScreenEvent.ReminderNotSet(result.errorMessage))
+                                _eventFlow.emit(
+                                    LaunchesScreenEvent.ReminderNotSet(result.errorMessage)
+                                )
                             }
                         }
                     }

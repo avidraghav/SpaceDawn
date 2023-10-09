@@ -3,9 +3,7 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
+        maven("https://plugins.gradle.org/m2/")
     }
 }
 dependencyResolutionManagement {
@@ -17,6 +15,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "SpaceDawn"
-include ':app'
-include ':domain'
-include ':data'
+include(":app")
+include(":domain")
+include(":data")

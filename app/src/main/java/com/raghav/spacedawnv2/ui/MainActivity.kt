@@ -96,7 +96,9 @@ fun SpaceDawnApp(modifier: Modifier = Modifier) {
                 }
             ) {
                 val activity = (LocalContext.current as? Activity)
-                val actionLabel by rememberUpdatedState(newValue = stringResource(id = R.string.reminders))
+                val actionLabel by rememberUpdatedState(
+                    newValue = stringResource(id = R.string.reminders)
+                )
                 LaunchesScreen(
                     systemBackButtonClicked = { activity?.finish() },
                     reminderSetSuccessfully = {
@@ -135,7 +137,9 @@ fun SpaceDawnApp(modifier: Modifier = Modifier) {
                     slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right)
                 }
             ) {
-                val snackBarMessage by rememberUpdatedState(newValue = stringResource(R.string.reminder_cancelled_successfully))
+                val snackBarMessage by rememberUpdatedState(
+                    newValue = stringResource(R.string.reminder_cancelled_successfully)
+                )
                 RemindersScreen(
                     onBackPressed = { navController.navigateSingleTopTo(LaunchesScreen.route) },
                     reminderNotCancelled = { message ->

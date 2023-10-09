@@ -48,7 +48,9 @@ class AddReminderUseCase @Inject constructor(
                 is ReminderState.PermissionsState -> {
                     when {
                         reminderState.reminderPermission && !reminderState.notificationPermission -> {
-                            Resource.Error(message = Constants.NOTIFICATION_PERMISSION_NOT_AVAILABLE)
+                            Resource.Error(
+                                message = Constants.NOTIFICATION_PERMISSION_NOT_AVAILABLE
+                            )
                         }
 
                         !reminderState.reminderPermission && reminderState.notificationPermission -> {
@@ -56,11 +58,15 @@ class AddReminderUseCase @Inject constructor(
                         }
 
                         !reminderState.reminderPermission && !reminderState.notificationPermission -> {
-                            Resource.Error(message = Constants.NOTIFICATION_REMINDER_PERMISSION_NOT_AVAILABLE)
+                            Resource.Error(
+                                message = Constants.NOTIFICATION_REMINDER_PERMISSION_NOT_AVAILABLE
+                            )
                         }
 
                         else -> {
-                            Resource.Error(message = Constants.NOTIFICATION_REMINDER_PERMISSION_NOT_AVAILABLE)
+                            Resource.Error(
+                                message = Constants.NOTIFICATION_REMINDER_PERMISSION_NOT_AVAILABLE
+                            )
                         }
                     }
                 }

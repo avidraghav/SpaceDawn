@@ -9,4 +9,4 @@ class NoOpInterceptor : NetworkInterceptor {
         // This interceptor does nothing and immediately returns the original response
         return chain.proceed(chain.request())
     }
- }
+}
