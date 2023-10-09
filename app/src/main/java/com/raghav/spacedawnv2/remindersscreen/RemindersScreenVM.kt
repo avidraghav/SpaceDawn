@@ -66,7 +66,11 @@ class RemindersScreenVM @Inject constructor(
             cancelReminderUseCase(reminderId).let { result ->
                 when (result) {
                     is Resource.Error -> {
-                        _eventFlow.emit(RemindersScreenEvent.ReminderNotCancelled(result.errorMessage.toString()))
+                        _eventFlow.emit(
+                            RemindersScreenEvent.ReminderNotCancelled(
+                                result.errorMessage.toString()
+                            )
+                        )
                     }
 
                     is Resource.Success -> {

@@ -181,7 +181,9 @@ fun LaunchesScreen(
             },
             onConfirmClick = {
                 showReminderPermissionRationale = false
-                scheduleExactAlarmPermissionLauncher.launch(Manifest.permission.SCHEDULE_EXACT_ALARM)
+                scheduleExactAlarmPermissionLauncher.launch(
+                    Manifest.permission.SCHEDULE_EXACT_ALARM
+                )
             },
             modifier = modifier
         )
@@ -197,7 +199,9 @@ fun LaunchesScreen(
             onConfirmClick = {
                 showNotificationPermissionRationale = false
                 if (!isNotificationPermissionDeclined) {
-                    postNotificationsPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    postNotificationsPermissionLauncher.launch(
+                        Manifest.permission.POST_NOTIFICATIONS
+                    )
                 } else {
                     (context as Activity).openAppSettings()
                 }

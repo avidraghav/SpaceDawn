@@ -63,8 +63,12 @@ fun ReminderContent(
                 withStyle(
                     style = when (reminder.status?.name) {
                         stringResource(R.string.to_be_determined) -> SpanStyle(color = Color.Red)
-                        stringResource(R.string.go_for_launch) -> SpanStyle(MaterialTheme.colors.Green)
-                        stringResource(R.string.to_be_confirmed) -> SpanStyle(MaterialTheme.colors.Yellow)
+                        stringResource(R.string.go_for_launch) -> SpanStyle(
+                            MaterialTheme.colors.Green
+                        )
+                        stringResource(R.string.to_be_confirmed) -> SpanStyle(
+                            MaterialTheme.colors.Yellow
+                        )
                         else -> SpanStyle()
                     }
                 ) {

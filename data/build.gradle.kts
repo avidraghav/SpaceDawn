@@ -53,6 +53,7 @@ ktlint {
             it.file.path.contains("$buildDir/generated/")
         }
     }
+    disabledRules.set(listOf("max-line-length"))
 }
 
 dependencies {
