@@ -1,12 +1,13 @@
+@file:Suppress("DSL_SCOPE_VIOLATION", "UnstableApiUsage")
+
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
-    id("com.android.library")
-    kotlin("android")
-    id("org.jlleitschuh.gradle.ktlint")
-    id("com.google.devtools.ksp")
-    kotlin("kapt")
-    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ktlint)
+    id("spacedawn.android.hilt")
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -61,15 +62,10 @@ dependencies {
 
     implementation(libs.androidx.corektx)
     implementation(libs.androidx.appcompat)
-//    implementation("com.google.android.material:material:1.5.0")
 
     // Retrofit
     implementation(libs.bundles.retrofit)
     ksp(libs.moshi.codegen)
-
-    // Hilt
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
 
     // Room
     implementation(libs.bundles.room)
@@ -90,8 +86,4 @@ dependencies {
     testImplementation(libs.mockito.kotlin)
 
     androidTestImplementation(libs.androidx.test.core)
-}
-
-kapt {
-    correctErrorTypes = true
 }

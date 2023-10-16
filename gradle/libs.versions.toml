@@ -49,6 +49,7 @@ test_junit = "4.13.2"
 truth = "1.1.4"
 androidx_test_extensions = "1.1.3"
 androidx_test_core = "2.1.0"
+material = "1.10.0"
 
 [libraries]
 # Project
@@ -90,8 +91,8 @@ hilt_work = { module = "androidx.hilt:hilt-work", version.ref = "hilt_work" }
 hilt_compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hilt_compiler" }
 
 # Coroutines
-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+coroutines_core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutines_test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 
 # Coil
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
@@ -104,6 +105,9 @@ kotlin_immutable_collections = { module = "org.jetbrains.kotlinx:kotlinx-collect
 androidx_annotations = { module = "androidx.annotation:annotation", version = "1.6.0" }
 java_inject = { module = "javax.inject:javax.inject", version = "1" }
 
+build_agp = { module = "com.android.tools.build:gradle", version.ref = "android_gradle_plugin" }
+build_kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
 # Test
 test_junit = { module = "junit:junit", version.ref = "test_junit" }
 androidx_test_extensions = { module = "androidx.test.ext:junit", version.ref = "androidx_test_extensions" }
@@ -112,17 +116,18 @@ google_truth = { module = "com.google.truth:truth", version.ref = "truth" }
 androidx_test_core = { module = "androidx.arch.core:core-testing", version.ref = "androidx_test_core" }
 mockito_core = { module = "org.mockito:mockito-core", version = "5.3.1" }
 mockito_kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version = "5.0.0" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 android_application = { id = "com.android.application", version.ref = "android_gradle_plugin" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin_android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin_jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-ktlint_plugin = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
-hilt-plugin = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-ksp-plugin = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-android-library = { id = "com.android.library", version.ref = "android_gradle_plugin" }
-android-java-library = { id = "java-library", version.ref = "android_gradle_plugin" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+kotlin_kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+hilt= { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+android_library = { id = "com.android.library", version.ref = "android_gradle_plugin" }
 
 [bundles]
 compose = ["compose-ui", "compose_graphics", "compose_tooling_preview", "material_3", "compose_lifecycle"]

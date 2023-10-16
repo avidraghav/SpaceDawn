@@ -1,13 +1,13 @@
+@file:Suppress("DSL_SCOPE_VIOLATION", "UnstableApiUsage")
+
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
-    id("com.android.application")
-    kotlin("android")
-    id("org.jlleitschuh.gradle.ktlint")
-    // Hilt doesn"t supports KSP yet
-    kotlin("kapt")
-    id("com.google.dagger.hilt.android")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ktlint)
+    id("spacedawn.android.hilt")
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -104,9 +104,7 @@ dependencies {
     // Retrofit
     implementation(libs.bundles.retrofit)
 
-    // Hilt
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
+    // Navigation with Hilt and Compose
     implementation(libs.hilt.navigation)
 
     testImplementation(libs.test.junit)
@@ -118,8 +116,4 @@ dependencies {
     // For making Assertions in Test cases
     testImplementation(libs.google.truth)
     androidTestImplementation(libs.google.truth)
-}
-
-kapt {
-    correctErrorTypes = true
 }
