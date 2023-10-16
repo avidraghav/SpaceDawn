@@ -1,10 +1,12 @@
+@file:Suppress("DSL_SCOPE_VIOLATION", "UnstableApiUsage")
+
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
     id("java-library")
-    id("org.jetbrains.kotlin.jvm")
-    id("com.google.devtools.ksp")
-    id("org.jlleitschuh.gradle.ktlint")
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.ktlint)
 }
 
 java {
