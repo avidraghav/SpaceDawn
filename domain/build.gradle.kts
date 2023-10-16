@@ -29,22 +29,20 @@ ktlint {
 }
 
 dependencies {
-    implementation("androidx.annotation:annotation:1.6.0")
-    implementation("javax.inject:javax.inject:1")
+    implementation(libs.androidx.annotations)
+    implementation(libs.java.inject)
 
     // Room
-    implementation("androidx.room:room-common:2.5.1")
+    implementation(libs.room.common)
 
     // Moshi
-    implementation("com.squareup.moshi:moshi:1.14.0")
-    ksp("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
+    implementation(libs.moshi)
+    ksp(libs.moshi.codegen)
 
     // Coroutines Flow
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
+    implementation(libs.coroutines.core)
 
-    val okhttp_interceptor = "5.0.0-alpha.2"
-    api("com.squareup.okhttp3:logging-interceptor:$okhttp_interceptor")
+    implementation(libs.okhttp.interceptor)
 
-    // For Making Kotlin Collections Immutable as to be considered stable
-    api("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
+    api(libs.kotlin.immutable.collections)
 }
