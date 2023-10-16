@@ -108,7 +108,7 @@ java_inject = { module = "javax.inject:javax.inject", version = "1" }
 test_junit = { module = "junit:junit", version.ref = "test_junit" }
 androidx_test_extensions = { module = "androidx.test.ext:junit", version.ref = "androidx_test_extensions" }
 androidx_expresso_core = { module = "androidx.test.espresso:espresso-core", version = "3.4.0" }
-google_truth = { module = "com.google.truth:truth", version = "truth" }
+google_truth = { module = "com.google.truth:truth", version.ref = "truth" }
 androidx_test_core = { module = "androidx.arch.core:core-testing", version.ref = "androidx_test_core" }
 mockito_core = { module = "org.mockito:mockito-core", version = "5.3.1" }
 mockito_kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version = "5.0.0" }
