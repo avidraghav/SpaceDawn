@@ -8,7 +8,6 @@ import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -29,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
@@ -52,6 +52,7 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen()
         setContent {
             SpaceDawnTheme {
                 // A surface container using the 'background' color from the theme
@@ -66,7 +67,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SpaceDawnApp(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
@@ -86,6 +86,7 @@ fun SpaceDawnApp(modifier: Modifier = Modifier) {
             startDestination = LaunchesScreen.route,
             modifier = Modifier.padding(innerPadding)
         ) {
+            // Launches Screen
             composable(
                 LaunchesScreen.route,
                 enterTransition = {
@@ -128,6 +129,7 @@ fun SpaceDawnApp(modifier: Modifier = Modifier) {
                     }
                 )
             }
+            // Reminders Screen
             composable(
                 RemindersScreen.route,
                 enterTransition = {
