@@ -41,6 +41,9 @@ coil = "2.4.0"
 # WorkManager
 workmanager = "2.8.1"
 
+# Splash Screen
+splashscreen_core = "1.0.1"
+
 # Quality
 ktlint = "11.5.0"
 
@@ -100,6 +103,9 @@ coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 # WorkManager
 workmanager = { module = "androidx.work:work-runtime-ktx", version.ref = "workmanager" }
 
+# Splash Screen
+splashscreen_core = { module = "androidx.core:core-splashscreen", version.ref = "splashscreen_core" }
+
 # General dependencies
 kotlin_immutable_collections = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version = "0.3.5" }
 androidx_annotations = { module = "androidx.annotation:annotation", version = "1.6.0" }
@@ -124,7 +130,7 @@ kotlin_android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin_jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 kotlin_kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
-hilt= { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 android_library = { id = "com.android.library", version.ref = "android_gradle_plugin" }

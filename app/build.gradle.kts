@@ -107,6 +107,10 @@ dependencies {
     // Navigation with Hilt and Compose
     implementation(libs.hilt.navigation)
 
+    // Splash Screen
+    implementation(libs.splashscreen.core)
+
+    // Test Dependencies
     testImplementation(libs.test.junit)
     androidTestImplementation(libs.androidx.test.extensions)
     androidTestImplementation(libs.androidx.expresso.core)
