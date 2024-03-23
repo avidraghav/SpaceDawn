@@ -1,10 +1,8 @@
 package com.raghav.spacedawnv2.ui
 
-import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -13,40 +11,30 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.raghav.spacedawnv2.R
-import com.raghav.spacedawnv2.launchesscreen.LaunchesScreen
 import com.raghav.spacedawnv2.navigation.Destination
 import com.raghav.spacedawnv2.navigation.LaunchesScreen
 import com.raghav.spacedawnv2.navigation.RemindersScreen
-import com.raghav.spacedawnv2.remindersscreen.RemindersScreen
+import com.raghav.spacedawnv2.navigation.SpaceDawnNavHost
 import com.raghav.spacedawnv2.ui.theme.SpaceDawnTheme
 import com.raghav.spacedawnv2.ui.theme.spacing
 import com.raghav.spacedawnv2.util.Helpers.Companion.navigateSingleTopTo
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -81,89 +69,12 @@ fun SpaceDawnApp(modifier: Modifier = Modifier) {
             SnackbarHost(snackbarHostState)
         }
     ) { innerPadding ->
-        NavHost(
+        SpaceDawnNavHost(
             navController = navController,
-            startDestination = LaunchesScreen.route,
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            // Launches Screen
-            composable(
-                LaunchesScreen.route,
-                enterTransition = {
-                    slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Right)
-                },
-                exitTransition = {
-                    slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Left)
-                }
-            ) {
-                val activity = (LocalContext.current as? Activity)
-                val actionLabel by rememberUpdatedState(
-                    newValue = stringResource(id = R.string.reminders)
-                )
-                LaunchesScreen(
-                    systemBackButtonClicked = { activity?.finish() },
-                    reminderSetSuccessfully = {
-                        scope.launch {
-                            val actionTaken = snackbarHostState.showSnackbar(
-                                it,
-                                actionLabel = actionLabel,
-                                withDismissAction = true,
-                                duration = SnackbarDuration.Short
-                            )
-                            when (actionTaken) {
-                                SnackbarResult.ActionPerformed -> {
-                                    navController.navigateSingleTopTo(RemindersScreen.route)
-                                }
-
-                                else -> {}
-                            }
-                        }
-                    },
-                    reminderNotSet = {
-                        scope.launch {
-                            snackbarHostState.showSnackbar(
-                                it,
-                                withDismissAction = true
-                            )
-                        }
-                    }
-                )
-            }
-            // Reminders Screen
-            composable(
-                RemindersScreen.route,
-                enterTransition = {
-                    slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left)
-                },
-                exitTransition = {
-                    slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right)
-                }
-            ) {
-                val snackBarMessage by rememberUpdatedState(
-                    newValue = stringResource(R.string.reminder_cancelled_successfully)
-                )
-                RemindersScreen(
-                    onBackPressed = { navController.navigateSingleTopTo(LaunchesScreen.route) },
-                    reminderNotCancelled = { message ->
-                        scope.launch {
-                            snackbarHostState.showSnackbar(
-                                message.toString(),
-                                withDismissAction = true
-                            )
-                        }
-                    },
-                    reminderCancelled = {
-                        scope.launch {
-                            snackbarHostState.showSnackbar(
-                                // need to extract to string res
-                                snackBarMessage,
-                                withDismissAction = true
-                            )
-                        }
-                    }
-                )
-            }
-        }
+            modifier = Modifier.padding(innerPadding),
+            snackbarHostState = snackbarHostState,
+            coroutineScope = scope
+        )
     }
 }
 

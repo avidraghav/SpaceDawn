@@ -2,7 +2,9 @@ package com.raghav.spacedawnv2.domain.usecase
 
 import com.raghav.spacedawnv2.domain.model.Reminder
 import com.raghav.spacedawnv2.domain.repository.LaunchesRepository
-import com.raghav.spacedawnv2.domain.util.Constants
+import com.raghav.spacedawnv2.domain.util.NotificationPermissionException
+import com.raghav.spacedawnv2.domain.util.ReminderAndNotificationPermissionException
+import com.raghav.spacedawnv2.domain.util.ReminderPermissionException
 import com.raghav.spacedawnv2.domain.util.ReminderScheduler
 import com.raghav.spacedawnv2.domain.util.ReminderState
 import com.raghav.spacedawnv2.domain.util.Resource
@@ -49,23 +51,25 @@ class AddReminderUseCase @Inject constructor(
                     when {
                         reminderState.reminderPermission && !reminderState.notificationPermission -> {
                             Resource.Error(
-                                message = Constants.NOTIFICATION_PERMISSION_NOT_AVAILABLE
+                                exception = NotificationPermissionException()
                             )
                         }
 
                         !reminderState.reminderPermission && reminderState.notificationPermission -> {
-                            Resource.Error(message = Constants.REMINDER_PERMISSION_NOT_AVAILABLE)
+                            Resource.Error(
+                                exception = ReminderPermissionException()
+                            )
                         }
 
                         !reminderState.reminderPermission && !reminderState.notificationPermission -> {
                             Resource.Error(
-                                message = Constants.NOTIFICATION_REMINDER_PERMISSION_NOT_AVAILABLE
+                                exception = ReminderAndNotificationPermissionException()
                             )
                         }
 
                         else -> {
                             Resource.Error(
-                                message = Constants.NOTIFICATION_REMINDER_PERMISSION_NOT_AVAILABLE
+                                exception = ReminderAndNotificationPermissionException()
                             )
                         }
                     }
