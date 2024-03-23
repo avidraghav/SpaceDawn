@@ -6,7 +6,9 @@ import com.raghav.spacedawnv2.domain.model.LaunchDetail
 import com.raghav.spacedawnv2.domain.model.toReminder
 import com.raghav.spacedawnv2.domain.repository.LaunchesRepository
 import com.raghav.spacedawnv2.domain.usecase.AddReminderUseCase
-import com.raghav.spacedawnv2.domain.util.Constants
+import com.raghav.spacedawnv2.domain.util.NotificationPermissionException
+import com.raghav.spacedawnv2.domain.util.ReminderAndNotificationPermissionException
+import com.raghav.spacedawnv2.domain.util.ReminderPermissionException
 import com.raghav.spacedawnv2.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -76,30 +78,36 @@ class LaunchesScreenVM @Inject constructor(
             addReminderUseCase(reminder).let { result ->
                 when (result) {
                     is Resource.Error -> {
-                        when (result.errorMessage) {
-                            Constants.REMINDER_PERMISSION_NOT_AVAILABLE -> {
-                                _eventFlow.emit(
-                                    LaunchesScreenEvent.PermissionToSetReminderNotGranted
-                                )
-                            }
+                        if (result.exception != null) {
+                            when (result.exception) {
+                                is ReminderPermissionException -> {
+                                    _eventFlow.emit(
+                                        LaunchesScreenEvent.PermissionToSetReminderNotGranted
+                                    )
+                                }
 
-                            Constants.NOTIFICATION_PERMISSION_NOT_AVAILABLE -> {
-                                _eventFlow.emit(
-                                    LaunchesScreenEvent.PermissionToSendNotificationsNotGranted
-                                )
-                            }
+                                is NotificationPermissionException -> {
+                                    _eventFlow.emit(
+                                        LaunchesScreenEvent.PermissionToSendNotificationsNotGranted
+                                    )
+                                }
 
-                            Constants.NOTIFICATION_REMINDER_PERMISSION_NOT_AVAILABLE -> {
-                                _eventFlow.emit(
-                                    LaunchesScreenEvent.PermissionsToSendNotificationsAndSetReminderNotGranted
-                                )
-                            }
+                                is ReminderAndNotificationPermissionException -> {
+                                    _eventFlow.emit(
+                                        LaunchesScreenEvent.PermissionsToSendNotificationsAndSetReminderNotGranted
+                                    )
+                                }
 
-                            else -> {
-                                _eventFlow.emit(
-                                    LaunchesScreenEvent.ReminderNotSet(result.errorMessage)
-                                )
+                                else -> {
+                                    _eventFlow.emit(
+                                        LaunchesScreenEvent.ReminderNotSet(result.errorMessage)
+                                    )
+                                }
                             }
+                        } else {
+                            _eventFlow.emit(
+                                LaunchesScreenEvent.ReminderNotSet(result.errorMessage)
+                            )
                         }
                     }
 
