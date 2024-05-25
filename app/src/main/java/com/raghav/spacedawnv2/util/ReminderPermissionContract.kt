@@ -2,11 +2,11 @@ package com.raghav.spacedawnv2.util
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
-import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContract
 
 class ReminderPermissionContract : ActivityResultContract<String, Boolean>() {
@@ -19,6 +19,6 @@ class ReminderPermissionContract : ActivityResultContract<String, Boolean>() {
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?): Boolean {
-        return resultCode == ComponentActivity.RESULT_OK
+        return resultCode == RESULT_OK
     }
 }

@@ -12,11 +12,11 @@ plugins {
 
 android {
     namespace = "com.raghav.data.spacedawnv2"
-    compileSdk = 34
+    compileSdk = libs.versions.compile.sdk.get().toInt()
 
     defaultConfig {
-        minSdk = 24
-        targetSdk = 34
+        minSdk = libs.versions.min.sdk.get().toInt()
+        targetSdk = libs.versions.target.sdk.get().toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -76,6 +76,7 @@ dependencies {
     androidTestImplementation(libs.androidx.expresso.core)
 
     testImplementation(libs.coroutines.test)
+    androidTestImplementation(libs.coroutines.test)
 
     // For making Assertions in Test cases
     testImplementation(libs.google.truth)
