@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconButton
@@ -65,13 +65,14 @@ fun RemindersScreen(
                 navigationIcon = {
                     FilledIconButton(
                         onClick = onBackPressed,
-                        colors = IconButtonDefaults.filledIconButtonColors(
+                        colors =
+                        IconButtonDefaults.filledIconButtonColors(
                             containerColor = MaterialTheme.colorScheme.surface,
                             contentColor = MaterialTheme.colorScheme.onSurface
                         )
                     ) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.back_button)
                         )
                     }
@@ -83,7 +84,8 @@ fun RemindersScreen(
         Box(modifier = modifier.fillMaxSize().padding(innerPadding)) {
             if (state.reminders.isNotEmpty()) {
                 LazyColumn(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .fillMaxSize()
                         .padding(top = MaterialTheme.spacing.small)
                 ) {
@@ -112,7 +114,8 @@ fun RemindersScreen(
                 Text(
                     text = it,
                     style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.align(Alignment.Center)
+                    modifier =
+                    Modifier.align(Alignment.Center)
                         .padding(MaterialTheme.spacing.medium)
                 )
             }

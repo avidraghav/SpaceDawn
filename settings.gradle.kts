@@ -15,6 +15,9 @@ dependencyResolutionManagement {
     }
 }
 
+/* https://github.com/gradle/gradle/issues/28407 */
+gradle.startParameter.excludedTaskNames.addAll(listOf(":build-logic:convention:testClasses"))
+
 rootProject.name = "SpaceDawn"
 include(":app")
 include(":domain")

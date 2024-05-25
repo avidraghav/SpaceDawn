@@ -8,16 +8,17 @@ plugins {
     alias(libs.plugins.ktlint)
     id("spacedawn.android.hilt")
     alias(libs.plugins.ksp)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
     namespace = "com.raghav.spacedawnv2"
-    compileSdk = 34
+    compileSdk = libs.versions.compile.sdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.raghav.spacedawnv2"
-        minSdk = 24
-        targetSdk = 34
+        minSdk = libs.versions.min.sdk.get().toInt()
+        targetSdk = libs.versions.target.sdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
 
@@ -48,9 +49,7 @@ android {
         compose = true
         buildConfig = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.0"
-    }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
